@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Onboarding = ({ onOnboardingComplete }) => {
+const OnboardingPage = ({ onOnboardingComplete }) => {
   const [name, setName] = useState('');
   const [grade, setGrade] = useState('');
   const [id, setId] = useState('');
@@ -37,4 +37,4 @@ const Onboarding = ({ onOnboardingComplete }) => {
   );
 };
 
-export default Onboarding;
+export default OnboardingPage;

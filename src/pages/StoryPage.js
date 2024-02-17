@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import AdventureOptions from './AdventureOptions';
-import VocabChecklist from './VocabChecklist';
-import vocabWords from './VocabWords';
+import AdventureOptions from '../components/AdventureOptions';
+import VocabChecklist from '../components/VocabChecklist';
+import vocabWords from '../components/VocabWords';
 
-const Story = ({ userDetails }) => {
+const StoryPage = ({ userDetails }) => {
   const [story, setStory] = useState('');
   const [options, setOptions] = useState([]);
   const [usedVocab, setUsedVocab] = useState([]);
@@ -86,4 +86,4 @@ const Story = ({ userDetails }) => {
   );
 };
 
-export default Story;
+export default StoryPage;

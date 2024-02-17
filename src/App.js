@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Onboarding from './components/Onboarding';
+import Onboarding from './pages/OnboardingPage';
 import Nav from './components/Nav';
-import Vocab from './components/Vocab';
-import Story from './components/Story';
+import VocabPage from './pages/VocabPage';
+import StoryPage from './pages/StoryPage';
 import LandingPage from './pages/LandingPage';
 
 const App = () => {
@@ -24,7 +24,7 @@ const App = () => {
   if (currentPage === 'landing') {
     return <LandingPage setCurrentPage={setCurrentPage} />;
   }
-  
+
   // Render Onboarding if onboarding is not complete
   if (!onboardingComplete) {
     return <Onboarding onOnboardingComplete={handleOnboardingComplete} />;
@@ -34,8 +34,8 @@ const App = () => {
   return (
     <div>
       <Nav setCurrentPage={setCurrentPage} />
-      {currentPage === 'vocab' && <Vocab userDetails={userDetails} onContinueToStory={handleContinueToStory} />}
-      {currentPage === 'story' && <Story userDetails={userDetails} />}
+      {currentPage === 'vocab' && <VocabPage userDetails={userDetails} onContinueToStory={handleContinueToStory} />}
+      {currentPage === 'story' && <StoryPage userDetails={userDetails} />}
     </div>
   );
 };
