@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AdventureOptions from './AdventureOptions';
 import VocabChecklist from './VocabChecklist';
 import vocabWords from './vocabWords';
@@ -7,6 +7,7 @@ const Story = ({ userDetails }) => {
   const [story, setStory] = useState('');
   const [options, setOptions] = useState([]);
   const [usedVocab, setUsedVocab] = useState([]);
+  const endOfStoryRef = useRef(null); // Create a ref for scrolling
 
   const fetchStoryContinuation = async (selectedOption = '') => {
     try {
@@ -18,35 +19,36 @@ const Story = ({ userDetails }) => {
         body: JSON.stringify({ story, option: selectedOption }),
       });
       if (!response.ok) {
-        // throw new Error('Network response was not ok');
+        // Simulate a response for demonstration
         response = {
-          json: async () => (
-            {
-              newStoryPart: 'John strolled into the quaint corner store, his footsteps echoing against the polished linoleum floor. With a casual glance around, he spotted a shiny, crimson apple nestled among a pile of fresh produce. Grasping it gently, he felt the smooth skin beneath his fingertips, imagining the crisp, juicy bite to come. As he approached the checkout counter, a faint smile tugged at the corners of his lips, a simple pleasure found in the ordinary act of buying fruit. With a friendly nod to the cashier, he exchanged a few coins for his prize, savoring the anticipation of his next snack.',
-              newOptions: [
-                { text: 'Eat the apple', vocab: 'apple' },
-                { text: 'Put the apple in his bag', vocab: 'bag' },
-                { text: 'Leave the store', vocab: 'store' },
-              ],
-            }
-          ),
+          json: async () => ({
+            newStoryPart: 'John strolled into the quaint corner store, his footsteps echoing against the polished linoleum floor. With a casual glance around, he spotted a shiny, crimson apple nestled among a pile of fresh produce. Grasping it gently, he felt the smooth skin beneath his fingertips, imagining the crisp, juicy bite to come. As he approached the checkout counter, a faint smile tugged at the corners of his lips, a simple pleasure found in the ordinary act of buying fruit. With a friendly nod to the cashier, he exchanged a few coins for his prize, savoring the anticipation of his next snack.',
+            // Assuming your response structure here
+            newOptions: [
+              { text: 'Eat the apple' },
+              { text: 'Put the apple in his bag' },
+              { text: 'Leave the store' },
+            ],
+          }),
         };
       }
 
       const { newStoryPart, newOptions } = await response.json();
-
       setStory(prev => prev + ' ' + newStoryPart);
       setOptions(newOptions);
-
     } catch (error) {
       console.error('Error fetching story continuation:', error);
     }
   };
 
-
   useEffect(() => {
     fetchStoryContinuation();
   }, []);
+
+  useEffect(() => {
+    // Scroll to the bottom of the page when options are updated
+    endOfStoryRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [options]);
 
   const handleOptionSelect = (option) => {
     fetchStoryContinuation(option.text);
@@ -66,7 +68,9 @@ const Story = ({ userDetails }) => {
             <br />
           </React.Fragment>
         ))}</p>
-        <AdventureOptions options={options} onOptionSelect={handleOptionSelect} />
+        <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} />
+        {/* This element is used as an anchor for scrolling */}
+        <div ref={endOfStoryRef} />
       </div>
     </div>
   );

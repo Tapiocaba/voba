@@ -9,6 +9,11 @@
   position: relative;
 }
 
+.vocab-nobox {
+  cursor: pointer;
+  position: relative;
+}
+
 .tooltip .tooltiptext {
   visibility: hidden;
   width: auto; /* Allow the width to adjust based on content, up to max-width */
