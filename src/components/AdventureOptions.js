@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import VocabWords from './VocabWords.js';
-import '../css/vocab.css'
+import '../css/vocab.css';
 
 const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+
   const renderTextWithVocab = (text, grade) => {
     const gradeVocab = VocabWords[grade] || [];
     const vocabMap = gradeVocab.reduce((acc, { word, definition }) => {
@@ -22,22 +24,33 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
           </span>
         );
       }
-      // For words without a matching vocab word, just return the word with a space.
       return `${word} `;
     });
   };
 
+  const handleOptionClick = (option, index) => {
+    setSelectedOptionIndex(index); // Highlight the selected option
+    onOptionSelect(option);
+  };
+
   return (
     <div>
-      {options.map((option, index) => (
-        <button
-          key={index}
-          className="block p-2 my-2 border-2 border-blue-500 text-blue-500 bg-white rounded"
-          onClick={() => onOptionSelect(option)}
-        >
-          {renderTextWithVocab(option.text, userDetails.grade)}
-        </button>
-      ))}
+      {options.map((option, index) => {
+        const isSelected = index === selectedOptionIndex;
+        let borderColor = 'border-blue-500'; // Default border color
+        if (isSelected) {
+          borderColor = option.correct ? 'border-green-500' : 'border-red-500';
+        }
+        return (
+          <button
+            key={index}
+            className={`block p-2 my-2 border-2 ${borderColor} text-blue-500 bg-white rounded`}
+            onClick={() => handleOptionClick(option, index)}
+          >
+            {renderTextWithVocab(option.text, userDetails.grade)}
+          </button>
+        );
+      })}
     </div>
   );
 };
