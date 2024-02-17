@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate, FewShotPromptTemplate
 from langchain.schema import HumanMessage
 from langchain.prompts.example_selector import LengthBasedExampleSelector

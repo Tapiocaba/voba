@@ -4,12 +4,14 @@ import Nav from './components/Nav';
 import VocabPage from './pages/VocabPage';
 import StoryPage from './pages/StoryPage';
 import LandingPage from './pages/LandingPage';
-import './App.css';
+import ChooseModePage from './pages/ChooseModePage';
+import './css/App.css';
 
 const App = () => {
   const [onboardingComplete, setOnboardingComplete] = useState(false);
   const [userDetails, setUserDetails] = useState({ name: '', grade: '', id: '' });
   const [currentPage, setCurrentPage] = useState('landing');
+  const [mode, setMode] = useState('normal');
 
   const handleOnboardingComplete = (name, grade) => {
     setUserDetails({ name, grade });
@@ -17,9 +19,14 @@ const App = () => {
     setCurrentPage('vocab'); // go to vocab once onboarding is complete
   };
 
-  const handleContinueToStory = () => {
-    setCurrentPage('story');
+  const handleContinueToMode = () => {
+    setCurrentPage('chooseMode');
   };
+
+  const setCurrentMode = (mode) => {
+    setMode(mode);
+    setCurrentPage('story');
+  }
 
   // Render LandingPage if currentPage is 'landing'
   if (currentPage === 'landing') {
@@ -36,8 +43,9 @@ const App = () => {
     <div>
       <Nav setCurrentPage={setCurrentPage} />
       <div style={{ padding: 100 }}>
-        {currentPage === 'vocab' && <VocabPage userDetails={userDetails} onContinueToStory={handleContinueToStory} />}
-        {currentPage === 'story' && <StoryPage userDetails={userDetails} />}
+        {currentPage === 'vocab' && <VocabPage userDetails={userDetails} onContinueToStory={handleContinueToMode} />}
+        {currentPage === 'story' && <StoryPage userDetails={userDetails} mode={mode} />}
+        {currentPage === 'chooseMode' && <ChooseModePage userDetails={userDetails} setCurrentMode={setCurrentMode} />}
       </div>
     </div>
   );
