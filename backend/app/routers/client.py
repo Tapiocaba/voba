@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 
 from dependencies import llm
-from models import VocabList, SentenceResponse
+from models import VocabList, SentenceResponse, SentenceChoices
 
 router = APIRouter()
 
@@ -40,7 +40,7 @@ async def getStoryContinue(story: str, mode: str) -> dict:
     return {"story": new_story, "next_sentence": next_sentence}
 
 @router.get("/get-sentence options", tags=['client'], status_code=status.HTTP_200_OK)
-async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> SentenceResponse:
+async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> SentenceChoices:
     if mode == "creative":
         pass
     elif mode == "test":
@@ -54,15 +54,35 @@ async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> Se
     # Generate audio
 
     # Return
-    ret = SentenceResponse(
-        sentence1="TODO",
-        sentence2="TODO",
-        sentence3="TODO",
-        sentence4="TODO",
-        audio1="TODO",
-        audio2="TODO",
-        audio3="TODO",
-        audio4="TODO",
+    c1 = SentenceResponse(
+        sentence="TODO",
+        audio="TODO",
+        isCorrect=False,
+    )
+
+    c2 = SentenceResponse(
+        sentence="TODO",
+        audio="TODO",
+        isCorrect=False,
+    )
+
+    c3 = SentenceResponse(
+        sentence="TODO",
+        audio="TODO",
+        isCorrect=False,
+    )
+
+    c4 = SentenceResponse(
+        sentence="TODO",
+        audio="TODO",
+        isCorrect=False,
+    )
+
+    ret = SentenceChoices(
+        choice1=c1,
+        choice2=c2,
+        choice3=c3,
+        choice4=c4,
     )
 
     return ret
