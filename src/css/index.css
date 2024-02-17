@@ -1,11 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import url('https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Andika', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -13,30 +13,6 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: 'Andika', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-.andika-regular {
-  font-family: "Andika", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.andika-bold {
-  font-family: "Andika", sans-serif;
-  font-weight: 700;
-  font-style: normal;
-}
-
-.andika-regular-italic {
-  font-family: "Andika", sans-serif;
-  font-weight: 400;
-  font-style: italic;
-}
-
-.andika-bold-italic {
-  font-family: "Andika", sans-serif;
-  font-weight: 700;
-  font-style: italic;
 }
