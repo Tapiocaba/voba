@@ -10,7 +10,7 @@ const ChooseModePage = ({ setCurrentMode }) => {
           onClick={() => setCurrentMode('creative')}
           className="bg-white text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded w-64 h-24 flex flex-col justify-center items-center">
           <span className="text-lg">Creative</span>
-          <span className="text-sm">Choose your own adventure where every answer is correct.</span>
+          <span className="text-sm">Choose your own adventure where every story continuation uses the vocab word correctly.</span>
         </button>
 
         {/* Test Mode Button */}
@@ -26,7 +26,7 @@ const ChooseModePage = ({ setCurrentMode }) => {
           onClick={() => setCurrentMode('mixed')}
           className="bg-white text-blue-700 font-semibold py-2 px-4 border border-blue-500 rounded w-64 h-24 flex flex-col justify-center items-center">
           <span className="text-lg">Mixed</span>
-          <span className="text-sm">There is more than one possible answer.</span>
+          <span className="text-sm">At least 1 of the story continuations use the vocab word correctly.</span>
         </button>
       </div>
     </div>
