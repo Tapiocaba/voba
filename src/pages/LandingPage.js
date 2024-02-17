@@ -20,11 +20,11 @@ const LandingPage = ({ setCurrentPage }) => {
         </div>
       </div>
 
-      {/* Heading and Subtext */}
+      {/* Highlights Section */}
       <div className="flex-grow flex flex-col items-center justify-center space-y-4">
-        <h1 className="text-4xl font-bold text-center">Welcome to Our Platform</h1>
+        <h1 className="text-4xl font-bold text-center">Welcome to Voba</h1>
         <p className="text-xl text-center max-w-md">
-          Start your journey today! (placeholder)
+            Where Learning Meets Adventure!
         </p>
         <button
           onClick={() => setCurrentPage('onboarding')}
@@ -37,20 +37,30 @@ const LandingPage = ({ setCurrentPage }) => {
       <div className="py-8 bg-gray-100">
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="highlight p-4 shadow-lg rounded-lg bg-white">
-            <h3 className="font-semibold text-lg">AI-powered vocabulary learning</h3>
-            <p>AI-powered vocabulary learning</p>
+            <h3 className="font-semibold text-lg">Embark on a Vocabulary Adventure!</h3>
+            <p>
+                With Voba, experience the magic of learning new words through AI-driven adventures. 
+                Transform how you learn with stories that adapt to the words you need to master.
+            </p>
           </div>
           <div className="highlight p-4 shadow-lg rounded-lg bg-white">
-            <h3 className="font-semibold text-lg">Rich Combat System</h3>
-            <p>Features a rich combat system with four playable classes, each with distinct skills and character customizations.</p>
+            <h3 className="font-semibold text-lg">Create, Choose, Learn!</h3>
+            <p>
+                Features a choose-your-own-adventure format invites you into stories where your choices build the narrative. 
+                It's not just about memorizing; it's about applying what you learn in context!
+            </p>
           </div>
           <div className="highlight p-4 shadow-lg rounded-lg bg-white">
-            <h3 className="font-semibold text-lg">Play Anywhere</h3>
-            <p>Play on any device, anywhere: the game offers a different layout and interface for desktop and mobile.</p>
+            <h3 className="font-semibold text-lg">Learning Without Limits.</h3>
+            <p>
+                Voba goes where you go. Whether on a tablet at home or a computer in the classroom, our platform's adaptive interface ensures your learning adventure is always at your fingertips. 
+            </p>
           </div>
           <div className="highlight p-4 shadow-lg rounded-lg bg-white">
-            <h3 className="font-semibold text-lg">Multiple Worlds</h3>
-            <p>Different worlds to progress through, some singleplayer and some multiplayer. You can even build your own.</p>
+            <h3 className="font-semibold text-lg">Your Imagination, Your World.</h3>
+            <p>
+                In Voba, every word is a building block for new worlds. Whether it's with pre-defined words or your own, the power of vocabulary opens endless possibilities. 
+            </p>
           </div>
         </div>
       </div>
