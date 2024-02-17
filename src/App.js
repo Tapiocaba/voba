@@ -42,7 +42,7 @@ const App = () => {
   return (
     <div>
       <Nav setCurrentPage={setCurrentPage} />
-      <div style={{ padding: 100 }}>
+      <div style={{ paddingTop: 200, paddingLeft: 100, paddingRight: 100 }}>
         {currentPage === 'vocab' && <VocabPage userDetails={userDetails} onContinueToStory={handleContinueToMode} />}
         {currentPage === 'story' && <StoryPage userDetails={userDetails} mode={mode} />}
         {currentPage === 'chooseMode' && <ChooseModePage userDetails={userDetails} setCurrentMode={setCurrentMode} />}
