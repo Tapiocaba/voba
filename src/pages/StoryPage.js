@@ -3,7 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import AdventureOptions from '../components/AdventureOptions';
 import VocabChecklist from '../components/VocabChecklist';
 import vocabWords from '../components/VocabWords';
-import '../StoryPage.css';
+import '../css/StoryPage.css';
 
 const StoryPage = ({ userDetails, mode }) => {
   const [storyParts, setStoryParts] = useState([]); // Changed to array to handle each part separately
