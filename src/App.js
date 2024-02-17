@@ -35,8 +35,10 @@ const App = () => {
   return (
     <div>
       <Nav setCurrentPage={setCurrentPage} />
-      {currentPage === 'vocab' && <VocabPage userDetails={userDetails} onContinueToStory={handleContinueToStory} />}
-      {currentPage === 'story' && <StoryPage userDetails={userDetails} />}
+      <div style={{ padding: 100 }}>
+        {currentPage === 'vocab' && <VocabPage userDetails={userDetails} onContinueToStory={handleContinueToStory} />}
+        {currentPage === 'story' && <StoryPage userDetails={userDetails} />}
+      </div>
     </div>
   );
 };
