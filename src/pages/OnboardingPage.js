@@ -27,6 +27,8 @@ const OnboardingPage = ({ onOnboardingComplete }) => {
             <span>Please fill out all fields before finishing.</span>
           </div>
         )}
+        <img src={`${process.env.PUBLIC_URL}/voba-title.png`} alt="Logo" className="h-20" />
+
         <div>
           <label htmlFor="name" className="block text-lg font-medium text-gray-700 mb-2">Name</label>
           <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm mb-2" />
