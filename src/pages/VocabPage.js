@@ -1,8 +1,8 @@
 import React from 'react';
-import VocabWords from './VocabWords';
+import VocabWords from '../components/VocabWords';
 import '../Vocab.css';
 
-const Vocab = ({ userDetails, onContinueToStory }) => {
+const VocabPage = ({ userDetails, onContinueToStory }) => {
   const wordsForGrade = VocabWords[userDetails.grade];
 
   return (
@@ -35,4 +35,4 @@ const Vocab = ({ userDetails, onContinueToStory }) => {
   );
 };
 
-export default Vocab;
+export default VocabPage;
