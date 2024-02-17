@@ -1,22 +1,32 @@
 import React, { useState } from 'react';
+import Onboarding from './Onboarding';
 import Nav from './Nav';
 import Vocab from './Vocab';
 import Story from './Story';
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState('vocab'); // 'vocab' or 'story'
-  const [vocabWords, setVocabWords] = useState([]);
+  const [onboardingComplete, setOnboardingComplete] = useState(false);
+  const [userDetails, setUserDetails] = useState({ name: '', grade: '' });
+  const [currentPage, setCurrentPage] = useState('vocab');
 
-  const handleVocabSelection = (selectedWords) => {
-    setVocabWords(selectedWords);
-    setCurrentPage('story');
+  const handleOnboardingComplete = (name, grade) => {
+    setUserDetails({ name, grade });
+    setOnboardingComplete(true);
   };
+
+  const handleContinueToStory = () => {
+    setCurrentPage('story'); // Transition to the Story component
+  };
+
+  if (!onboardingComplete) {
+    return <Onboarding onOnboardingComplete={handleOnboardingComplete} />;
+  }
 
   return (
     <div>
       <Nav setCurrentPage={setCurrentPage} />
-      {currentPage === 'vocab' && <Vocab onVocabSelection={handleVocabSelection} />}
-      {currentPage === 'story' && <Story vocabWords={vocabWords} />}
+      {currentPage === 'vocab' && <Vocab userDetails={userDetails} onContinueToStory={handleContinueToStory} />}
+      {currentPage === 'story' && <Story userDetails={userDetails} />}
     </div>
   );
 };

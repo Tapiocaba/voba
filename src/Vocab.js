@@ -1,34 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
+import vocabWords from './vocabWords';
+import './Vocab.css'; // Assuming you'll write CSS in this file
 
-const mockVocab = {
-  "Grade 1": ["apple", "ball", "cat"],
-  "Grade 2": ["dog", "elephant", "fish"],
-  // Extend this list as needed
-};
-
-const Vocab = ({ onVocabSelection }) => {
-  const [selectedGrade, setSelectedGrade] = useState('Grade 1'); // Default or user-selected grade
+const Vocab = ({ userDetails, onContinueToStory }) => {
+  const wordsForGrade = vocabWords[userDetails.grade];
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Select a Grade Level:</h2>
-      <div className="flex flex-wrap mb-4">
-        {Object.keys(mockVocab).map((grade) => (
+    // Outer container for vertical centering
+    <div className="flex items-center justify-center h-screen">
+      <div className="p-4">
+        <h2 className="text-xl font-bold mb-10 text-center">Vocabulary Words for Grade {userDetails.grade}</h2>
+        <div className="flex flex-wrap justify-center gap-4">
+          {wordsForGrade.length > 0 ? (
+            wordsForGrade.map((wordObj, index) => (
+              <div key={index} className="vocab-box tooltip">
+                {wordObj.word}
+                <span className="tooltiptext">{wordObj.definition}</span>
+              </div>
+            ))
+          ) : (
+            <p>No vocabulary words available for this grade.</p>
+          )}
+        </div>
+        <div className="text-center mt-8">
           <button
-            key={grade}
-            className={`mr-2 mb-2 px-4 py-2 ${selectedGrade === grade ? 'bg-blue-700' : 'bg-blue-500'} text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-opacity-50`}
-            onClick={() => setSelectedGrade(grade)}
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
+            onClick={onContinueToStory}
           >
-            {grade}
+            Continue to Story
           </button>
-        ))}
+        </div>
       </div>
-      <button
-        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50"
-        onClick={() => onVocabSelection(mockVocab[selectedGrade])}
-      >
-        Continue to Story
-      </button>
     </div>
   );
 };

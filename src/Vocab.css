@@ -1,0 +1,35 @@
+.vocab-box {
+  display: inline-block;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: auto; /* Allow the width to adjust based on content, up to max-width */
+  min-width: 400px;
+  max-width: 500px; /* Set a maximum width to prevent the tooltip from becoming too wide */
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 10px; /* Provide sufficient padding for the content */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%); /* Center the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+  /* Removed white-space: nowrap to allow text wrapping */
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
