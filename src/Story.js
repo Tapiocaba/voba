@@ -8,6 +8,8 @@ const Story = ({ userDetails }) => {
   const [options, setOptions] = useState([]);
   const [usedVocab, setUsedVocab] = useState([]);
   const endOfStoryRef = useRef(null); // Create a ref for scrolling
+  const isMounted = useRef(false); // Track the initial mount
+
 
   const fetchStoryContinuation = async (selectedOption = '') => {
     try {
@@ -42,8 +44,12 @@ const Story = ({ userDetails }) => {
   };
 
   useEffect(() => {
-    fetchStoryContinuation();
-  }, []);
+    if (!isMounted.current) {
+      fetchStoryContinuation();
+      isMounted.current = true; // Mark as mounted after first effect runs
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run only once despite React Strict Mode
 
   useEffect(() => {
     // Scroll to the bottom of the page when options are updated
