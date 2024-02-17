@@ -7,9 +7,10 @@ import '../css/storyPage.css';
 import ElephantPopup from '../components/ElephantPopup';
 
 const StoryPage = ({ userDetails, mode }) => {
-  const [storyParts, setStoryParts] = useState([]); // Changed to array to handle each part separately
+  const [storyParts, setStoryParts] = useState([]);
   const [options, setOptions] = useState([]);
   const [usedVocab, setUsedVocab] = useState([]);
+  const [elephantText, setElephantText] = useState('What do you think the next part of the story should be? Choose an option below!');
   const endOfStoryRef = useRef(null);
   const isMounted = useRef(false);
 
@@ -18,21 +19,21 @@ const StoryPage = ({ userDetails, mode }) => {
       let newStoryPart = '';
       let newOptions = [];
 
-
       // if story is empty, fetch the first part of the story
       if (storyParts.length === 0) {
-        const response = await fetch('/get-initial-story', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        // const response = await fetch('/get-initial-story', {
+        //   method: 'GET',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        // });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch initial story');
-        }
+        // if (!response.ok) {
+        //   throw new Error('Failed to fetch initial story');
+        // }
 
-        newStoryPart = await response.json();
+        // newStoryPart = await response.json();
+        newStoryPart = 'Once upon a time, in a land far, far away...';
       }
       else {
 
@@ -50,21 +51,32 @@ const StoryPage = ({ userDetails, mode }) => {
 
         newStoryPart = await response.json();
 
-        const optionsResponse = await fetch('/get-sentence-options', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ story: storyParts.join(' '), option: selectedOption, mode: mode }),
-        });
-
-        if (!optionsResponse.ok) {
-          throw new Error('Failed to fetch sentence options');
-        }
-
-        newOptions = await optionsResponse.json();
-
       }
+
+      // const optionsResponse = await fetch('/get-sentence-options', {
+      //   method: 'GET',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ story: storyParts.join(' '), option: selectedOption, mode: mode }),
+      // });
+
+      // if (!optionsResponse.ok) {
+      //   throw new Error('Failed to fetch sentence options');
+      // }
+
+      const optionsResponse = {
+        ok: true,
+        json: async () => {
+          return [
+            { text: 'Option 1', correct: true },
+            { text: 'Option 2', correct: false },
+            { text: 'Option 3', correct: false },
+          ];
+        }
+      }
+
+      newOptions = await optionsResponse.json();
 
       setStoryParts(prev => [...prev, newStoryPart]);
       setOptions(newOptions);
@@ -87,12 +99,17 @@ const StoryPage = ({ userDetails, mode }) => {
   }, [options]);
 
   const handleOptionSelect = (option) => {
-    fetchStoryContinuation(option.text);
-    setStoryParts(prev => [...prev, `\n${option.text}\n`]);
-    const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
-    const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
-    const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace(/[.,!?]/g, ''));
-    setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
+    if (option.correct) {
+      setElephantText('Great job! You chose the right option!');
+      fetchStoryContinuation(option.text);
+      setStoryParts(prev => [...prev, `\n${option.text}\n`]);
+      const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
+      const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
+      const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace(/[.,!?]/g, ''));
+      setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
+    } else {
+      setElephantText('Oh no! That was the wrong choice. Try again!');
+    }
   };
 
   return (
@@ -117,7 +134,7 @@ const StoryPage = ({ userDetails, mode }) => {
           <div style={{ height: '300px' }}></div>
         </TransitionGroup>
         <div className="fixed-bottom">
-          <ElephantPopup text={'Hello how are you doing today!'} />
+          <ElephantPopup text={elephantText} />
           <div className="options-container">
             <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} />
           </div>
