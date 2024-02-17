@@ -7,7 +7,6 @@ const Story = ({ vocabWords }) => {
   const [options, setOptions] = useState([]);
   const [usedVocab, setUsedVocab] = useState([]);
 
-  // Mock function to fetch story continuation and options from OpenAI
   const fetchStoryContinuation = async (selectedOption = '') => {
     try {
       const response = await fetch('/generate-story', {
