@@ -12,7 +12,8 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
 
     return text.split(' ').map((word, index) => {
       const key = `${index}-${word}`;
-      const definition = vocabMap[word.toLowerCase()];
+      const wordWithoutPunctuation = word.replace('.', '').replace(',', '').replace('!', '').replace('?', '');
+      const definition = vocabMap[wordWithoutPunctuation.toLowerCase()];
       if (definition) {
         return (
           <span key={key} className="tooltip vocab-nobox" style={{ fontWeight: 'bold' }}>

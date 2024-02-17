@@ -26,8 +26,8 @@ const Story = ({ userDetails }) => {
             // Assuming your response structure here
             newOptions: [
               { text: 'Eat the apple' },
-              { text: 'Put the apple in his bag' },
-              { text: 'Leave the store' },
+              { text: 'Put the ball in his bag.' },
+              { text: 'Play with a cat.' },
             ],
           }),
         };
@@ -53,7 +53,11 @@ const Story = ({ userDetails }) => {
   const handleOptionSelect = (option) => {
     fetchStoryContinuation(option.text);
     setStory(prev => prev + '\n\n' + option.text + '\n\n');
-    setUsedVocab([...usedVocab, option.vocab]);
+    // Keep track of used vocab words
+    const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
+    const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace('.', '').replace(',', '').replace('!', '').replace('?', '')));
+    const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace('.', '').replace(',', '').replace('!', '').replace('?', ''));
+    setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
   };
 
   return (
