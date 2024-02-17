@@ -13,6 +13,10 @@ async def healthCheck():
 async def healthStatus():
     return {"message": "Client API Healthy"}
 
+@router.get("/get-initial-story", tags=['client'], status_code=status.HTTP_200_OK)
+async def getInitialStory() -> str:
+    pass
+
 @router.get("/get-story-continue", tags=['client'], status_code=status.HTTP_200_OK)
 async def getStoryContinue(story: str) -> dict:
     # Langchain stuff here
