@@ -22,7 +22,7 @@ const OnboardingPage = ({ onOnboardingComplete }) => {
           <label htmlFor="grade" className="block text-lg font-medium text-gray-700 mb-2">Grade Level</label>
           <select id="grade" value={grade} onChange={(e) => setGrade(e.target.value)} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm mb-2">
             <option value="">Select your grade</option>
-            {Array.from({ length: 12 }, (_, i) => <option key={i} value={i + 1}>{i + 1}</option>)}
+            {Array.from({ length: 4 }, (_, i) => <option key={i} value={i + 1}>{i + 1}</option>)}
           </select>
         </div>
         <div>
