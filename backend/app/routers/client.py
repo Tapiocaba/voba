@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
+from fastapi.responses import Response
 
-from dependencies import llm
+from dependencies import llm, client
 from models import VocabList, SentenceResponse, SentenceChoices
 
 router = APIRouter()
@@ -39,8 +40,9 @@ async def getStoryContinue(story: str, mode: str) -> dict:
     new_story = story + next_sentence
     return {"story": new_story, "next_sentence": next_sentence}
 
-@router.get("/get-sentence options", tags=['client'], status_code=status.HTTP_200_OK)
+@router.get("/get-sentence-options", tags=['client'], status_code=status.HTTP_200_OK)
 async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> SentenceChoices:
+    print(mode)
     if mode == "creative":
         pass
     elif mode == "test":
@@ -50,31 +52,25 @@ async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> Se
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
     # Langchain stuff here
-    
-    # Generate audio
 
     # Return
     c1 = SentenceResponse(
         sentence="TODO",
-        audio="TODO",
         isCorrect=False,
     )
 
     c2 = SentenceResponse(
         sentence="TODO",
-        audio="TODO",
         isCorrect=False,
     )
 
     c3 = SentenceResponse(
         sentence="TODO",
-        audio="TODO",
         isCorrect=False,
     )
 
     c4 = SentenceResponse(
         sentence="TODO",
-        audio="TODO",
         isCorrect=False,
     )
 
@@ -86,3 +82,15 @@ async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> Se
     )
 
     return ret
+
+@router.get("/get-audio", tags=['client'], status_code=status.HTTP_200_OK)
+async def getAudio(audio_str: str):
+    
+    # Generate audio
+    response = client.audio.speech.create(
+        model="tts-1",
+        voice="shimmer",
+        input=audio_str,
+    )
+
+    return Response(content=response.content, media_type="audio/mpeg")
