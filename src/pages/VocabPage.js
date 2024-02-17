@@ -1,6 +1,6 @@
 import React from 'react';
 import VocabWords from '../components/VocabWords';
-import '../css/Vocab.css';
+import '../css/vocab.css';
 
 const VocabPage = ({ userDetails, onContinueToStory }) => {
   const wordsForGrade = VocabWords[userDetails.grade];
@@ -9,7 +9,8 @@ const VocabPage = ({ userDetails, onContinueToStory }) => {
     // Outer container for vertical centering
     <div className="flex items-center justify-center">
       <div className="p-4">
-        <h2 className="text-xl font-bold mb-10 text-center">Vocabulary Words for Grade {userDetails.grade}</h2>
+        <h2 className="text-xl font-bold mb-10 text-center">Hello, {userDetails.name}!</h2>
+        <h2 className="text-xl font-bold mb-10 text-center">Here are your vocab words (Grade {userDetails.grade}).</h2>
         <div className="flex flex-wrap justify-center gap-4">
           {wordsForGrade.length > 0 ? (
             wordsForGrade.map((wordObj, index) => (
@@ -24,7 +25,7 @@ const VocabPage = ({ userDetails, onContinueToStory }) => {
         </div>
         <div className="text-center mt-8">
           <button
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
             onClick={onContinueToStory}
           >
             Continue

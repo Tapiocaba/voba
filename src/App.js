@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Onboarding from './pages/OnboardingPage';
+import OnboardingPage from './pages/OnboardingPage';
 import Nav from './components/Nav';
 import VocabPage from './pages/VocabPage';
 import StoryPage from './pages/StoryPage';
@@ -35,14 +35,14 @@ const App = () => {
 
   // Render Onboarding if onboarding is not complete
   if (!onboardingComplete) {
-    return <Onboarding onOnboardingComplete={handleOnboardingComplete} />;
+    return <OnboardingPage onOnboardingComplete={handleOnboardingComplete} />;
   }
 
   // Main app content
   return (
     <div>
       <Nav setCurrentPage={setCurrentPage} />
-      <div style={{ padding: 100 }}>
+      <div style={{ paddingTop: 200, paddingLeft: 100, paddingRight: 100 }}>
         {currentPage === 'vocab' && <VocabPage userDetails={userDetails} onContinueToStory={handleContinueToMode} />}
         {currentPage === 'story' && <StoryPage userDetails={userDetails} mode={mode} />}
         {currentPage === 'chooseMode' && <ChooseModePage userDetails={userDetails} setCurrentMode={setCurrentMode} />}

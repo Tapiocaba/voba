@@ -1,0 +1,60 @@
+@keyframes slideUp {
+    from {
+      transform: translateY(20%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+}
+  
+  .slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+  }
+  
+.welcome-background {
+    background-image: linear-gradient(to bottom, rgba(135, 206, 235, 0.7), rgba(135, 206, 235, 0.3)), url('../../public/voba-elephant-bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center 40%;
+}
+  
+/* Button styles */
+.log-in-button {
+    background-color: #e67e22; /* Darker shade for better visibility */
+    color: #ffffff;
+    border-color: #d35400; /* Slightly darker for border */
+}
+  
+.sign-up-button {
+    background-color: #e67e22; /* Bright orange for contrast */
+    color: #ffffff;
+    border-color: #d35400; /* Slightly darker for border */
+}
+  
+.get-started-button {
+    background-color: #e67e22;
+    color: #ffffff;
+    border-color: #d35400;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }  
+
+.welcome-text {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* x-offset, y-offset, blur-radius, color */
+}
+  
+.welcome-text-overlay {
+    position: relative;
+    z-index: 1;
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.1); /* Dark overlay */
+      z-index: -1;
+    }
+}

@@ -1,0 +1,51 @@
+
+@keyframes bobbing {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.elephant-popup {
+  animation: bobbing 3s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed; /* Adjust positioning as needed */
+  bottom: 0; /* Adjust positioning as needed */
+  left: 5%; /* Center the popup horizontally */
+  transform: translateX(-50%); /* Center the popup horizontally */
+}
+
+
+.speech-bubble {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(70%, -80%); /* Adjust to move the bubble to the desired position */
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 10px;
+  text-align: center;
+  color: #333; /* Adjust text color as needed */
+  width: auto; /* Adjust width as needed */
+  max-width: calc(100% - 40px); /* Ensure it doesn't overflow the parent */
+}
+
+.speech-bubble:after {
+  content: '';
+  position: absolute;
+  top: 98%; 
+  left: 20px; 
+  border-width: 15px;
+  border-style: solid;
+  border-color: #f0f0f0 transparent transparent transparent;
+}
+
+audio {
+  width: 100%;
+  margin-top: 10px;
+}
+
