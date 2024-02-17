@@ -3,7 +3,8 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import AdventureOptions from '../components/AdventureOptions';
 import VocabChecklist from '../components/VocabChecklist';
 import vocabWords from '../components/VocabWords';
-import '../css/StoryPage.css';
+import '../css/storyPage.css';
+import ElephantPopup from '../components/ElephantPopup';
 
 const StoryPage = ({ userDetails, mode }) => {
   const [storyParts, setStoryParts] = useState([]); // Changed to array to handle each part separately
@@ -67,6 +68,7 @@ const StoryPage = ({ userDetails, mode }) => {
 
       setStoryParts(prev => [...prev, newStoryPart]);
       setOptions(newOptions);
+
     } catch (error) {
       console.error('Error fetching story continuation:', error);
     }
@@ -115,6 +117,7 @@ const StoryPage = ({ userDetails, mode }) => {
           <div style={{ height: '300px' }}></div>
         </TransitionGroup>
         <div className="fixed-bottom">
+          <ElephantPopup text={'Hello how are you doing today!'} />
           <div className="options-container">
             <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} />
           </div>

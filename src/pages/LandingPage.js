@@ -1,56 +1,71 @@
 import React from 'react';
+import '../css/landing.css';
 
 const LandingPage = ({ setCurrentPage }) => {
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Navigation Bar */}
-      <div className="flex justify-between items-center px-10 py-4">
-        <img src={`${process.env.PUBLIC_URL}/voba-title.png`} alt="Logo" className="h-20" />
-        <div className="space-x-4">
+    <div className="flex flex-col">
+      {/* Background Section */}
+      <div className="flex flex-col welcome-background h-[100vh] welcome-text-overlay">
+        {/* Navigation Bar */}
+        <div className="flex justify-between items-center px-10 py-4">
+          <img src={`${process.env.PUBLIC_URL}/voba-title.png`} alt="Logo" className="h-20" />
+          <div className="space-x-4">
+            <button
+              onClick={() => setCurrentPage('onboarding')}
+              className="log-in-button font-semibold py-2 px-4 rounded transition-all duration-300 hover:bg-sky-500">
+              Log In
+            </button>
+            <button
+              onClick={() => setCurrentPage('onboarding')}
+              className="sign-up-button font-semibold py-2 px-4 rounded transition-all duration-300 hover:bg-sky-500">
+              Sign Up
+            </button>
+          </div>
+        </div>
+
+        {/* Welcome Message with Slide-up Animation */}
+        <div className="flex-grow flex flex-col items-center space-y-5 slide-up justify-start pt-60">
+        <h1 className="text-6xl font-bold text-center text-white welcome-text">Welcome to Voba!</h1>
+        <p className="text-2xl text-center max-w-md text-white welcome-text">
+            Where Learning Meets Adventure
+          </p>
           <button
             onClick={() => setCurrentPage('onboarding')}
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-            Log In
-          </button>
-          <button
-            onClick={() => setCurrentPage('onboarding')}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-            Sign Up
+            className="get-started-button log-in-button mt-4 bg-sky-400 hover:bg-sky-500 text-white font-semibold py-2 px-6 rounded transition-all duration-300 shadow-lg">
+            Get Started
           </button>
         </div>
       </div>
 
-      {/* Heading and Subtext */}
-      <div className="flex-grow flex flex-col items-center justify-center space-y-4">
-        <h1 className="text-4xl font-bold text-center">Welcome to Our Platform</h1>
-        <p className="text-xl text-center max-w-md">
-          Start your journey today! (placeholder)
-        </p>
-        <button
-          onClick={() => setCurrentPage('onboarding')}
-          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
-          Get Started
-        </button>
-      </div>
-
       {/* Highlights Section */}
-      <div className="py-8 bg-gray-100">
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="highlight p-4 shadow-lg rounded-lg bg-white">
-            <h3 className="font-semibold text-lg">AI-powered vocabulary learning</h3>
-            <p>AI-powered vocabulary learning</p>
+      <div className="py-8 ">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Highlight Boxes */}
+          <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center">
+            <h3 className="font-semibold text-lg">Embark on a Vocabulary Adventure!</h3>
+            <p>
+              Experience the magic of learning new words through AI-driven adventures. 
+              Transform how you learn with stories that adapt to the words you need to master.
+            </p>
           </div>
-          <div className="highlight p-4 shadow-lg rounded-lg bg-white">
-            <h3 className="font-semibold text-lg">Rich Combat System</h3>
-            <p>Features a rich combat system with four playable classes, each with distinct skills and character customizations.</p>
+          <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center">
+            <h3 className="font-semibold text-lg">Create, Choose, Learn!</h3>
+            <p>
+                Features a choose-your-own-adventure format invites you into stories where your choices build the narrative. 
+                It's not just about memorizing; it's about applying what you learn in context!
+            </p>
           </div>
-          <div className="highlight p-4 shadow-lg rounded-lg bg-white">
-            <h3 className="font-semibold text-lg">Play Anywhere</h3>
-            <p>Play on any device, anywhere: the game offers a different layout and interface for desktop and mobile.</p>
+          <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center">
+            <h3 className="font-semibold text-lg">Learning Without Limits.</h3>
+            <p>
+                Voba goes where you go. Whether on a tablet at home or a computer in the classroom, our platform's adaptive interface ensures your learning adventure is always at your fingertips. 
+            </p>
           </div>
-          <div className="highlight p-4 shadow-lg rounded-lg bg-white">
-            <h3 className="font-semibold text-lg">Multiple Worlds</h3>
-            <p>Different worlds to progress through, some singleplayer and some multiplayer. You can even build your own.</p>
+          <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center">
+            <h3 className="font-semibold text-lg">Your Imagination, Your World.</h3>
+            <p>
+                Every word is a building block for new worlds. Whether it's with pre-defined words or your own, the power of vocabulary opens endless possibilities. 
+            </p>
           </div>
         </div>
       </div>
