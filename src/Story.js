@@ -9,21 +9,26 @@ const Story = ({ vocabWords }) => {
 
   // Mock function to fetch story continuation and options from OpenAI
   const fetchStoryContinuation = async (selectedOption = '') => {
-    // Here, you'd send a request to your backend or serverless function that
-    // communicates with OpenAI's API, passing the current story and selected option.
-    // This example just simulates a response.
+    try {
+      const response = await fetch('/generate-story', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ story, option: selectedOption }),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const { newStoryPart, newOptions } = await response.json();
 
-    // Simulated API response with new story part and options
-    const newStoryPart = `After choosing to ${selectedOption}, our hero finds themselves in a new dilemma.`; // Replace with OpenAI response
-    const newOptions = [
-      { text: 'Option 1 using vocab word', vocab: 'Word1' },
-      { text: 'Option 2 using vocab word', vocab: 'Word2' },
-      { text: 'Option 3 using vocab word', vocab: 'Word3' },
-    ]; // Replace with dynamically generated options using vocab words
-
-    setStory(prev => prev + ' ' + newStoryPart);
-    setOptions(newOptions);
+      setStory(prev => prev + ' ' + newStoryPart);
+      setOptions(newOptions);
+    } catch (error) {
+      console.error('Error fetching story continuation:', error);
+    }
   };
+
 
   useEffect(() => {
     fetchStoryContinuation();
