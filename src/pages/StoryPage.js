@@ -63,13 +63,16 @@ const StoryPage = ({ userDetails }) => {
     setStoryParts(prev => [...prev, `\n${option.text}\n`]);
     const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
     const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
-    setUsedVocab(prev => [...prev, ...usedVocab]);
+    const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace(/[.,!?]/g, ''));
+    setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
   };
 
   return (
     <div className="flex">
-      <div className="w-1/3">
-        <VocabChecklist usedVocab={usedVocab} vocabWords={vocabWords[userDetails.grade]} />
+      <div className="w-1/3" >
+        <div style={{ position: 'fixed' }}>
+          <VocabChecklist usedVocab={usedVocab} vocabWords={vocabWords[userDetails.grade]} />
+        </div>
       </div>
       <div className="w-2/3 p-4">
         <TransitionGroup component={null}>
@@ -83,8 +86,14 @@ const StoryPage = ({ userDetails }) => {
               ))}</p>
             </CSSTransition>
           ))}
+          <div style={{ height: '300px' }}></div>
         </TransitionGroup>
-        <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} />
+        <div className="fixed-bottom">
+          <div className="options-container">
+            <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} />
+          </div>
+        </div>
+
         <div ref={endOfStoryRef} />
       </div>
     </div>

@@ -7,7 +7,7 @@ const VocabPage = ({ userDetails, onContinueToStory }) => {
 
   return (
     // Outer container for vertical centering
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center">
       <div className="p-4">
         <h2 className="text-xl font-bold mb-10 text-center">Vocabulary Words for Grade {userDetails.grade}</h2>
         <div className="flex flex-wrap justify-center gap-4">
