@@ -58,9 +58,11 @@ async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> Se
         sentence1="TODO",
         sentence2="TODO",
         sentence3="TODO",
+        sentence4="TODO",
         audio1="TODO",
         audio2="TODO",
         audio3="TODO",
+        audio4="TODO",
     )
 
     return ret
