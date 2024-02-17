@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
 import Onboarding from './pages/OnboardingPage';
-=======
-import Onboarding from './pages/Onboarding';
->>>>>>> 839f49fb7c8def81950da7d98397ec237df9c978
 import Nav from './components/Nav';
 import VocabPage from './pages/VocabPage';
 import StoryPage from './pages/StoryPage';
