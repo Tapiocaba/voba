@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Onboarding from './pages/OnboardingPage';
+import OnboardingPage from './pages/OnboardingPage';
 import Nav from './components/Nav';
 import VocabPage from './pages/VocabPage';
 import StoryPage from './pages/StoryPage';
@@ -35,7 +35,7 @@ const App = () => {
 
   // Render Onboarding if onboarding is not complete
   if (!onboardingComplete) {
-    return <Onboarding onOnboardingComplete={handleOnboardingComplete} />;
+    return <OnboardingPage onOnboardingComplete={handleOnboardingComplete} />;
   }
 
   // Main app content
