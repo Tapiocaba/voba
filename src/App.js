@@ -1,22 +1,24 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Nav from "./Nav";
-import Vocab from "./Vocab";
-import Story from "./Story";
+import React, { useState } from 'react';
+import Nav from './Nav';
+import Vocab from './Vocab';
+import Story from './Story';
 
-function App() {
+const App = () => {
+  const [currentPage, setCurrentPage] = useState('vocab'); // 'vocab' or 'story'
+  const [vocabWords, setVocabWords] = useState([]);
+
+  const handleVocabSelection = (selectedWords) => {
+    setVocabWords(selectedWords);
+    setCurrentPage('story');
+  };
+
   return (
-    <Router>
-      <div className="App">
-        <Nav />
-        <Routes>
-          <Route path="/vocab" element={<Vocab />} />
-          <Route path="/story" element={<Story />} />
-          <Route path="/" element={<Vocab />} />
-        </Routes>
-      </div>
-    </Router>
+    <div>
+      <Nav setCurrentPage={setCurrentPage} />
+      {currentPage === 'vocab' && <Vocab onVocabSelection={handleVocabSelection} />}
+      {currentPage === 'story' && <Story vocabWords={vocabWords} />}
+    </div>
   );
-}
+};
 
 export default App;
