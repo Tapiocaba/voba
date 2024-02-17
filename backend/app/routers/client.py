@@ -39,6 +39,10 @@ async def getStoryContinue(story: str, mode: str) -> dict:
     new_story = story + next_sentence
     return {"story": new_story, "next_sentence": next_sentence}
 
+<<<<<<< HEAD
+@router.get("/get-sentence-options", tags=['client'], status_code=status.HTTP_200_OK)
+async def getSentenceOptions(story: str, vocab_list: VocabList) -> SentenceResponse:
+=======
 @router.get("/get-sentence options", tags=['client'], status_code=status.HTTP_200_OK)
 async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> SentenceChoices:
     if mode == "creative":
@@ -49,6 +53,7 @@ async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> Se
         pass
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
+>>>>>>> b41682ca18b1235a756f2c8dd97868a4540d7205
     # Langchain stuff here
     
     # Generate audio

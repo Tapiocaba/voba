@@ -3,7 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import AdventureOptions from '../components/AdventureOptions';
 import VocabChecklist from '../components/VocabChecklist';
 import vocabWords from '../components/VocabWords';
-import '../StoryPage.css';
+import '../css/StoryPage.css';
 
 const StoryPage = ({ userDetails, mode }) => {
   const [storyParts, setStoryParts] = useState([]); // Changed to array to handle each part separately
@@ -14,32 +14,57 @@ const StoryPage = ({ userDetails, mode }) => {
 
   const fetchStoryContinuation = async (selectedOption = '') => {
     try {
-      let response = await fetch('/generate-story', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ story: storyParts.join(' '), option: selectedOption }),
-      });
-      if (!response.ok) {
-        // response = {/* Simulated response for demonstration */ };
+      let newStoryPart = '';
+      let newOptions = [];
+
+
+      // if story is empty, fetch the first part of the story
+      if (storyParts.length === 0) {
+        const response = await fetch('/get-initial-story', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
         if (!response.ok) {
-          // Simulate a response for demonstration
-          response = {
-            json: async () => ({
-              newStoryPart: 'John strolled into the quaint corner store, his footsteps echoing against the polished linoleum floor. With a casual glance around, he spotted a shiny, crimson apple nestled among a pile of fresh produce. Grasping it gently, he felt the smooth skin beneath his fingertips, imagining the crisp, juicy bite to come. As he approached the checkout counter, a faint smile tugged at the corners of his lips, a simple pleasure found in the ordinary act of buying fruit. With a friendly nod to the cashier, he exchanged a few coins for his prize, savoring the anticipation of his next snack.',
-              // Assuming your response structure here
-              newOptions: [
-                { text: 'Eat the apple' },
-                { text: 'Put the ball in his bag.' },
-                { text: 'Play with a cat.' },
-              ],
-            }),
-          };
+          throw new Error('Failed to fetch initial story');
         }
+
+        newStoryPart = await response.json();
+      }
+      else {
+
+        const response = await fetch('/get-story-continue', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ story: storyParts.join(' '), option: selectedOption }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch story continuation');
+        }
+
+        newStoryPart = await response.json();
+
+        const optionsResponse = await fetch('/get-sentence-options', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ story: storyParts.join(' '), option: selectedOption, mode: mode }),
+        });
+
+        if (!optionsResponse.ok) {
+          throw new Error('Failed to fetch sentence options');
+        }
+
+        newOptions = await optionsResponse.json();
+
       }
 
-      const { newStoryPart, newOptions } = await response.json();
       setStoryParts(prev => [...prev, newStoryPart]);
       setOptions(newOptions);
     } catch (error) {
