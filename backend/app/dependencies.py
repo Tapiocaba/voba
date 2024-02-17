@@ -3,10 +3,10 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate, FewShotPromptTemplate
 from langchain.schema import HumanMessage
 from langchain.prompts.example_selector import LengthBasedExampleSelector
-from langchain_core.output_parsers import StrOutputParser
-from langchain.output_parsers import PydanticOutputParser
+from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from langchain_core.pydantic_v1 import BaseModel, Field, validator
 from models import VocabWord, VocabList, SentenceResponse
+import json
 import os
 
 load_dotenv()
@@ -64,34 +64,34 @@ def get_sentence_options(story: str, vocab_list: VocabList, mode: str = "creativ
     vocab_string = ", ".join(vocab_list)
 
     # Set up pydantic output parser
-    pydantic_parser = PydanticOutputParser(pydantic_object=SentenceOptions)
+    parser = JsonOutputParser(pydantic_object=SentenceOptions)
 
     # todo: change based on mode
     instructions = """
         You are a storyteller helping a first-grader learn vocabulary using a 
         choose-your-own-adventure story. Given the following story, come up with 
-        three options for choices the character makes next. Ensure that:
+        four options for choices the character makes next. Ensure that:
         \n\n
         - Each option is one sentence.\n
         - Each option is written at a first-grade level.\n
         - Each option is interesting and an action choice.\n
         - Each option uses exactly one of the following vocab words: {vocab}\n
         - No two options use the same vocab word.
-        \n\n
         Story: {story}
     """
 
     prompt = PromptTemplate(
         template=instructions,
         input_variables=["vocab","story"],
-        partial_variables={"format_instructions": pydantic_parser.get_format_instructions()},
+        partial_variables={"format_instructions": parser.get_format_instructions()},
     )
+
     output_parser = StrOutputParser()
 
     runnable = prompt | llm | output_parser
     output = runnable.invoke({"vocab": vocab_string, "story": story})
 
-    return output
+    return _string_to_json(output)
 
 
 # Ensures vocab is not in the story
@@ -105,6 +105,28 @@ def _check_no_vocab_in_string(string, words_list):
 # Ensures vocab is in the story
 def _check_vocab_in_string():
     return False
+
+
+# function to change LLM output string to JSON (just for testing)
+def _string_to_json(input_string):
+    # Split the string into lines
+    lines = input_string.split('\n')
+    
+    # Initialize an empty dictionary to store the result
+    result = {}
+    
+    # Iterate over each line
+    for line in lines:
+        # Split each line by the first occurrence of a period
+        parts = line.split('.', 1)
+        if len(parts) == 2:
+            option_number = parts[0].strip()
+            text = parts[1].strip()
+            # Add the option number and text to the result dictionary
+            result[f"option{option_number}"] = text
+    
+    return json.dumps(result, indent=4)
+
 
 # Tests
 vocab_list = ["nibbled","consequence","feast","annoy","enormous"]
