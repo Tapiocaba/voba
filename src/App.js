@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Onboarding from './components/Onboarding';
+import Onboarding from './pages/Onboarding';
 import Nav from './components/Nav';
 import Vocab from './components/Vocab';
 import Story from './components/Story';
