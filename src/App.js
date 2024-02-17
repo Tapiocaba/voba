@@ -28,7 +28,7 @@ const App = () => {
     setCurrentPage('story');
   }
 
-  // Render LandingPage if currsentPage is 'landing'
+  // Render LandingPage if currentPage is 'landing'
   if (currentPage === 'landing') {
     return <LandingPage setCurrentPage={setCurrentPage} />;
   }
