@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import AdventureOptions from './AdventureOptions';
 import VocabChecklist from './VocabChecklist';
-import vocabWords from './vocabWords';
+import vocabWords from './VocabWords';
 
 const Story = ({ userDetails }) => {
   const [story, setStory] = useState('');

@@ -1,9 +1,9 @@
 import React from 'react';
-import vocabWords from './vocabWords';
-import './Vocab.css'; // Assuming you'll write CSS in this file
+import VocabWords from './VocabWords';
+import '../Vocab.css';
 
 const Vocab = ({ userDetails, onContinueToStory }) => {
-  const wordsForGrade = vocabWords[userDetails.grade];
+  const wordsForGrade = VocabWords[userDetails.grade];
 
   return (
     // Outer container for vertical centering

@@ -16,22 +16,21 @@
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: auto; /* Allow the width to adjust based on content, up to max-width */
+  width: auto;
   min-width: 400px;
-  max-width: 500px; /* Set a maximum width to prevent the tooltip from becoming too wide */
+  max-width: 500px; 
   background-color: black;
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 10px; /* Provide sufficient padding for the content */
+  padding: 5px 10px;
   position: absolute;
   z-index: 1;
   bottom: 125%;
   left: 50%;
-  transform: translateX(-50%); /* Center the tooltip */
+  transform: translateX(-50%);
   opacity: 0;
   transition: opacity 0.3s;
-  /* Removed white-space: nowrap to allow text wrapping */
 }
 
 .tooltip:hover .tooltiptext {

@@ -1,10 +1,10 @@
 import React from 'react';
-import vocabWords from './vocabWords';
-import './Vocab.css'; // Assuming this is where your CSS lives
+import VocabWords from './VocabWords.js';
+import '../Vocab.css'; // Assuming this is where your CSS lives
 
 const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
   const renderTextWithVocab = (text, grade) => {
-    const gradeVocab = vocabWords[grade] || [];
+    const gradeVocab = VocabWords[grade] || [];
     const vocabMap = gradeVocab.reduce((acc, { word, definition }) => {
       acc[word.toLowerCase()] = definition; // Ensuring case-insensitive matching
       return acc;
@@ -35,7 +35,6 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
           className="block p-2 my-2 border-2 border-blue-500 text-blue-500 bg-white rounded"
           onClick={() => onOptionSelect(option)}
         >
-          {/* Render the option text, potentially with vocab words highlighted and with tooltips */}
           {renderTextWithVocab(option.text, userDetails.grade)}
         </button>
       ))}
