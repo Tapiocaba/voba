@@ -24,7 +24,7 @@ async def getStoryContinue(story: str) -> dict:
     new_story = story + next_sentence
     return {"story": new_story, "next_sentence": next_sentence}
 
-@router.get("/get-sentence options", tags=['client'], status_code=status.HTTP_200_OK)
+@router.get("/get-sentence-options", tags=['client'], status_code=status.HTTP_200_OK)
 async def getSentenceOptions(story: str, vocab_list: VocabList) -> SentenceResponse:
     # Langchain stuff here
     
