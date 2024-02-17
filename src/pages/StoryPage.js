@@ -7,7 +7,7 @@ import '../css/storyPage.css';
 import ElephantPopup from '../components/ElephantPopup';
 
 const StoryPage = ({ userDetails, mode }) => {
-  const [storyParts, setStoryParts] = useState([]); // Changed to array to handle each part separately
+  const [storyParts, setStoryParts] = useState([]);
   const [options, setOptions] = useState([]);
   const [usedVocab, setUsedVocab] = useState([]);
   const endOfStoryRef = useRef(null);
