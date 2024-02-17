@@ -4,6 +4,7 @@ import Nav from './components/Nav';
 import VocabPage from './pages/VocabPage';
 import StoryPage from './pages/StoryPage';
 import LandingPage from './pages/LandingPage';
+import './App.css';
 
 const App = () => {
   const [onboardingComplete, setOnboardingComplete] = useState(false);
