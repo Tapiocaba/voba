@@ -10,8 +10,8 @@ class VocabList(BaseModel):
 
 class SentenceResponse(BaseModel):
     sentence: str
-    audio: str
     isCorrect: bool
+
 class SentenceChoices(BaseModel):
     choice1: SentenceResponse
     choice2: SentenceResponse
