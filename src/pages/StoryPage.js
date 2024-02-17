@@ -5,7 +5,7 @@ import VocabChecklist from '../components/VocabChecklist';
 import vocabWords from '../components/VocabWords';
 import '../StoryPage.css';
 
-const StoryPage = ({ userDetails }) => {
+const StoryPage = ({ userDetails, mode }) => {
   const [storyParts, setStoryParts] = useState([]); // Changed to array to handle each part separately
   const [options, setOptions] = useState([]);
   const [usedVocab, setUsedVocab] = useState([]);
