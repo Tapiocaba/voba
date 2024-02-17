@@ -8,7 +8,7 @@ const LandingPage = ({ setCurrentPage }) => {
         <img src={`${process.env.PUBLIC_URL}/voba-title.png`} alt="Logo" className="h-20" />
         <div className="space-x-4">
           <button
-            onClick={() => console.log('Log In')}
+            onClick={() => setCurrentPage('onboarding')}
             className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
             Log In
           </button>
@@ -19,7 +19,7 @@ const LandingPage = ({ setCurrentPage }) => {
           </button>
         </div>
       </div>
-      
+
       {/* Heading and Subtext */}
       <div className="flex-grow flex flex-col items-center justify-center space-y-4">
         <h1 className="text-4xl font-bold text-center">Welcome to Our Platform</h1>
