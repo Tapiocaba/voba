@@ -1,6 +1,6 @@
 import React from 'react';
 import VocabWords from './VocabWords.js';
-import '../css/vocab.css'
+import '../css/Vocab.css'
 
 const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
   const renderTextWithVocab = (text, grade) => {
