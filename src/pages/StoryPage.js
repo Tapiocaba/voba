@@ -52,6 +52,7 @@ const StoryPage = ({ userDetails, mode }) => {
       fetchStoryContinuation();
       isMounted.current = true;
     }
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
