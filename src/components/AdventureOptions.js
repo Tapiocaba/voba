@@ -1,9 +1,28 @@
 import React, { useState } from 'react';
 import VocabWords from './VocabWords.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import '../css/vocab.css';
 
 const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+
+  const handleAudioClick = async (text) => {
+    try {
+      // Assuming you have an endpoint like `/get_audio?text=${text}` that returns an MP3 file
+      const audioUrl = `/get_audio?text=${encodeURIComponent(text)}`;
+      const response = await fetch(audioUrl);
+      if (!response.ok) {
+        throw new Error('Audio fetch failed');
+      }
+      const blob = await response.blob();
+      const audioUrlObject = URL.createObjectURL(blob);
+      const audio = new Audio(audioUrlObject);
+      audio.play();
+    } catch (error) {
+      console.error('Error fetching audio:', error);
+    }
+  };
 
   const renderTextWithVocab = (text, grade) => {
     const gradeVocab = VocabWords[grade] || [];
@@ -42,13 +61,21 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
           borderColor = option.correct ? 'border-green-500' : 'border-red-500';
         }
         return (
-          <button
-            key={index}
-            className={`block p-2 my-2 border-2 ${borderColor} text-blue-500 bg-white rounded`}
-            onClick={() => handleOptionClick(option, index)}
-          >
-            {renderTextWithVocab(option.text, userDetails.grade)}
-          </button>
+          <div key={index} className="flex items-center space-x-2">
+            <button
+              className="text-blue-500 bg-transparent border-none p-2"
+              onClick={() => handleAudioClick(option.text)}
+              aria-label="Listen"
+            >
+              <FontAwesomeIcon icon={faVolumeUp} />
+            </button>
+            <button
+              className={`flex-grow block p-2 my-2 border-2 ${borderColor} text-blue-500 bg-white rounded`}
+              onClick={() => handleOptionClick(option, index)}
+            >
+              {renderTextWithVocab(option.text, userDetails.grade)}
+            </button>
+          </div>
         );
       })}
     </div>

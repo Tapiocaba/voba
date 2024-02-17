@@ -8,7 +8,7 @@ const LandingPage = ({ setCurrentPage }) => {
       <div className="flex flex-col welcome-background h-[100vh] welcome-text-overlay">
         {/* Navigation Bar */}
         <div className="flex justify-between items-center px-10 py-4">
-          <img src={`${process.env.PUBLIC_URL}/voba-title.png`} alt="Logo" className="h-20" />
+          <img src={`${process.env.PUBLIC_URL}/voba-title-blue.png`} alt="Logo" className="h-20" />
           <div className="space-x-4">
             <button
               onClick={() => setCurrentPage('onboarding')}
@@ -22,7 +22,7 @@ const LandingPage = ({ setCurrentPage }) => {
             </button>
           </div>
         </div>
-
+        
         {/* Welcome Message with Slide-up Animation */}
         <div className="flex-grow flex flex-col items-center space-y-5 slide-up justify-start pt-60">
         <h1 className="text-6xl font-bold text-center text-white welcome-text">Welcome to Voba!</h1>

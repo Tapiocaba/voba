@@ -27,7 +27,7 @@ const OnboardingPage = ({ onOnboardingComplete }) => {
             <span>Please fill out all fields before finishing.</span>
           </div>
         )}
-        <img src={`${process.env.PUBLIC_URL}/voba-title.png`} alt="Logo" className="h-20" />
+        <img src={`${process.env.PUBLIC_URL}/voba-title-blue.png`} alt="Logo" className="h-20" />
 
         <div>
           <label htmlFor="name" className="block text-lg font-medium text-gray-700 mb-2">Name</label>

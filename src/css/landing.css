@@ -1,25 +1,19 @@
-@keyframes slideUp {
-    from {
-      transform: translateY(20%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-}
-  
-  .slide-up {
-    animation: slideUp 0.8s ease-out forwards;
-  }
-  
+
 .welcome-background {
-    background-image: linear-gradient(to bottom, rgba(135, 206, 235, 0.7), rgba(135, 206, 235, 0.3)), url('../../public/voba-elephant-bg.png');
+    background-image: 
+        linear-gradient(
+            to bottom, 
+            rgba(255, 255, 255, 0.9), 
+            rgba(135, 206, 235, 0.1) 70%, 
+            rgba(135, 206, 235, 0.2)
+        ),
+        url('../../public/voba-elephant-bg.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center 40%;
+    height: 100vh; /* Adjust if necessary */
 }
-  
+
 /* Button styles */
 .log-in-button {
     background-color: #e67e22; /* Darker shade for better visibility */
@@ -54,7 +48,22 @@
       right: 0;
       bottom: 0;
       left: 0;
-      background: rgba(0, 0, 0, 0.1); /* Dark overlay */
+      background: rgba(0, 0, 0, 0.2); /* Dark overlay */
       z-index: -1;
     }
+}
+
+@keyframes slideUp {
+    from {
+      transform: translateY(20%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+}
+
+.slide-up {
+    animation: slideUp 0.8s ease-out forwards;
 }
