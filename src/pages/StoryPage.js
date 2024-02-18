@@ -17,7 +17,7 @@ const StoryPage = ({ userDetails, mode }) => {
   const endOfStoryRef = useRef(null);
   const isMounted = useRef(false);
 
-  const fetchStoryContinuation = async (selectedOption = '') => {
+  const fetchStoryContinuation = async (storyText = '') => {
     try {
       let newStoryPart = '';
       let newOptions = [];
@@ -51,7 +51,7 @@ const StoryPage = ({ userDetails, mode }) => {
 
           const response = await axios.get(requestUrl, {
             params: {
-              story: storyParts.join(' ') + ' ' + selectedOption,
+              story: storyText,
               mode: mode,
               vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(', '),
             },
@@ -70,7 +70,7 @@ const StoryPage = ({ userDetails, mode }) => {
       try {
         const optionsResponse = await axios.get('http://127.0.0.1:8000/api/get-sentence-options', {
           params: {
-            story: storyParts.join(' ') + ' ' + newStoryPart,
+            story: storyText + newStoryPart,
             vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(', '),
             mode: mode,
           },
@@ -123,7 +123,8 @@ const StoryPage = ({ userDetails, mode }) => {
       setTimeout(() => {
         setElephantText('Give me a second to continue the story...');
         setOptions([]);
-        fetchStoryContinuation(option.text);
+        const storyText = storyParts.join(' ') + ' ' + option.text;
+        fetchStoryContinuation(storyText);
         setStoryParts(prev => [...prev, `\n${option.text}\n`]);
         const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
         const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.toLowerCase().replace(/[.,!?]/g, '')));
