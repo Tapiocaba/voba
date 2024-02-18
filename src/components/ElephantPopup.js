@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../css/elephantPopup.css';
+import '../css/ElephantPopup.css';
 
 // This is a simple functional component that accepts text and audioLink props
 const ElephantPopup = ({ text, audioLink }) => {

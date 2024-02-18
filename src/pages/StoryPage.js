@@ -7,7 +7,7 @@ import vocabWords from '../components/VocabWords';
 import ElephantPopup from '../components/ElephantPopup';
 import axios from 'axios';
 
-import '../css/storyPage.css';
+import '../css/StoryPage.css';
 
 const StoryPage = ({ userDetails, mode }) => {
   const [storyParts, setStoryParts] = useState([]);
