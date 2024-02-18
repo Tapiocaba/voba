@@ -57,7 +57,7 @@ def get_story_start(vocab_list: str, mode: str = "creative"):
     output_parser = StrOutputParser()
 
     runnable = prompt | llm | output_parser
-    output = runnable.invoke({"vocab": vocab_list})
+    output = runnable.invoke({"vocab": vocab_string})
 
     return output
 
