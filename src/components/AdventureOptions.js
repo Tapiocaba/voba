@@ -65,7 +65,7 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
           <div key={index} className="flex items-center space-x-2">
             <button
               className="text-blue-500 bg-transparent border-none p-2"
-              onClick={() => handleAudioClick(option.text)}
+              onClick={() => handleAudioClick(option.sentence)}
               aria-label="Listen"
             >
               <FontAwesomeIcon icon={faVolumeUp} />
