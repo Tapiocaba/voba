@@ -46,40 +46,43 @@ const LandingPage = ({ setCurrentPage }) => {
         <div className="max-w-4xl mx-auto">
           {/* Animated Title */}
           <h2 className="highlights-title slide-up text-center">Discover the Fun of Reading!</h2>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Animated Highlight Boxes */}
-            <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center slide-in-from-bottom">
+            <div className="highlight p-6 shadow-2xl rounded-lg bg-pastel-pink text-center slide-in-from-bottom">
                 <h3 className="font-semibold text-lg">Embark on a Vocabulary Adventure!</h3>
-                    <p>
+                <p>
                     Experience the magic of learning new words through AI-driven adventures. 
                     Transform how you learn with stories that adapt to the words you need to master.
-                    </p>
+                </p>
             </div>
-            <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center slide-in-from-bottom">
+            <div className="highlight p-6 shadow-2xl rounded-lg bg-pastel-green text-center slide-in-from-bottom">
                 <h3 className="font-semibold text-lg">Create, Choose, Learn!</h3>
-                    <p>
-                        Features a choose-your-own-adventure format invites you into stories where your choices build the narrative. 
-                        It's not just about memorizing; it's about applying what you learn in context!
-                    </p>
+                <p>
+                    Features a choose-your-own-adventure format invites you into stories where your choices build the narrative. 
+                    It's not just about memorizing; it's about applying what you learn in context!
+                </p>
             </div>
-            <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center slide-in-from-bottom">
+            <div className="highlight p-6 shadow-2xl rounded-lg bg-pastel-blue text-center slide-in-from-bottom">
                 <h3 className="font-semibold text-lg">Learning Without Limits.</h3>
-                    <p>
-                        Voba goes where you go. Whether on a tablet at home or a computer in the classroom, our platform's adaptive interface ensures your learning adventure is always at your fingertips. 
-                    </p>
+                <p>
+                    Voba goes where you go. Whether on a tablet at home or a computer in the classroom, our platform's adaptive interface ensures your learning adventure is always at your fingertips. 
+                </p>
             </div>
-            <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center slide-in-from-bottom">
+            <div className="highlight p-6 shadow-2xl rounded-lg bg-pastel-yellow text-center slide-in-from-bottom">
                 <h3 className="font-semibold text-lg">Your Imagination, Your World.</h3>
                 <p>
                     Every word is a building block for new worlds. Whether it's with pre-defined words or your own, the power of vocabulary opens endless possibilities. 
                 </p>
             </div>
+
           </div>
         </div>
       </div>
       <div className="flex flex-col">
         <LandingGameModes />
+      </div>
+      <div className="flex justify-center items-center">
+        <img src={`${process.env.PUBLIC_URL}/images/divider.png`} alt="Divider" className="w-auto h-auto max-w-xs md:max-w-sm lg:max-w-lg" />
       </div>
       <Footer />
     </div>
