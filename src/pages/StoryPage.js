@@ -107,7 +107,7 @@ const StoryPage = ({ userDetails, mode }) => {
 
   useEffect(() => {
     endOfStoryRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [options]);
+  }, [options, storyParts]);
 
   const handleOptionSelect = (option) => {
     if (option.isCorrect) {
