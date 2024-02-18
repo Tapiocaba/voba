@@ -60,6 +60,7 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
         let borderColor = 'border-blue-500'; // Default border color
         if (isSelected) {
           borderColor = option.isCorrect ? 'border-green-500' : 'border-red-500';
+          setTimeout(() => setSelectedOptionIndex(null), 1000); // Reset the selected option after 1 second
         }
         return (
           <div key={index} className="flex items-center space-x-2">
