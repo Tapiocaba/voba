@@ -23,17 +23,20 @@ function LandingGameModes() {
   ];
 
   return (
-    <div className="game-modes-container">
-      <div className="game-modes-left">
-        {gameModes.map((mode, index) => (
-          <div key={index} className={`game-mode-cloud ${mode.class}`}>
-            <h3>{mode.title}</h3>
-            <p>{mode.description}</p>
-          </div>
-        ))}
-      </div>
-      <div className="game-modes-right">
-        <img src={`${process.env.PUBLIC_URL}/vovo-sitting.png`} alt="Happy Elephant" />
+    <div>
+      <h2 className="highlights-title slide-up text-center"> Built with a Variety of Game Modes</h2>
+      <div className="game-modes-container">
+        <div className="game-modes-left">
+          {gameModes.map((mode, index) => (
+            <div key={index} className={`game-mode-cloud ${mode.class}`}>
+              <h2><b>{mode.title}</b></h2>
+              <p>{mode.description}</p>
+            </div>
+          ))}
+        </div>
+        <div className="game-modes-right">
+          <img src={`${process.env.PUBLIC_URL}/vovo-sitting.png`} alt="Happy Elephant" />
+        </div>
       </div>
     </div>
   );
