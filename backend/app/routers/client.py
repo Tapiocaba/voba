@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 
 
 from models import VocabList, SentenceResponse, SentenceChoices
-from dependencies import get_sentence_options, get_story_start, client
+from dependencies import get_sentence_options, get_story_start, get_story_continue, client
 from typing import List
 import json
 
@@ -27,33 +27,23 @@ async def getInitialStory(vocab_list: str, mode: str) -> str:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
 
 @router.get("/get-story-continue", tags=['client'], status_code=status.HTTP_200_OK)
-async def getStoryContinue(story: str, mode: str) -> dict:
-    if mode == "creative":
-        pass
-    elif mode == "test":
-        pass
-    elif mode == "mixed":
-        pass
-    else:
+async def getStoryContinue(story: str, vocab_list: str, mode: str) -> dict:
+    if mode not in ["creative", "test", "mixed"]:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
-    # Langchain stuff here
-    next_sentence = None
-    new_story = story + next_sentence
-    return {"story": new_story, "next_sentence": next_sentence}
+    else:
+        story = get_story_continue(story=story, vocab_list=vocab_list, mode=mode)
+        return Response(content=story, media_type="text/plain")
+    
 
 @router.get("/get-sentence-options", tags=['client'], status_code=status.HTTP_200_OK)
 async def getSentenceOptions(story: str, vocab_list: str, mode: str) -> SentenceChoices:
-    print('im here')
     if mode not in ["creative", "test", "mixed",""]:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
     try:
-        print('im here 2')
         sentence_options = get_sentence_options(story=story,vocab_list=vocab_list,mode=mode)
-        print('im here 3')
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error: Incorrect JSON format.")
 
-    print(sentence_options)
 
     # # Return
     # c1 = SentenceResponse(
@@ -85,14 +75,12 @@ async def getSentenceOptions(story: str, vocab_list: str, mode: str) -> Sentence
 
     formatted_sentences = {}
 
-    for option, sentence in sentence_options.items():
+    for option, text in sentence_options.items():
         formatted_sentences[option] = {
-            "sentence": sentence,
+            "text": text,
             "isCorrect": True
         }
-
     
-
     return JSONResponse(content=formatted_sentences)
 
 @router.get("/get-audio", tags=['client'], status_code=status.HTTP_200_OK)

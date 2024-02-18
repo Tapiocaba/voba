@@ -59,13 +59,13 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
         const isSelected = index === selectedOptionIndex;
         let borderColor = 'border-blue-500'; // Default border color
         if (isSelected) {
-          borderColor = option.correct ? 'border-green-500' : 'border-red-500';
+          borderColor = option.isCorrect ? 'border-green-500' : 'border-red-500';
         }
         return (
           <div key={index} className="flex items-center space-x-2">
             <button
               className="text-blue-500 bg-transparent border-none p-2"
-              onClick={() => handleAudioClick(option.sentence)}
+              onClick={() => handleAudioClick(option.text)}
               aria-label="Listen"
             >
               <FontAwesomeIcon icon={faVolumeUp} />

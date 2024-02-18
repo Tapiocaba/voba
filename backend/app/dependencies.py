@@ -34,7 +34,7 @@ class SentenceOptions(BaseModel):
 
 
 # Get the start of a new story, depending on vocab list
-def get_story_start(vocab_list: VocabList, mode: str = "creative"):
+def get_story_start(vocab_list: str, mode: str = "creative"):
 
     instructions = """
         You are a storyteller helping a first-grader learn vocabulary. Think of 
@@ -61,9 +61,41 @@ def get_story_start(vocab_list: VocabList, mode: str = "creative"):
 
     return output
 
+def get_story_continue(story: str, vocab_list: str, mode: str = "creative"):
+
+    instructions = """
+        You are a storyteller helping a first-grader learn vocabulary. Continue
+        the following story that is likely to later use the following vocabulary words: 
+        \n\n
+        {vocab}
+        \n\n
+        Make sure to do the following in the continuation:
+        \n\n
+        - Do not actually use the vocabulary words.\n
+        - Stop at a point where it would make sense to have options for
+        what happens next or what choice is made next. Do not actually give any options. \n
+        - Write it at a level that a first-grader would understand.\n
+        - Make it interesting and fun, so the first-grader wants to keep reading.\n
+        - Make it about 50 words.\n\n
+
+        Here is the story I want you to the continue:
+
+        {story}
+        
+    """
+
+    prompt = PromptTemplate.from_template(instructions)
+    output_parser = StrOutputParser()
+
+
+    runnable = prompt | llm | output_parser
+    output = runnable.invoke({"vocab": vocab_list, "story": story})
+
+
+    return output
+
 
 def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
-    print('hello boys')
     # Set up pydantic output parser
     # parser = JsonOutputParser(pydantic_object=SentenceOptions)
 
@@ -89,41 +121,27 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     """
 
     prompt = PromptTemplate.from_template(instructions)
-    print('bruh')
 
     output_parser = StrOutputParser()
-    print('bruh2')
-
-
     runnable = prompt | llm | output_parser
     output = runnable.invoke({"vocab": vocab_list, "story": story})
     
-    print('lala')
     # slice from first bracket to last bracket.
     start_index = output.find('{')
     end_index = output.rfind('}') + 1
     output = output[start_index:end_index]
 
-    print(output)
-
     # convert output to dict
     output = json.loads(output)
 
-    
-
-    print(output)
-
-    
     # ensure options are in the correct format & each have at least one vocab word
     # options = output.values()
 
-    # print(options)
     # if not _validate_options_json(output):
     #     raise ValueError("JSON data is not in the correct format")
     # elif not all([_check_vocab_in_string(option, vocab_list) for option in options]):
     #     raise ValueError("Not every option has a vocab word")
 
-    # print('got here')
     return output
 
 # Ensures vocab is not in the story
