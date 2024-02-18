@@ -6,11 +6,13 @@ from mangum import Mangum
 from routers import client
 import logging
 
+
 app = FastAPI()
 
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Adjust in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

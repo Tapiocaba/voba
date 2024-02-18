@@ -2,6 +2,7 @@ import React from 'react';
 import '../css/landing.css';
 
 const LandingPage = ({ setCurrentPage }) => {
+
   return (
     <div className="flex flex-col">
       {/* Background Section */}
@@ -37,35 +38,41 @@ const LandingPage = ({ setCurrentPage }) => {
         </div>
       </div>
 
+
       {/* Highlights Section */}
-      <div className="py-8 ">
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Highlight Boxes */}
-          <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center">
-            <h3 className="font-semibold text-lg">Embark on a Vocabulary Adventure!</h3>
-            <p>
-              Experience the magic of learning new words through AI-driven adventures. 
-              Transform how you learn with stories that adapt to the words you need to master.
-            </p>
-          </div>
-          <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center">
-            <h3 className="font-semibold text-lg">Create, Choose, Learn!</h3>
-            <p>
-                Features a choose-your-own-adventure format invites you into stories where your choices build the narrative. 
-                It's not just about memorizing; it's about applying what you learn in context!
-            </p>
-          </div>
-          <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center">
-            <h3 className="font-semibold text-lg">Learning Without Limits.</h3>
-            <p>
-                Voba goes where you go. Whether on a tablet at home or a computer in the classroom, our platform's adaptive interface ensures your learning adventure is always at your fingertips. 
-            </p>
-          </div>
-          <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center">
-            <h3 className="font-semibold text-lg">Your Imagination, Your World.</h3>
-            <p>
-                Every word is a building block for new worlds. Whether it's with pre-defined words or your own, the power of vocabulary opens endless possibilities. 
-            </p>
+      <div className="py-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Animated Title */}
+          <h2 className="highlights-title slide-up text-center">Discover the Fun of Learning!</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Animated Highlight Boxes */}
+            <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center slide-in-from-bottom">
+                <h3 className="font-semibold text-lg">Embark on a Vocabulary Adventure!</h3>
+                    <p>
+                    Experience the magic of learning new words through AI-driven adventures. 
+                    Transform how you learn with stories that adapt to the words you need to master.
+                    </p>
+            </div>
+            <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center slide-in-from-bottom">
+                <h3 className="font-semibold text-lg">Create, Choose, Learn!</h3>
+                    <p>
+                        Features a choose-your-own-adventure format invites you into stories where your choices build the narrative. 
+                        It's not just about memorizing; it's about applying what you learn in context!
+                    </p>
+            </div>
+            <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center slide-in-from-bottom">
+                <h3 className="font-semibold text-lg">Learning Without Limits.</h3>
+                    <p>
+                        Voba goes where you go. Whether on a tablet at home or a computer in the classroom, our platform's adaptive interface ensures your learning adventure is always at your fingertips. 
+                    </p>
+            </div>
+            <div className="highlight p-6 shadow-lg rounded-lg bg-white text-center slide-in-from-bottom">
+                <h3 className="font-semibold text-lg">Your Imagination, Your World.</h3>
+                <p>
+                    Every word is a building block for new worlds. Whether it's with pre-defined words or your own, the power of vocabulary opens endless possibilities. 
+                </p>
+            </div>
           </div>
         </div>
       </div>

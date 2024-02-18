@@ -77,7 +77,6 @@ async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> Se
 
 @router.get("/get-audio", tags=['client'], status_code=status.HTTP_200_OK)
 async def getAudio(audio_str: str):
-    
     # Generate audio
     response = client.audio.speech.create(
         model="tts-1",
