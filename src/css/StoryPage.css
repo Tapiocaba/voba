@@ -20,7 +20,7 @@
   z-index: 1000; /* Keeps it on top */
   background-color: #fff; /* Optional: for visibility */
   padding: 20px;
-  width: 100%;
+  width: 60%;
 }
 
 .options-container {

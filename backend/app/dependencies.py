@@ -113,12 +113,13 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
         - None of the options use the same vocab word.\n
         - {mode_specific_instruction}
 
-       The output should be a json list with the following key value pairs\n
+       The output should be a json object with the following key value pairs\n
 
         "option1": "The first option to continue the story",
         "option2": "The second option to continue the story",
         "option3": "The third option to continue the story",
         "option4": "The fourth option to continue the story"
+        
 
        \n
         Story: {story}
@@ -139,6 +140,7 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     
     output = runnable.invoke({"vocab": vocab_list, "story": story, "mode_specific_instruction": mode_specific_instruction})
     
+    print(output)
     # slice from first bracket to last bracket.
     start_index = output.find('{')
     end_index = output.rfind('}') + 1
