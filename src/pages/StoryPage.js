@@ -76,6 +76,8 @@ const StoryPage = ({ userDetails, mode }) => {
           },
         });
         newOptions = optionsResponse.data;
+        console.log(newOptions);
+        console.log(optionsResponse);
       }
       catch (error) {
         console.error('Error fetching sentence options:', error);
