@@ -22,6 +22,7 @@ class SentenceOptions(BaseModel):
     option1: str = Field(description="first option to continue the story")
     option2: str = Field(description="second option to continue the story")
     option3: str = Field(description="third option to continue the story")
+    option4: str = Field(description="fourth option to continue the story") 
 
     # todo: add validation logic
     # @validator("setup")

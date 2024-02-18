@@ -42,30 +42,31 @@ async def getStoryContinue(story: str, mode: str) -> dict:
 async def getSentenceOptions(story: str, vocab_list: str, mode: str) -> SentenceChoices:
     if mode not in ["creative", "test", "mixed",""]:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
-    
     try:
         sentence_options = get_sentence_options(story=story,vocab_list=vocab_list,mode=mode)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error: Incorrect JSON format.")
 
+    print(sentence_options)
+
     # Return
     c1 = SentenceResponse(
-        sentence=sentence_options.option1,
+        sentence=sentence_options['option1'],
         isCorrect=True,
     )
 
     c2 = SentenceResponse(
-        sentence=sentence_options.option2,
+        sentence=sentence_options['option2'],
         isCorrect=True,
     )
 
     c3 = SentenceResponse(
-        sentence=sentence_options.option3,
+        sentence=sentence_options['option3'],
         isCorrect=True,
     )
 
     c4 = SentenceResponse(
-        sentence=sentence_options.option4,
+        sentence=sentence_options['option4'],
         isCorrect=True,
     )
 
