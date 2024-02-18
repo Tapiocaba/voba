@@ -2,6 +2,7 @@ import React from 'react';
 
 import Footer from '../components/Footer';
 import LandingGameModes from '../components/LandingGameModes';
+import FloatingCircles from '../components/FloatingCircles';
 
 import '../css/landing.css';
 
@@ -76,16 +77,24 @@ const LandingPage = ({ setCurrentPage }) => {
                     Every word is a building block for new worlds. Whether it's with pre-defined words or your own, the power of vocabulary opens endless possibilities. 
                 </p>
             </div>
-
           </div>
         </div>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col mb-20px">
         <LandingGameModes />
       </div>
-      <div className="flex justify-center items-center">
+      <h2 className="highlights-title slide-up text-center">Features</h2>
+      <FloatingCircles />
+      <div className="flex justify-center items-center relative">
         <img src={`${process.env.PUBLIC_URL}/images/divider.png`} alt="Divider" className="w-auto max-w-xs md:max-w-sm lg:max-w-lg" />
+        <button
+          onClick={() => setCurrentPage('onboarding')}
+          className="get-started-button log-in-button absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[calc(50%+140px)] mt-4 bg-sky-400 hover:bg-sky-500 text-white font-semibold py-2 px-6 rounded transition-all duration-300 shadow-lg">
+          Let's get started!
+        </button>
       </div>
+
+
       <Footer />
     </div>
   );
