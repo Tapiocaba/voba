@@ -7,6 +7,21 @@ const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWor
   const [editMode, setEditMode] = useState(false);
   const [newWord, setNewWord] = useState('');
 
+  const handleAudioClick = async (text) => {
+    try {
+      const params = { audio_str: text };
+      const response = await axios.get('http://localhost:8000/api/get-audio', {
+        params,
+        responseType: 'blob'
+      });
+      const audioUrlObject = URL.createObjectURL(response.data);
+      const audio = new Audio(audioUrlObject);
+      audio.play();
+    } catch (error) {
+      console.error('Error fetching audio:', error);
+    }
+  };
+
   const toggleEditMode = () => {
     setEditMode(!editMode);
   };
@@ -52,7 +67,8 @@ const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWor
           {!editMode && (
             <div>
               <h2 className="text-xl font-bold mb-10 text-center">Hello, {userDetails.name}!</h2>
-              <h2 className="text-xl font-bold mb-10 text-center">Here are your vocab words (Grade {userDetails.grade}).</h2>
+              <h2 className="text-xl font-bold text-center">Here are your vocab words (Grade {userDetails.grade}). </h2>
+              <h2 className="text-lg mb-10 text-center">Click on a word to hear it spoken.</h2>
             </div>
           )}
 
@@ -79,7 +95,9 @@ const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWor
           <div className="flex flex-wrap justify-center gap-4">
             {vocabWords.length > 0 ? (
               vocabWords.map((wordObj, index) => (
-                <div key={index} className="vocab-box tooltip relative">
+                <div key={index} className="vocab-box tooltip relative"
+                  onClick={() => handleAudioClick(wordObj.word)}
+                >
                   {editMode && (
                     <button
                       onClick={() => handleDeleteWord(index)}
