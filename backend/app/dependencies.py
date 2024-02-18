@@ -37,8 +37,8 @@ class SentenceOptions(BaseModel):
 def get_story_start(vocab_list: str, mode: str = "creative"):
 
     instructions = """
-        You are a storyteller helping a first-grader learn vocabulary. Think of 
-        a story plot that is likely to later use the following vocabulary words: 
+        You are a storyteller that kids LOVE to listen to helping a first-grader learn vocabulary. Think of 
+        an interesting story plot that is likely to later use the following vocabulary words: 
         \n\n
         {vocab}
         \n\n
@@ -62,28 +62,48 @@ def get_story_start(vocab_list: str, mode: str = "creative"):
 
     return output
 
-def get_story_continue(story: str, vocab_list: str, mode: str = "creative"):
+def get_story_continue(story: str, vocab_list: str, conclude: bool, mode: str = "creative"):
 
-    instructions = """
-        You are a storyteller helping a first-grader learn vocabulary. Continue
-        the following story that is likely to later use the following vocabulary words: 
-        \n\n
-        {vocab}
-        \n\n
-        Make sure to do the following in the continuation:
-        \n\n
-        - Do not actually use the vocabulary words.\n
-        - Stop at a point where it would make sense to have options for
-        what happens next or what choice is made next. Do not actually give any options. \n
-        - Write it at a level that a first-grader would understand.\n
-        - Make it interesting and fun, so the first-grader wants to keep reading.\n
-        - Make it about 2 sentences.\n\n
+    if conclude:
+        instructions = """
+            You are a storyteller that kids LOVE to listen to helping a first-grader learn reading. 
+            Conclude the following story.
+            \n\n
+            Make sure to do the following in the conclusion:
+            \n\n
+            - Write it at a level that a first-grader would understand.\n
+            - Make it interesting and fun.\n
+            - The conclusion should make sense in the context of the entire story,
+            but it should especially follow from the last two sentences of the story.\n
+            - Make it about 3 sentences.\n\n
 
-        Here is the story I want you to the continue:
+            Here is the story I want you to conclude:
 
-        {story}
-        
-    """
+            {story}
+        """
+
+    else:
+        instructions = """
+            You are a storyteller that kids LOVE to listen to helping a first-grader learn vocabulary. Continue
+            the following story that is likely to later use the following vocabulary words: 
+            \n\n
+            {vocab}
+            \n\n
+            Make sure to do the following in the continuation:
+            \n\n
+            - Do not actually use the vocabulary words.\n
+            - Stop at a point where it would make sense to have options for
+            what happens next or what choice is made next. Do not actually give any options. \n
+            - Write it at a level that a first-grader would understand.\n
+            - Make it interesting and fun, so the first-grader wants to keep reading.\n
+            - The continuation should make sense in the context of the entire story.\n
+            - Make it about 2 sentences.\n\n
+
+            Here is the story I want you to the continue:
+
+            {story}
+            
+        """
 
     prompt = PromptTemplate.from_template(instructions)
     output_parser = StrOutputParser()
@@ -102,13 +122,16 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
 
     # todo: change based on mode
     instructions = """
-        You are a storyteller helping a first-grader learn vocabulary using a 
+        You are a storyteller that kids LOVE to listen to helping a first-grader learn vocabulary using a 
         choose-your-own-adventure story. Given the following story, come up with 
         four options for how the story can continue. Ensure that:
         \n\n
         - Each option is one sentence.\n
         - Each option is written at a first-grade level.\n
         - Each option is interesting and makes sense in the story context.\n
+        - The options present significantly different choices for the reader, so they 
+        feel like their choices impact the story.\n
+        - The options should be written in an active voice, without modal verbs.\n
         - Each option uses exactly one of the following vocab words: {vocab}\n
         - None of the options use the same vocab word.\n
         - {mode_specific_instruction}
@@ -120,7 +143,6 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
         "option3": "The third option to continue the story",
         "option4": "The fourth option to continue the story"
         
-
        \n
         Story: {story}
     """

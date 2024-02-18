@@ -18,6 +18,8 @@ const StoryPage = ({ userDetails, mode }) => {
   const isMounted = useRef(false);
   const [initialized, setInitialized] = useState(false);
 
+  const concludeAt = 6;
+
   // fetch first part of the array
   const fetchFirstPart = async () => {
     const requestUrl = `http://127.0.0.1:8000/api/get-initial-story`;
@@ -69,6 +71,7 @@ const StoryPage = ({ userDetails, mode }) => {
               story: storyParts.join(' '),
               mode: mode,
               vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(', '),
+              conclude: storyParts.length === concludeAt,
             },
             headers: {
               'Accept': 'application/json',
@@ -83,7 +86,7 @@ const StoryPage = ({ userDetails, mode }) => {
       }
       fetchStoryContinuation();
     } 
-    else {
+    else if (storyParts.length !== concludeAt) {
       const fetchStoryOptions = async () => {
         try {
           const optionsResponse = await axios.get('http://127.0.0.1:8000/api/get-sentence-options', {
@@ -192,7 +195,7 @@ const StoryPage = ({ userDetails, mode }) => {
                 ))}</p>
               </CSSTransition>
             ))}
-            <div style={{ height: '300px' }}></div>
+            <div style={{ height: '400px' }}></div>
           </TransitionGroup>
         </div>
         <div ref={endOfStoryRef} />

@@ -27,11 +27,11 @@ async def getInitialStory(vocab_list: str, mode: str) -> str:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
 
 @router.get("/get-story-continue", tags=['client'], status_code=status.HTTP_200_OK)
-async def getStoryContinue(story: str, vocab_list: str, mode: str) -> dict:
+async def getStoryContinue(story: str, vocab_list: str, mode: str, conclude: bool) -> dict:
     if mode not in ["creative", "test", "mixed"]:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
     else:
-        story = get_story_continue(story=story, vocab_list=vocab_list, mode=mode)
+        story = get_story_continue(story=story, vocab_list=vocab_list, mode=mode, conclude=conclude)
         return Response(content=story, media_type="text/plain")
     
 @router.get("/explain-wrong", tags=['client'], status_code=status.HTTP_200_OK)
