@@ -126,15 +126,15 @@ const StoryPage = ({ userDetails, mode }) => {
         fetchStoryContinuation(option.text);
         setStoryParts(prev => [...prev, `\n${option.text}\n`]);
         const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
-        const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
-        const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace(/[.,!?]/g, ''));
+        const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.toLowerCase().replace(/[.,!?]/g, '')));
+        const usedVocabWithoutPunctuation = usedVocab.map(word => word.toLowerCase().replace(/[.,!?]/g, ''));
         setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
       }, 1000);
 
     } else {
       try {
         const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
-        const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
+        const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.toLowerCase().replace(/[.,!?;]/g, '')));
         let word = '';
         if (usedVocab.length > 0) {
           word = usedVocab[0];
@@ -165,11 +165,9 @@ const StoryPage = ({ userDetails, mode }) => {
       <div className="w-1/3" >
         <div style={{ position: 'fixed' }}>
           <VocabChecklist usedVocab={usedVocab} vocabWords={vocabWords[userDetails.grade]} />
-          <div className="fixed-bottom">
-            <div className="options-container">
-              <ElephantPopup text={elephantText} />
-            </div>
-          </div>
+
+          <ElephantPopup text={elephantText} />
+
         </div>
       </div>
       <div className="w-2/3 p-4">

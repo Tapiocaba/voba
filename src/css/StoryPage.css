@@ -19,8 +19,8 @@
   bottom: 0;
   z-index: 1000; /* Keeps it on top */
   background-color: #fff; /* Optional: for visibility */
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Optional: for depth */
   padding: 20px;
+  width: 100%;
 }
 
 .options-container {
