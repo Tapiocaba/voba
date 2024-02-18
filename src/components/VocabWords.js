@@ -13,20 +13,40 @@ const vocabWords = {
     { word: 'island', definition: 'A piece of land surrounded by water. Some are big and some are very small.', imageLink: 'https://t4.ftcdn.net/jpg/00/69/30/95/360_F_69309552_K5ZGEkyzxpqKWCo2dN7YqRE8pEQCbFMl.jpg'},
     { word: 'jungle', definition: 'A thick forest in hot countries where lots of wild animals live.', imageLink: 'https://cdn.pixabay.com/photo/2022/12/03/22/53/rainforest-7633483_1280.jpg'},
   ],
-  '3': [
-    { word: 'kangaroo', definition: 'An animal from Australia that carries its baby in a pouch and loves to hop.', imageLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Kangaroo_Australia_01_11_2008_-_retouch.JPG/330px-Kangaroo_Australia_01_11_2008_-_retouch.JPG'},
-    { word: 'lemon', definition: 'A sour, yellow fruit that is often used to make lemonade.', imageLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/P1030323.JPG/330px-P1030323.JPG'},
-    { word: 'mountain', definition: 'A very tall part of the earth’s surface, much taller than a hill.' , imageLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg/495px-Everest_North_Face_toward_Base_Camp_Tibet_Luca_Galuzzi_2006.jpg'},
-    { word: 'night', definition: 'The time when it is dark outside and most people sleep.' },
-    { word: 'ocean', definition: 'A very large area of salt water. The ocean is home to many creatures and plants.', imageLink: 'https://cdn5.vectorstock.com/i/1000x1000/61/29/ocean-surface-wave-seamless-underwater-cartoon-vector-23306129.jpg'},
-  ],
   '4': [
     { word: 'penguin', definition: 'A black and white bird that cannot fly but is an excellent swimmer.', imageLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Emperor_Penguin_Manchot_empereur.jpg/263px-Emperor_Penguin_Manchot_empereur.jpg'},
     { word: 'quilt', definition: 'A warm bed covering made of padding enclosed between layers of fabric and kept in place by lines of stitching.', imageLink: 'https://www.gillymacdesigns.com/wp-content/uploads/2021/06/Untitled-design-20-1080x675.png'},
     { word: 'rocket', definition: 'A vehicle designed to travel through space.', imageLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Soyuz_TMA-9_launch.jpg/255px-Soyuz_TMA-9_launch.jpg'},
     { word: 'sunflower', definition: 'A tall plant with large yellow flowers that look like the sun.', imageLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Sunflower_sky_backdrop.jpg/330px-Sunflower_sky_backdrop.jpg'},
     { word: 'turtle', definition: 'A reptile with a hard shell that can live both in water and on land.', imageLink: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Green_Sea_Turtle_swimming.jpg/330px-Green_Sea_Turtle_swimming.jpg'},
-  ]
+  ],
+  '3': [
+      {
+        word: "uncanny",
+        definition: "Strange or mysterious, especially in an unsettling way.",
+        imageLink: "https://media.istockphoto.com/id/1211530625/vector/the-cute-brown-haired-boy-standing-in-blue-pants-with-a-scared-face-vector-illustration-in.jpg?s=612x612&w=0&k=20&c=uVr_00ZGnqR9qgUzD5FfRfUSeBTHCBVh_g8GpobeLjw="
+      },
+      {
+        word: "treasure",
+        definition: "A quantity of precious metals, gems, or other valuable objects.",
+        imageLink: "https://thumbs.dreamstime.com/b/stock-illustration-features-cartoon-styled-pirate-chest-unlocked-lid-overflowing-shiny-gold-coins-272984906.jpg"
+      },
+      {
+        word: "swift",
+        definition: "Moving or capable of moving with great speed or velocity.",
+        imageLink: "https://www.shutterstock.com/image-vector/happy-cute-little-boy-run-600nw-1931220455.jpg"
+      },
+      {
+        word: "explore",
+        definition: "Travel through (an unfamiliar area) in order to learn about it.",
+        imageLink: "https://media.istockphoto.com/id/1474437719/vector/school-children-holding-magnifying-glass-to-watch-ladybug-on-green-plant-in-yard-garden-or.jpg?s=612x612&w=0&k=20&c=RAJM6BbJqABNi0w1jN6SbcGRaPjkJlJDIR5hoZGfkvg="
+      },
+      {
+        word: "consider",
+        definition: "Think carefully about (something), typically before making a decision.",
+        imageLink: "https://img.freepik.com/free-vector/girl-thinking_1308-85997.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1708041600&semt=ais"
+      }
+    ]
 };
 
 export default vocabWords;
