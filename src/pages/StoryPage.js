@@ -37,7 +37,6 @@ const StoryPage = ({ userDetails, mode }) => {
             },
           })
           newStoryPart = response.data;
-          setStoryParts(prev => [...prev, newStoryPart]);
         }
         catch (error) {
           console.error('Error fetching story continuation:', error);
@@ -61,7 +60,6 @@ const StoryPage = ({ userDetails, mode }) => {
             },
           })
           newStoryPart = response.data;
-          setStoryParts(prev => [...prev, newStoryPart]);
         }
         catch (error) {
           throw new Error('Failed to fetch story continuation');
@@ -72,7 +70,7 @@ const StoryPage = ({ userDetails, mode }) => {
       try {
         const optionsResponse = await axios.get('http://127.0.0.1:8000/api/get-sentence-options', {
           params: {
-            story: storyParts.join(' '),
+            story: storyParts.join(' ') + ' ' + newStoryPart,
             vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(', '),
             mode: mode,
           },
@@ -85,12 +83,15 @@ const StoryPage = ({ userDetails, mode }) => {
           text: option.text,
           isCorrect: option.isCorrect,
         }));
+        // shuffle the options
+        newOptions = newOptions.sort(() => Math.random() - 0.5);
       }
       catch (error) {
         console.error('Error fetching sentence options:', error);
       }
 
       setOptions(newOptions);
+      setStoryParts(prev => [...prev, newStoryPart]);
       setElephantText('Choose an option to continue the story!');
 
     } catch (error) {

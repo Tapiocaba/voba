@@ -35,6 +35,14 @@ const VocabPage = ({ userDetails, onContinueToStory }) => {
           <p className="text-lg">Select a word to see its definition and image.</p>
         )}
       </div>
+
+      {/* Continue to Story Button */}
+      <button
+        onClick={onContinueToStory}
+        className="fixed bottom-0 right-0 m-4 bg-orange-500 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded shadow"
+      >
+        Continue to Story
+      </button>
     </div>
   );
 };

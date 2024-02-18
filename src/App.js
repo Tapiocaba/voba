@@ -13,7 +13,7 @@ const App = () => {
   const [onboardingComplete, setOnboardingComplete] = useState(false);
   const [userDetails, setUserDetails] = useState({ name: '', grade: '', id: '' });
   const [currentPage, setCurrentPage] = useState('landing');
-  const [mode, setMode] = useState('normal');
+  const [mode, setMode] = useState('creative');
 
   const handleOnboardingComplete = (name, grade) => {
     setUserDetails({ name, grade });
