@@ -39,7 +39,7 @@ async def getStoryContinue(story: str, mode: str) -> dict:
     return {"story": new_story, "next_sentence": next_sentence}
 
 @router.get("/get-sentence-options", tags=['client'], status_code=status.HTTP_200_OK)
-async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> SentenceChoices:
+async def getSentenceOptions(story: str, vocab_list: str, mode: str) -> SentenceChoices:
     if mode not in ["creative", "test", "mixed",""]:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
     

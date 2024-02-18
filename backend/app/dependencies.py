@@ -61,9 +61,8 @@ def get_story_start(vocab_list: str, mode: str = "creative"):
     return output
 
 
-def get_sentence_options(story: str, vocab_list: VocabList, mode: str = "creative"):
+def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     llm = ChatOpenAI(temperature=1, model_name='gpt-4-1106-preview', openai_api_key=OPENAI_API_KEY)
-    vocab_string = ", ".join(vocab_list)
 
     # Set up pydantic output parser
     parser = JsonOutputParser(pydantic_object=SentenceOptions)
@@ -92,7 +91,8 @@ def get_sentence_options(story: str, vocab_list: VocabList, mode: str = "creativ
     str_output_parser = StrOutputParser()
 
     runnable = prompt | llm | parser
-    output = runnable.invoke({"vocab": vocab_string, "story": story})
+    output = runnable.invoke({"vocab": vocab_list, "story": story})
+    print(output)
 
     if not _validate_options_json(output):
         raise ValueError("JSON data is not in the correct format")

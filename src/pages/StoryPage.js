@@ -30,7 +30,7 @@ const StoryPage = ({ userDetails, mode }) => {
           const response = await axios.get(requestUrl, {
             params: {
               mode: mode,
-              vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(','),
+              vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(', '),
             },
             headers: {
               'Accept': 'application/json',
@@ -54,38 +54,35 @@ const StoryPage = ({ userDetails, mode }) => {
           body: JSON.stringify({ story: storyParts.join(' '), option: selectedOption }),
         });
 
+
         if (!response.ok) {
           throw new Error('Failed to fetch story continuation');
         }
+
 
         newStoryPart = await response.json();
 
       }
 
-      // const optionsResponse = await fetch('/get-sentence-options', {
-      //   method: 'GET',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ story: storyParts.join(' '), option: selectedOption, mode: mode }),
-      // });
-
-      // if (!optionsResponse.ok) {
-      //   throw new Error('Failed to fetch sentence options');
-      // }
-
-      const optionsResponse = {
-        ok: true,
-        json: async () => {
-          return [
-            { text: 'Option 1', correct: true },
-            { text: 'Option 2', correct: false },
-            { text: 'Option 3', correct: false },
-          ];
-        }
+      try {
+        const optionsResponse = await axios.get('http://127.0.0.1:8000/api/get-sentence-options', {
+          params: {
+            story: storyParts.join(' '),
+            vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(', '),
+            mode: mode,
+          },
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+        newOptions = optionsResponse.data;
+      }
+      catch (error) {
+        console.error('Error fetching sentence options:', error);
       }
 
-      newOptions = await optionsResponse.json();
+
+
 
       setStoryParts(prev => [...prev, newStoryPart]);
       setOptions(newOptions);
