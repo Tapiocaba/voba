@@ -6,7 +6,7 @@ import VocabPage from './pages/VocabPage';
 import StoryPage from './pages/StoryPage';
 import LandingPage from './pages/LandingPage';
 import ChooseModePage from './pages/ChooseModePage';
-import VocabWords from './VocabWords';
+import VocabWords from './components/VocabWords';
 
 import './css/App.css';
 
