@@ -7,12 +7,15 @@ import '../css/vocab.css';
 const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
+  // Function to handle audio icon click
   const handleAudioClick = async (text) => {
     try {
-      // Assuming you have an endpoint like `/get_audio?text=${text}` that returns an MP3 file
-      const audioUrl = `/get_audio?text=${encodeURIComponent(text)}`;
+      // Update the endpoint URL to match your server's address and the get-audio endpoint
+      // Assuming your backend is hosted on localhost:8000, change it according to your actual backend host and port
+      const audioUrl = `http://127.0.0.1:8000/api/get-audio?audio_str=${encodeURIComponent(text)}`;
       const response = await fetch(audioUrl);
       if (!response.ok) {
+        console.log(response)
         throw new Error('Audio fetch failed');
       }
       const blob = await response.blob();
@@ -23,6 +26,7 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
       console.error('Error fetching audio:', error);
     }
   };
+
 
   const renderTextWithVocab = (text, grade) => {
     const gradeVocab = VocabWords[grade] || [];
