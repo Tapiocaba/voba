@@ -37,6 +37,7 @@ const StoryPage = ({ userDetails, mode }) => {
             },
           })
           newStoryPart = response.data;
+          setStoryParts(prev => [...prev, newStoryPart]);
         }
         catch (error) {
           console.error('Error fetching story continuation:', error);
@@ -60,6 +61,7 @@ const StoryPage = ({ userDetails, mode }) => {
             },
           })
           newStoryPart = response.data;
+          setStoryParts(prev => [...prev, newStoryPart]);
         }
         catch (error) {
           throw new Error('Failed to fetch story continuation');
@@ -88,7 +90,6 @@ const StoryPage = ({ userDetails, mode }) => {
         console.error('Error fetching sentence options:', error);
       }
 
-      setStoryParts(prev => [...prev, newStoryPart]);
       setOptions(newOptions);
       setElephantText('Choose an option to continue the story!');
 

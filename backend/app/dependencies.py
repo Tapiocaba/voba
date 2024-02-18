@@ -57,7 +57,7 @@ def get_story_start(vocab_list: str, mode: str = "creative"):
     output_parser = StrOutputParser()
 
     runnable = prompt | llm | output_parser
-    output = runnable.invoke({"vocab": vocab_string})
+    output = runnable.invoke({"vocab": vocab_list})
 
     return output
 
@@ -107,10 +107,10 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
         \n\n
         - Each option is one sentence.\n
         - Each option is written at a first-grade level.\n
-        - Each option is interesting and an action choice.\n
+        - Each option is interesting and makes sense in the story context.\n
         - Each option uses exactly one of the following vocab words: {vocab}\n
         - No two options use the same vocab word.\n
-       The output should be a json with the following key value pairs\n
+       The output should be a json with the following key value pairs:\n
        
         "option1": "Sentence 1",
         "option2": "Sentence 2",
