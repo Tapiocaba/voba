@@ -4,13 +4,15 @@ import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import '../css/Vocab.css';
 import axios from 'axios';
 
+const BASE_URL = 'https://vkv088ibwf.execute-api.us-east-2.amazonaws.com/dev/api'
+
 const AdventureOptions = ({ options, onOptionSelect, userDetails, vocabWords }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
   const handleAudioClick = async (text) => {
     try {
       const params = { audio_str: text };
-      const response = await axios.get('http://localhost:8000/api/get-audio', {
+      const response = await axios.get(`${BASE_URL}/get-audio`, {
         params,
         responseType: 'blob'
       });
