@@ -36,6 +36,7 @@ async def getStoryContinue(story: str, vocab_list: str, mode: str) -> dict:
     
 @router.get("/explain-wrong", tags=['client'], status_code=status.HTTP_200_OK)
 async def explainWrong(sentence: str, word: str) -> str:
+    print(sentence, word)
     explanation = explain_why_wrong(sentence=sentence, word=word)
     return Response(content=explanation, media_type="text/plain")
     
@@ -80,11 +81,24 @@ async def getSentenceOptions(story: str, vocab_list: str, mode: str) -> Sentence
 
     formatted_sentences = {}
 
-    for option, text in sentence_options.items():
-        formatted_sentences[option] = {
-            "text": text,
-            "isCorrect": True
-        }
+    if mode == "test":
+        for option, text in sentence_options.items():
+            formatted_sentences[option] = {
+                "text": text,
+                "isCorrect": True if option == "option1" else False
+            }
+    elif mode == "creative":
+        for option, text in sentence_options.items():
+            formatted_sentences[option] = {
+                "text": text,
+                "isCorrect": True
+            }
+    else:
+        for option, text in sentence_options.items():
+            formatted_sentences[option] = {
+                "text": text,
+                "isCorrect": True if option == "option1" or option == "option2" else False
+            }
     
     return JSONResponse(content=formatted_sentences)
 
