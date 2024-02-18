@@ -19,5 +19,5 @@ Create bundle
 cd dep
 zip ../treehacks-api.zip -r .
 cd ..
-zip treehacks-api.zip -u main.py models.py dependencies.py __init__.py .env
+zip treehacks-api.zip -u main.py models.py dependencies.py __init__.py .env routers -r
 ```
