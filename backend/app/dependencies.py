@@ -8,10 +8,13 @@ from langchain_core.pydantic_v1 import BaseModel, Field, validator
 from models import VocabWord, VocabList, SentenceResponse
 import json
 import os
+from openai import OpenAI
 
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+client = OpenAI()
+llm = ChatOpenAI(temperature=0, model_name='gpt-4-1106-preview')
 
 
 # Data structure for sentence option outputs
@@ -153,6 +156,7 @@ def _string_to_json(input_string):
 # print(story_start)
 # story_options = get_sentence_options(story=story_start, vocab_list=vocab_list)
 # print(story_options)
+
 
 
 
