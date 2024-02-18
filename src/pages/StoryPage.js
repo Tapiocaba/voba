@@ -184,7 +184,7 @@ const StoryPage = ({ userDetails, mode }) => {
                 ))}</p>
               </CSSTransition>
             ))}
-            <div style={{ height: '300px' }}></div>
+            <div style={{ height: '400px' }}></div>
           </TransitionGroup>
         </div>
         <div ref={endOfStoryRef} />
