@@ -47,7 +47,7 @@ const App = () => {
   return (
     <div>
       <Nav setCurrentPage={setCurrentPage} />
-      <div style={{ paddingTop: 200, paddingLeft: 100, paddingRight: 100 }}>
+      <div style={{ paddingTop: 150, paddingLeft: 100, paddingRight: 100 }}>
         {currentPage === 'vocab' &&
           <VocabPage
             userDetails={userDetails}

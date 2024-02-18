@@ -38,60 +38,72 @@ const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWor
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="p-4">
-        <h2 className="text-xl font-bold mb-10 text-center">Hello, {userDetails.name}!</h2>
-        <h2 className="text-xl font-bold mb-10 text-center">Here are your vocab words (Grade {userDetails.grade}).</h2>
+    <div>
+      <button
+        className="mb-4 bg-gray-500 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded"
+        onClick={toggleEditMode}
+      >
+        {editMode ? 'Exit Teacher Mode' : 'Teacher Mode'}
+      </button>
+      <div className="flex items-center justify-center">
 
-        <button
-          className="mb-4 bg-gray-500 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded"
-          onClick={toggleEditMode}
-        >
-          {editMode ? 'Exit Teacher Mode' : 'Teacher Mode'}
-        </button>
+        <div className="p-4" style={{ maxWidth: 600 }}>
 
-        {editMode && (
-          <form className="mb-4 text-center" onSubmit={handleNewWordSubmit}>
-            <input
-              type="text"
-              value={newWord}
-              onChange={(e) => setNewWord(e.target.value)}
-              placeholder="Enter new word"
-              className="mr-2 py-2 px-4 rounded border-2 border-gray-300"
-            />
-            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
-              Add Word
-            </button>
-          </form>
-        )}
-
-        <div className="flex flex-wrap justify-center gap-4">
-          {vocabWords.length > 0 ? (
-            vocabWords.map((wordObj, index) => (
-              <div key={index} className="vocab-box tooltip relative">
-                {editMode && (
-                  <button
-                    onClick={() => handleDeleteWord(index)}
-                    className="absolute top-0 right-0 text-xl font-bold px-2 py-1"
-                  >
-                    ×
-                  </button>
-                )}
-                {wordObj.word}
-                <span className="tooltiptext">{wordObj.definition}</span>
-              </div>
-            ))
-          ) : (
-            <p>No vocabulary words available for this grade.</p>
+          {!editMode && (
+            <div>
+              <h2 className="text-xl font-bold mb-10 text-center">Hello, {userDetails.name}!</h2>
+              <h2 className="text-xl font-bold mb-10 text-center">Here are your vocab words (Grade {userDetails.grade}).</h2>
+            </div>
           )}
-        </div>
-        <div className="text-center mt-8">
-          <button
-            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-            onClick={onContinueToMode}
-          >
-            Continue
-          </button>
+
+          {editMode && (
+            <h2 className="text-xl font-bold mb-10 text-center">Add or remove vocabulary words for {userDetails.name}</h2>
+          )}
+
+
+          {editMode && (
+            <form className="mb-4 text-center" onSubmit={handleNewWordSubmit}>
+              <input
+                type="text"
+                value={newWord}
+                onChange={(e) => setNewWord(e.target.value)}
+                placeholder="Enter new word"
+                className="mr-2 py-2 px-4 rounded border-2 border-gray-300"
+              />
+              <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                Add Word
+              </button>
+            </form>
+          )}
+
+          <div className="flex flex-wrap justify-center gap-4">
+            {vocabWords.length > 0 ? (
+              vocabWords.map((wordObj, index) => (
+                <div key={index} className="vocab-box tooltip relative">
+                  {editMode && (
+                    <button
+                      onClick={() => handleDeleteWord(index)}
+                      className="absolute top-0 right-0 text-xl font-bold px-2 py-1"
+                    >
+                      ×
+                    </button>
+                  )}
+                  {wordObj.word}
+                  {!editMode && <span className="tooltiptext">{wordObj.definition}</span>}
+                </div>
+              ))
+            ) : (
+              <p>No vocabulary words available for this grade.</p>
+            )}
+          </div>
+          <div className="text-center mt-8">
+            <button
+              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+              onClick={onContinueToMode}
+            >
+              Continue
+            </button>
+          </div>
         </div>
       </div>
     </div>
