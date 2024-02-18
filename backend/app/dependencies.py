@@ -92,7 +92,10 @@ def get_sentence_options(story: str, vocab_list: VocabList, mode: str = "creativ
     runnable = prompt | llm | parser
     output = runnable.invoke({"vocab": vocab_string, "story": story})
 
-    return output
+    if not _validate_options_json(output):
+        raise ValueError("JSON data is not in the correct format")
+    else:
+        return output
 
 
 # Ensures vocab is not in the story
@@ -106,6 +109,21 @@ def _check_no_vocab_in_string(string, words_list):
 # Ensures vocab is in the story
 def _check_vocab_in_string():
     return False
+
+
+# Validate the sentence options json
+def _validate_options_json(options_json):
+    """
+    Validate if the JSON data is in the desired format.
+    """
+    # Define the expected format
+    expected_keys = ["option1", "option2", "option3", "option4"]
+    
+    # Check if the JSON data has all the expected keys
+    if all(key in options_json for key in expected_keys):
+        return True
+    else:
+        return False
 
 
 # function to change LLM output string to JSON (just for testing)
