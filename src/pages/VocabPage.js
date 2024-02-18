@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import VocabWords from '../components/VocabWords';
-import '../css/vocab.css';
+import '../css/Vocab.css';
 
 const VocabPage = ({ userDetails, onContinueToStory }) => {
   const [selectedWord, setSelectedWord] = useState(null);

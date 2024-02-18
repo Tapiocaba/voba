@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import VocabWords from './VocabWords.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
-import '../css/vocab.css';
+import '../css/Vocab.css';
 import axios from 'axios';
 
 const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
@@ -59,13 +59,14 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
         const isSelected = index === selectedOptionIndex;
         let borderColor = 'border-blue-500'; // Default border color
         if (isSelected) {
-          borderColor = option.correct ? 'border-green-500' : 'border-red-500';
+          borderColor = option.isCorrect ? 'border-green-500' : 'border-red-500';
+          setTimeout(() => setSelectedOptionIndex(null), 1000); // Reset the selected option after 1 second
         }
         return (
           <div key={index} className="flex items-center space-x-2">
             <button
               className="text-blue-500 bg-transparent border-none p-2"
-              onClick={() => handleAudioClick(option.sentence)}
+              onClick={() => handleAudioClick(option.text)}
               aria-label="Listen"
             >
               <FontAwesomeIcon icon={faVolumeUp} />
