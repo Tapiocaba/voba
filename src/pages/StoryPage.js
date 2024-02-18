@@ -9,6 +9,8 @@ import { jsPDF } from "jspdf";
 
 
 import '../css/StoryPage.css';
+const BASE_URL = 'https://vkv088ibwf.execute-api.us-east-2.amazonaws.com/dev/api'
+
 
 const StoryPage = ({ userDetails, mode, vocabWords }) => {
   const [storyParts, setStoryParts] = useState([]);
@@ -47,7 +49,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
 
   // fetch first part of the array
   const fetchFirstPart = async () => {
-    const requestUrl = `http://127.0.0.1:8000/api/get-initial-story`;
+    const requestUrl = `${BASE_URL}/get-initial-story`;
     let newStoryPart = '';
 
     try {
@@ -90,7 +92,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
     else if (storyParts.length % 2 === 0) {
       const fetchStoryContinuation = async () => {
         try {
-          const requestUrl = `http://127.0.0.1:8000/api/get-story-continue`;
+          const requestUrl = `${BASE_URL}/get-story-continue`;
 
           const response = await axios.get(requestUrl, {
             params: {
@@ -116,7 +118,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
     else if (storyParts.length !== concludeAt + 1) {
       const fetchStoryOptions = async () => {
         try {
-          const optionsResponse = await axios.get('http://127.0.0.1:8000/api/get-sentence-options', {
+          const optionsResponse = await axios.get(`${BASE_URL}/get-sentence-options`, {
             params: {
               story: storyParts.join(' '),
               vocab_list: vocabWords.map(({ word }) => word).join(', '),
@@ -181,7 +183,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
           word = usedVocab[0];
         }
         if (word !== '') {
-          const response = await axios.get('http://127.0.0.1:8000/api/explain-wrong', {
+          const response = await axios.get(`${BASE_URL}/explain-wrong`, {
             params: {
               sentence: option.text,
               word: word,
