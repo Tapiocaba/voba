@@ -85,7 +85,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
         }
       }
       fetchStoryContinuation();
-    } 
+    }
     else if (storyParts.length !== concludeAt) {
       const fetchStoryOptions = async () => {
         try {
@@ -106,21 +106,22 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
           }));
           // shuffle the options
           newOptions = newOptions.sort(() => Math.random() - 0.5);
+          setOptions(newOptions);
+          setElephantText('Choose an option to continue the story!');
         }
         catch (error) {
           console.error('Error fetching sentence options:', error);
         }
-        setOptions(newOptions);
       }
-      fetchStoryOptions();
-      setElephantText('Choose an option to continue the story!');
+      fetchStoryOptions()
+
     }
     // eslint-disable-next-line
   }, [storyParts]);
 
-  useEffect(() => {
-    endOfStoryRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [options, storyParts]);
+  // useEffect(() => {
+  //   endOfStoryRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // }, [options, storyParts]);
 
   const handleOptionSelect = async (option) => {
     if (option.isCorrect) {
