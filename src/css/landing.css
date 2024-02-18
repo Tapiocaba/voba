@@ -11,7 +11,14 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center 40%;
-    height: 100vh; /* Adjust if necessary */
+    height: 100vh;
+    background-attachment: fixed;
+    background-color: #c7dffb; /* Solid color background */
+}
+
+.parallax-background {
+  position: relative;
+  background-position: center;
 }
 
 .welcome-background:after {
@@ -27,6 +34,7 @@
 
 .highlights-section {
   background-color: #c7dffb;
+  padding-bottom: 5em;
 }
 
 /* Button styles */
@@ -131,11 +139,13 @@
 }
   
 /* style for game modes */
+
 .game-modes-container {
   display: flex;
   justify-content: center; /* Align horizontally center */
   align-items: flex-start; /* Align vertically to top */
   padding-left: 50px; /* Space from the left window */
+  color: #1b1b1b;
 }
 
 .game-modes-left {
@@ -144,13 +154,15 @@
   flex-direction: column;
   gap: 30px; /* Space between boxes */
   align-items: center; /* Align boxes center */
-  padding-top: 3em;
+  padding-top: 2em;
   padding-left: 10em;
 }
 
 .game-mode-cloud {
   width: 100%;
   padding: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
   margin: 0 auto; /* Center in the available space */
   border-radius: 15px;
   background-color: white;
@@ -194,9 +206,16 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  padding-bottom: 1em;
 }
 
 .game-modes-right img {
   max-width: 100%;
   height: auto;
+}
+
+.game-mode-cloud h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 4px;
 }

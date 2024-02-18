@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Footer from '../components/Footer';
 import LandingGameModes from '../components/LandingGameModes';
@@ -10,7 +10,7 @@ const LandingPage = ({ setCurrentPage }) => {
   return (
     <div className="flex flex-col">
       {/* Background Section */}
-      <div className="flex flex-col welcome-background h-[100vh] welcome-text-overlay">
+      <div className="flex flex-col welcome-background h-[100vh] welcome-text-overlay parallax-background">
         {/* Navigation Bar */}
         <div className="flex justify-between items-center px-10 py-4">
           <img src={`${process.env.PUBLIC_URL}/voba-title-blue.png`} alt="Logo" className="h-20" />
@@ -41,7 +41,6 @@ const LandingPage = ({ setCurrentPage }) => {
           </button>
         </div>
       </div>
-
       {/* Highlights Section */}
       <div className="highlights-section py-8">
         <div className="max-w-4xl mx-auto">

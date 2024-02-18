@@ -10,6 +10,8 @@
 
 # production
 /build
+dep
+*.zip
 
 # Python
 __pycache__/

@@ -58,12 +58,13 @@ def get_story_start(vocab_list: VocabList, mode: str = "creative"):
     output_parser = StrOutputParser()
 
     runnable = prompt | llm | output_parser
-    output = runnable.invoke({"vocab": vocab_string})
+    output = runnable.invoke({"vocab": vocab_list})
 
     return output
 
 
 def get_sentence_options(story: str, vocab_list: VocabList, mode: str = "creative"):
+    llm = ChatOpenAI(temperature=1, model_name='gpt-4-1106-preview', openai_api_key=OPENAI_API_KEY)
     vocab_string = ", ".join(vocab_list)
 
     # Set up pydantic output parser
