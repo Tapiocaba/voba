@@ -9,12 +9,12 @@ const Nav = ({ setCurrentPage }) => {
       <div className="space-x-4">
         <button
           onClick={() => setCurrentPage('vocab')}
-          className="bg-orange-500 font-semibold py-2 px-4 rounded transition-all duration-300 hover:bg-orange-600 text-lg">
+          className="bg-orange-500 font-semibold py-2 px-4 rounded transition-all duration-300 hover:bg-orange-600 text-lg text-white">
           Vocab
         </button>
         <button
           onClick={() => setCurrentPage('story')}
-          className="bg-orange-500 font-semibold py-2 px-4 rounded transition-all duration-300 hover:bg-orange-600 text-lg">
+          className="bg-orange-500 font-semibold py-2 px-4 rounded transition-all duration-300 hover:bg-orange-600 text-lg text-white">
           Story
         </button>
       </div>

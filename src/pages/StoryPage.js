@@ -3,7 +3,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import AdventureOptions from '../components/AdventureOptions';
 import VocabChecklist from '../components/VocabChecklist';
-import vocabWords from '../components/VocabWords';
+import vocabWords from '../VocabWords';
 import ElephantPopup from '../components/ElephantPopup';
 import axios from 'axios';
 
