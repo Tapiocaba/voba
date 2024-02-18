@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import '../css/onboarding.css';
+
 const OnboardingPage = ({ onOnboardingComplete }) => {
   const [name, setName] = useState('');
   const [grade, setGrade] = useState('');
@@ -20,14 +22,20 @@ const OnboardingPage = ({ onOnboardingComplete }) => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-md p-4 bg-white shadow-md rounded-lg">
+    <div className="flex items-center justify-center min-h-screen bg-fixed">
+    <div className="absolute w-full h-full onboarding-bg"></div>
+      <div className="w-full max-w-md p-4 bg-white shadow-md rounded-lg animate-float">
         {showAlert && (
           <div className={`fixed bottom-0 left-0 right-0 w-auto max-w-sm mx-auto mb-6 p-4 bg-red-200 border-red-400 text-red-700 rounded transition-all ease-in-out duration-500 ${showAlert ? 'opacity-100' : 'opacity-0'}`}>
             <span>Please fill out all fields before submitting.</span>
           </div>
         )}
-        <img src={`${process.env.PUBLIC_URL}/voba-title-blue.png`} alt="Logo" className="h-20" />
+
+        {/* Logo + Intro */}
+        <div className="text-center">
+          <h2 className="text-3xl font-semibold mb-4">Welcome to</h2>
+          <img src={`${process.env.PUBLIC_URL}/images/voba-title-blue.png`} alt="Logo" className="h-20 mx-auto" />
+        </div>
 
         {/* Text submission options */}
         <div>
@@ -46,7 +54,7 @@ const OnboardingPage = ({ onOnboardingComplete }) => {
           </select>
         </div>
         <button onClick={handleFinish} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
-          Finish
+          Submit
         </button>
       </div>
     </div>

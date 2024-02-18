@@ -35,7 +35,7 @@ function LandingGameModes() {
           ))}
         </div>
         <div className="game-modes-right">
-          <img src={`${process.env.PUBLIC_URL}/vovo-sitting.png`} alt="Happy Elephant" />
+          <img src={`${process.env.PUBLIC_URL}/images/vovo-sitting.png`} alt="Happy Elephant" />
         </div>
       </div>
     </div>

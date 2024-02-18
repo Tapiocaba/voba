@@ -15,7 +15,7 @@ load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
-llm = ChatOpenAI(temperature=0, model_name='gpt-4-1106-preview')
+llm = ChatOpenAI(temperature=1, model_name='gpt-4-1106-preview')
 
 
 # Data structure for sentence option outputs
@@ -34,8 +34,7 @@ class SentenceOptions(BaseModel):
 
 
 # Get the start of a new story, depending on vocab list
-def get_story_start(vocab_list: VocabList, mode: str = "creative"):
-    vocab_string = ", ".join(vocab_list)
+def get_story_start(vocab_list: str, mode: str = "creative"):
 
     instructions = """
         You are a storyteller helping a first-grader learn vocabulary. Think of 
@@ -62,12 +61,43 @@ def get_story_start(vocab_list: VocabList, mode: str = "creative"):
 
     return output
 
+def get_story_continue(story: str, vocab_list: str, mode: str = "creative"):
 
-def get_sentence_options(story: str, vocab_list: VocabList, mode: str = "creative"):
-    vocab_string = ", ".join(vocab_list)
+    instructions = """
+        You are a storyteller helping a first-grader learn vocabulary. Continue
+        the following story that is likely to later use the following vocabulary words: 
+        \n\n
+        {vocab}
+        \n\n
+        Make sure to do the following in the continuation:
+        \n\n
+        - Do not actually use the vocabulary words.\n
+        - Stop at a point where it would make sense to have options for
+        what happens next or what choice is made next. Do not actually give any options. \n
+        - Write it at a level that a first-grader would understand.\n
+        - Make it interesting and fun, so the first-grader wants to keep reading.\n
+        - Make it about 50 words.\n\n
 
+        Here is the story I want you to the continue:
+
+        {story}
+        
+    """
+
+    prompt = PromptTemplate.from_template(instructions)
+    output_parser = StrOutputParser()
+
+
+    runnable = prompt | llm | output_parser
+    output = runnable.invoke({"vocab": vocab_list, "story": story})
+
+
+    return output
+
+
+def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     # Set up pydantic output parser
-    parser = JsonOutputParser(pydantic_object=SentenceOptions)
+    # parser = JsonOutputParser(pydantic_object=SentenceOptions)
 
     # todo: change based on mode
     instructions = """
@@ -80,26 +110,37 @@ def get_sentence_options(story: str, vocab_list: VocabList, mode: str = "creativ
         - Each option is interesting and an action choice.\n
         - Each option uses exactly one of the following vocab words: {vocab}\n
         - No two options use the same vocab word.\n
-        Format Instructions: {format_instructions}
+       The output should be a json with the following key value pairs\n
+       
+        "option1": "Sentence 1",
+        "option2": "Sentence 2",
+        "option3": "Sentence 3",
+        "option4": "Sentence 4"
+       \n
         Story: {story}
     """
 
-    prompt = PromptTemplate(
-        template=instructions,
-        input_variables=["vocab","story"],
-        partial_variables={"format_instructions": parser.get_format_instructions()},
-    )
+    prompt = PromptTemplate.from_template(instructions)
 
-    runnable = prompt | llm | parser
-    output = runnable.invoke({"vocab": vocab_string, "story": story})
+    output_parser = StrOutputParser()
+    runnable = prompt | llm | output_parser
+    output = runnable.invoke({"vocab": vocab_list, "story": story})
     
+    # slice from first bracket to last bracket.
+    start_index = output.find('{')
+    end_index = output.rfind('}') + 1
+    output = output[start_index:end_index]
+
+    # convert output to dict
+    output = json.loads(output)
+
     # ensure options are in the correct format & each have at least one vocab word
-    options = output.values()
-    if not _validate_options_json(output):
-        raise ValueError("JSON data is not in the correct format")
-    elif not all([_check_vocab_in_string(option, vocab_list) for option in options]):
-        print(output)
-        raise ValueError("Not every option has a vocab word")
+    # options = output.values()
+
+    # if not _validate_options_json(output):
+    #     raise ValueError("JSON data is not in the correct format")
+    # elif not all([_check_vocab_in_string(option, vocab_list) for option in options]):
+    #     raise ValueError("Not every option has a vocab word")
 
     return output
 
@@ -159,11 +200,11 @@ def _string_to_json(input_string):
 
 
 # Tests
-vocab_list = ["nibbled","consequence","feast","annoy","enormous"]
-story_start = get_story_start(vocab_list)
-print(story_start)
-story_options = get_sentence_options(story=story_start, vocab_list=vocab_list)
-print(story_options)
+# vocab_list = ["nibbled","consequence","feast","annoy","enormous"]
+# story_start = get_story_start(vocab_list)
+# print(story_start)
+# story_options = get_sentence_options(story=story_start, vocab_list=vocab_list)
+# print(story_options)
 
 
 

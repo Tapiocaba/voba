@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+
 import OnboardingPage from './pages/OnboardingPage';
 import Nav from './components/Nav';
 import VocabPage from './pages/VocabPage';
 import StoryPage from './pages/StoryPage';
 import LandingPage from './pages/LandingPage';
 import ChooseModePage from './pages/ChooseModePage';
+
 import './css/App.css';
 
 const App = () => {

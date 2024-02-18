@@ -13,7 +13,7 @@ const StoryPage = ({ userDetails, mode }) => {
   const [storyParts, setStoryParts] = useState([]);
   const [options, setOptions] = useState([]);
   const [usedVocab, setUsedVocab] = useState([]);
-  const [elephantText, setElephantText] = useState('What do you think the next part of the story should be? Choose an option below!');
+  const [elephantText, setElephantText] = useState('Give me a second to think of a story...');
   const endOfStoryRef = useRef(null);
   const isMounted = useRef(false);
 
@@ -46,21 +46,24 @@ const StoryPage = ({ userDetails, mode }) => {
       }
       else {
 
-        const response = await fetch('/get-story-continue', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ story: storyParts.join(' '), option: selectedOption }),
-        });
+        try {
+          const requestUrl = `http://127.0.0.1:8000/api/get-story-continue`;
 
-
-        if (!response.ok) {
+          const response = await axios.get(requestUrl, {
+            params: {
+              story: storyParts.join(' '),
+              mode: mode,
+              vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(', '),
+            },
+            headers: {
+              'Accept': 'application/json',
+            },
+          })
+          newStoryPart = response.data;
+        }
+        catch (error) {
           throw new Error('Failed to fetch story continuation');
         }
-
-
-        newStoryPart = await response.json();
 
       }
 
@@ -75,17 +78,19 @@ const StoryPage = ({ userDetails, mode }) => {
             'Accept': 'application/json',
           },
         });
-        newOptions = optionsResponse.data;
+
+        newOptions = Object.values(optionsResponse.data).map(option => ({
+          text: option.text,
+          isCorrect: option.isCorrect,
+        }));
       }
       catch (error) {
         console.error('Error fetching sentence options:', error);
       }
 
-
-
-
       setStoryParts(prev => [...prev, newStoryPart]);
       setOptions(newOptions);
+      setElephantText('Choose an option to continue the story!');
 
     } catch (error) {
       console.error('Error fetching story continuation:', error);
@@ -102,17 +107,28 @@ const StoryPage = ({ userDetails, mode }) => {
 
   useEffect(() => {
     endOfStoryRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [options]);
+  }, [options, storyParts]);
 
   const handleOptionSelect = (option) => {
-    if (option.correct) {
-      setElephantText('Great job! You chose the right option!');
-      fetchStoryContinuation(option.text);
-      setStoryParts(prev => [...prev, `\n${option.text}\n`]);
-      const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
-      const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
-      const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace(/[.,!?]/g, ''));
-      setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
+    if (option.isCorrect) {
+      if (mode === 'test') {
+        setElephantText('Great job!');
+      }
+      else {
+        setElephantText('Nice choice!');
+      }
+      // wait 1 second and then 
+      setTimeout(() => {
+        setElephantText('Give me a second to continue the story...');
+        setOptions([]);
+        fetchStoryContinuation(option.text);
+        setStoryParts(prev => [...prev, `\n${option.text}\n`]);
+        const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
+        const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
+        const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace(/[.,!?]/g, ''));
+        setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
+      }, 1000);
+
     } else {
       setElephantText('Oh no! That was the wrong choice. Try again!');
     }
