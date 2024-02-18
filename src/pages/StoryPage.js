@@ -180,16 +180,17 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
         <div style={{ position: 'fixed' }}>
           {
             mode === 'test' &&
-            <p>Test mode: Only one story continuation uses the vocab word correctly.</p>
+            <h3 className="font-bold text-xl">📈 Test mode</h3>
           }
           {
             mode === 'creative' &&
-            <p>Creative mode: Every story continuation uses the vocab word correctly.</p>
+            <h3 className="font-bold text-xl">🎨 Creative mode</h3>
           }
           {
             mode === 'mixed' &&
-            <p>Mixed mode: At least 1 of the story continuations use the vocab word correctly.</p>
+            <h3 className="font-bold text-xl">🔥 Mixed mode</h3>
           }
+          <hr className="line" />
           <VocabChecklist usedVocab={usedVocab} vocabWords={vocabWords} />
           <div className="fixed-bottom">
             <div className="options-container">

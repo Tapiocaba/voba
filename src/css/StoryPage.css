@@ -29,3 +29,8 @@
   flex-wrap: wrap; /* Allows buttons to wrap in smaller screens */
   padding: 10px 0; /* Adds vertical padding without affecting centering */
 }
+
+.line {
+  border-color: darkgrey;
+  margin-top: 4px;
+}
