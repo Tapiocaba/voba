@@ -86,7 +86,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
       }
       fetchStoryContinuation();
     }
-    else if (storyParts.length !== concludeAt) {
+    else if (storyParts.length !== concludeAt + 1) {
       const fetchStoryOptions = async () => {
         try {
           const optionsResponse = await axios.get('http://127.0.0.1:8000/api/get-sentence-options', {
@@ -116,12 +116,15 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
       fetchStoryOptions()
 
     }
+    else {
+      setElephantText('The end! Great job!');
+    }
     // eslint-disable-next-line
   }, [storyParts]);
 
-  // useEffect(() => {
-  //   endOfStoryRef.current?.scrollIntoView({ behavior: 'smooth' });
-  // }, [options, storyParts]);
+  useEffect(() => {
+    endOfStoryRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [options, storyParts]);
 
   const handleOptionSelect = async (option) => {
     if (option.isCorrect) {
@@ -197,10 +200,9 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
               </CSSTransition>
             ))}
             <div style={{ height: '400px' }}></div>
-            <div style={{ height: '400px' }}></div>
           </TransitionGroup>
+          <div ref={endOfStoryRef} />
         </div>
-        <div ref={endOfStoryRef} />
         <div className="fixed-bottom">
           <div className="options-container">
             <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} vocabWords={vocabWords} />
