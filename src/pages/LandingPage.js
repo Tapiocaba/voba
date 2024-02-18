@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 import Footer from '../components/Footer';
 import LandingGameModes from '../components/LandingGameModes';
@@ -13,7 +13,7 @@ const LandingPage = ({ setCurrentPage }) => {
       <div className="flex flex-col welcome-background h-[100vh] welcome-text-overlay parallax-background">
         {/* Navigation Bar */}
         <div className="flex justify-between items-center px-10 py-4">
-          <img src={`${process.env.PUBLIC_URL}/voba-title-blue.png`} alt="Logo" className="h-20" />
+          <img src={`${process.env.PUBLIC_URL}/images/voba-title-blue.png`} alt="Logo" className="h-20" />
           <div className="space-x-4">
             <button
               onClick={() => setCurrentPage('onboarding')}

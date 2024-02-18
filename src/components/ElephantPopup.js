@@ -6,7 +6,7 @@ import '../css/elephantPopup.css';
 const ElephantPopup = ({ text, audioLink }) => {
   return (
     <div className="elephant-popup">
-      <img src={`${process.env.PUBLIC_URL}/voba-icon.png`} alt="Logo" className="h-40" />
+      <img src={`${process.env.PUBLIC_URL}/images/voba-icon.png`} alt="Logo" className="h-40" />
       <div className="speech-bubble">{text}</div>
       {/* <audio src={audioLink} controls>
         Your browser does not support the audio element.

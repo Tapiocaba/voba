@@ -7,7 +7,7 @@
             rgba(135, 206, 235, 0.1) 70%, 
             rgba(135, 206, 235, 0.2)
         ),
-        url('../../public/voba-elephant-bg.png');
+        url('../../public/images/voba-elephant-bg.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center 40%;
