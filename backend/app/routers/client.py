@@ -1,7 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import Response
-from dependencies import llm, client
-
 
 from models import VocabList, SentenceResponse, SentenceChoices
 from dependencies import get_sentence_options, get_story_start
@@ -42,10 +40,13 @@ async def getStoryContinue(story: str, mode: str) -> dict:
 
 @router.get("/get-sentence-options", tags=['client'], status_code=status.HTTP_200_OK)
 async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> SentenceChoices:
-    if mode in ["creative", "test", "mixed",""]:
-        sentence_options = get_sentence_options(story=story,vocab_list=vocab_list,mode=mode)
-    else:
+    if mode not in ["creative", "test", "mixed",""]:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
+    
+    try:
+        sentence_options = get_sentence_options(story=story,vocab_list=vocab_list,mode=mode)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error: Incorrect JSON format.")
 
     # Return
     c1 = SentenceResponse(

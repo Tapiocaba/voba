@@ -1,4 +1,5 @@
 import React from 'react';
+
 import VocabWords from '../components/VocabWords';
 import '../css/vocab.css';
 

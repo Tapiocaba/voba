@@ -14,6 +14,21 @@
     height: 100vh; /* Adjust if necessary */
 }
 
+.welcome-background:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 20%;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(199, 223, 251, 1));
+  z-index: 1;
+}
+
+.highlights-section {
+  background-color: #c7dffb;
+}
+
 /* Button styles */
 .log-in-button {
     background-color: #e67e22; /* Darker shade for better visibility */
@@ -88,27 +103,100 @@
   
 /* Style for the highlights title */
 .highlights-title {
-    font-size: 2.5rem; /* Larger font size */
-    font-weight: 600; /* Slightly bold */
-    color: #333; /* Dark color for visibility */
-    margin-bottom: 2rem; /* Space between title and boxes */
-    opacity: 0; /* Start invisible for animation */
-    animation: slideUp 1s ease-out 0.2s forwards; /* Use the same animation with a slight delay */
-  }
+  font-size: 2.5rem;
+  font-weight: 700; /* Slightly bolder */
+  color: #1A1A1A; /* Very dark gray instead of pure black */
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2); /* Increased blur radius and opacity for a deeper shadow */
+  margin-bottom: 3rem;
+  margin-top: 3rem;
+  opacity: 0;
+  animation: slideUp 1.2s ease-out 0.2s forwards;
+}
+
   
 .highlight:nth-child(1) {
-    animation-delay: 0.2s;
-  }
+  animation-delay: 0.2s;
+}
   
-  .highlight:nth-child(2) {
-    animation-delay: 0.4s;
-  }
+.highlight:nth-child(2) {
+  animation-delay: 0.4s;
+}
   
-  .highlight:nth-child(3) {
-    animation-delay: 0.6s;
-  }
+.highlight:nth-child(3) {
+  animation-delay: 0.6s;
+}
   
-  .highlight:nth-child(4) {
-    animation-delay: 0.8s;
-  }
+.highlight:nth-child(4) {
+  animation-delay: 0.8s;
+}
   
+/* style for game modes */
+.game-modes-container {
+  display: flex;
+  justify-content: center; /* Align horizontally center */
+  align-items: flex-start; /* Align vertically to top */
+  padding-left: 50px; /* Space from the left window */
+}
+
+.game-modes-left {
+  max-width: 50%; /* Adjust the max width as needed */
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Space between boxes */
+  align-items: center; /* Align boxes center */
+  padding-top: 3em;
+  padding-left: 10em;
+}
+
+.game-mode-cloud {
+  width: 100%;
+  padding: 20px;
+  margin: 0 auto; /* Center in the available space */
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s, background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Specific styles for hover effects */
+.creative {
+  background-color: #96e396; /* Light green background */
+  box-shadow: 0 8px 16px rgba(0, 128, 0, 0.2); /* Darker green shadow */
+}
+
+.creative:hover {
+  background-color: #defede; /* Light green background */
+  box-shadow: 0 8px 16px rgba(0, 128, 0, 0.2); /* Darker green shadow */
+}
+
+.test {
+  background-color: #f6c490; /* Light orange background */
+  box-shadow: 0 8px 16px rgba(255, 165, 0, 0.2); /* Darker orange shadow */
+}
+
+.test:hover {
+  background-color: #ffe6cc; /* Light orange background */
+  box-shadow: 0 8px 16px rgba(255, 165, 0, 0.2); /* Darker orange shadow */
+}
+
+.mixed {
+  background-color: #c794f7; /* Light purple background */
+  box-shadow: 0 8px 16px rgba(128, 0, 128, 0.2); /* Darker purple shadow */
+}
+
+.mixed:hover {
+  background-color: #e6ccff; /* Light purple background */
+  box-shadow: 0 8px 16px rgba(128, 0, 128, 0.2); /* Darker purple shadow */
+}
+
+.game-modes-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.game-modes-right img {
+  max-width: 100%;
+  height: auto;
+}
