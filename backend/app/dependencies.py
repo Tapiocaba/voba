@@ -58,6 +58,7 @@ def get_story_start(vocab_list: str, mode: str = "creative"):
 
     runnable = prompt | llm | output_parser
     output = runnable.invoke({"vocab": vocab_list})
+    output = runnable.invoke({"vocab": vocab_list})
 
     return output
 
@@ -103,28 +104,75 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     instructions = """
         You are a storyteller helping a first-grader learn vocabulary using a 
         choose-your-own-adventure story. Given the following story, come up with 
-        four options for choices the character makes next. Ensure that:
+        four options for how the story can continue. Ensure that:
         \n\n
         - Each option is one sentence.\n
         - Each option is written at a first-grade level.\n
         - Each option is interesting and makes sense in the story context.\n
         - Each option uses exactly one of the following vocab words: {vocab}\n
-        - No two options use the same vocab word.\n
-       The output should be a json with the following key value pairs:\n
+        - None of the options use the same vocab word.\n
+        - {mode_specific_instruction}
+
+       The output should be a json list with the following key value pairs\n
        
-        "option1": "Sentence 1",
-        "option2": "Sentence 2",
-        "option3": "Sentence 3",
-        "option4": "Sentence 4"
        \n
         Story: {story}
     """
+
+    if mode == "creative":
+        mode_specific_instruction = """
+        Make sure each option correctly uses the vocab word and makes sense in the context of the story.
+
+         An example output format would be:
+        {
+            "option1": {"text": "The enormous elephant nibbled on the leaves.",
+            "isCorrect": true},
+            "option2": {"text": "The enormous elephant danced in the rain.",
+            "isCorrect": true},
+            "option3": {"text": "The enormous elephant ran away.",
+            "isCorrect": true},
+            "option4": {"text": "The enormous elephant sang a song.",
+            "isCorrect": true}
+        }
+        """
+    elif mode == "test":
+        mode_specific_instruction = """
+        Only ONE of the options should be grammatically correct and make sense in the context of the story. The other three options should use the vocab word wrongly.
+
+         An example output format would be:
+        {
+            "option1": {"text": "The enormous elephant nibbled on the leaves.",
+            "isCorrect": false},
+            "option2": {"text": "The enormous elephant danced in the rain.",
+            "isCorrect": false},
+            "option3": {"text": "The enormous elephant ran away.",
+            "isCorrect": false},
+            "option4": {"text": "The enormous elephant sang a song.",
+            "isCorrect": true}
+        }
+        """
+    elif mode == "mixed":
+        mode_specific_instruction = """
+        TWO of the options should be grammatically correct and make sense in the context of the story. The other two options should use the vocab word wrongly.
+        
+         An example output format would be:
+        {
+            "option1": {"text": "The enormous elephant nibbled on the leaves.",
+            "isCorrect": false},
+            "option2": {"text": "The enormous elephant danced in the rain.",
+            "isCorrect": false},
+            "option3": {"text": "The enormous elephant ran away.",
+            "isCorrect": true},
+            "option4": {"text": "The enormous elephant sang a song.",
+            "isCorrect": true}
+        }
+        """
 
     prompt = PromptTemplate.from_template(instructions)
 
     output_parser = StrOutputParser()
     runnable = prompt | llm | output_parser
-    output = runnable.invoke({"vocab": vocab_list, "story": story})
+    output = runnable.invoke({"vocab": vocab_list, "story": story, "mode_specific_instruction": mode_specific_instruction})
     
     # slice from first bracket to last bracket.
     start_index = output.find('{')
@@ -141,6 +189,27 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     #     raise ValueError("JSON data is not in the correct format")
     # elif not all([_check_vocab_in_string(option, vocab_list) for option in options]):
     #     raise ValueError("Not every option has a vocab word")
+
+    return output
+
+def explain_why_wrong(sentence: str, word: str):
+    instructions = """
+        You are a teacher helping a first-grader learn vocabulary. The student used the word {word}
+        wrong in the following sentence. Explain to the student why the word was used wrong in 2 sentences or less.
+        \n\n
+      
+        Here is the sentence the student wrote:
+        \n\n
+        {sentence}
+        \n\n
+        The vocabulary word the student used incorrectly is: {word}
+    """
+
+    prompt = PromptTemplate.from_template(instructions)
+    output_parser = StrOutputParser()
+
+    runnable = prompt | llm | output_parser
+    output = runnable.invoke({"sentence": sentence, "word": word})
 
     return output
 

@@ -110,7 +110,7 @@ const StoryPage = ({ userDetails, mode }) => {
     endOfStoryRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [options, storyParts]);
 
-  const handleOptionSelect = (option) => {
+  const handleOptionSelect = async (option) => {
     if (option.isCorrect) {
       if (mode === 'test') {
         setElephantText('Great job!');
@@ -131,7 +131,32 @@ const StoryPage = ({ userDetails, mode }) => {
       }, 1000);
 
     } else {
-      setElephantText('Oh no! That was the wrong choice. Try again!');
+      try {
+        const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
+        const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
+        let word = '';
+        if (usedVocab.length > 0) {
+          word = usedVocab[0];
+        }
+        if (word !== '') {
+          const response = await axios.get('http://127.0.0.1:8000/api/explain-wrong', {
+            params: {
+              sentence: option.text,
+              word: option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, ''))),
+
+            },
+            headers: {
+              'Accept': 'application/json',
+            },
+          });
+          setElephantText(response.data);
+        }
+        else {
+          setElephantText('Try again!');
+        }
+      } catch (error) {
+        console.error('Error fetching explanation:', error);
+      }
     }
   };
 
