@@ -5,7 +5,7 @@ import VocabPage from './pages/VocabPage';
 import StoryPage from './pages/StoryPage';
 import LandingPage from './pages/LandingPage';
 import ChooseModePage from './pages/ChooseModePage';
-import './css/app.css';
+import './css/App.css';
 
 const App = () => {
   const [onboardingComplete, setOnboardingComplete] = useState(false);

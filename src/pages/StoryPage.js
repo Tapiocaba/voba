@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
 import AdventureOptions from '../components/AdventureOptions';
 import VocabChecklist from '../components/VocabChecklist';
 import vocabWords from '../components/VocabWords';
-import '../css/storyPage.css';
 import ElephantPopup from '../components/ElephantPopup';
+
+import '../css/storyPage.css';
 
 const StoryPage = ({ userDetails, mode }) => {
   const [storyParts, setStoryParts] = useState([]);

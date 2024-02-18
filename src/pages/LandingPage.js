@@ -1,4 +1,8 @@
 import React from 'react';
+
+import Footer from '../components/Footer';
+import LandingGameModes from '../components/LandingGameModes';
+
 import '../css/landing.css';
 
 const LandingPage = ({ setCurrentPage }) => {
@@ -38,12 +42,11 @@ const LandingPage = ({ setCurrentPage }) => {
         </div>
       </div>
 
-
       {/* Highlights Section */}
-      <div className="py-8">
+      <div className="highlights-section py-8">
         <div className="max-w-4xl mx-auto">
           {/* Animated Title */}
-          <h2 className="highlights-title slide-up text-center">Discover the Fun of Learning!</h2>
+          <h2 className="highlights-title slide-up text-center">Discover the Fun of Reading!</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Animated Highlight Boxes */}
@@ -76,6 +79,10 @@ const LandingPage = ({ setCurrentPage }) => {
           </div>
         </div>
       </div>
+      <div className="flex flex-col">
+        <LandingGameModes />
+      </div>
+      <Footer />
     </div>
   );
 };
