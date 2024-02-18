@@ -13,7 +13,9 @@ const LandingPage = ({ setCurrentPage }) => {
       <div className="flex flex-col welcome-background h-[100vh] welcome-text-overlay parallax-background">
         {/* Navigation Bar */}
         <div className="flex justify-between items-center px-10 py-4">
-          <img src={`${process.env.PUBLIC_URL}/images/voba-title-blue.png`} alt="Logo" className="h-20" />
+          <a href="/" className="h-20">
+            <img src={`${process.env.PUBLIC_URL}/images/voba-title-blue.png`} alt="Logo" className="h-20" />
+          </a>
           <div className="space-x-4">
             <button
               onClick={() => setCurrentPage('onboarding')}
@@ -82,7 +84,7 @@ const LandingPage = ({ setCurrentPage }) => {
         <LandingGameModes />
       </div>
       <div className="flex justify-center items-center">
-        <img src={`${process.env.PUBLIC_URL}/images/divider.png`} alt="Divider" className="w-auto h-auto max-w-xs md:max-w-sm lg:max-w-lg" />
+        <img src={`${process.env.PUBLIC_URL}/images/divider.png`} alt="Divider" className="w-auto max-w-xs md:max-w-sm lg:max-w-lg" />
       </div>
       <Footer />
     </div>
