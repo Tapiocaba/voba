@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import Response
 
 from models import VocabList, SentenceResponse, SentenceChoices
-from dependencies import get_sentence_options, get_story_start
+from dependencies import get_sentence_options, get_story_start, client
 from typing import List
 
 router = APIRouter()
