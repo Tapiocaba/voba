@@ -58,6 +58,7 @@ def get_story_start(vocab_list: str, mode: str = "creative"):
 
     runnable = prompt | llm | output_parser
     output = runnable.invoke({"vocab": vocab_list})
+    output = runnable.invoke({"vocab": vocab_list})
 
     return output
 
@@ -108,6 +109,7 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
         \n\n
         - Each option is one sentence.\n
         - Each option is written at a first-grade level.\n
+        - Each option is interesting and makes sense in the story context.\n
         - Each option uses exactly one of the following vocab words: {vocab}\n
         - None of the options use the same vocab word.\n
         - {mode_specific_instruction}
