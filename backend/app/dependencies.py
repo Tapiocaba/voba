@@ -76,7 +76,8 @@ def get_sentence_options(story: str, vocab_list: VocabList, mode: str = "creativ
         - Each option is written at a first-grade level.\n
         - Each option is interesting and an action choice.\n
         - Each option uses exactly one of the following vocab words: {vocab}\n
-        - No two options use the same vocab word.
+        - No two options use the same vocab word.\n
+        Format Instructions: {format_instructions}
         Story: {story}
     """
 
@@ -86,12 +87,12 @@ def get_sentence_options(story: str, vocab_list: VocabList, mode: str = "creativ
         partial_variables={"format_instructions": parser.get_format_instructions()},
     )
 
-    output_parser = StrOutputParser()
+    str_output_parser = StrOutputParser()
 
-    runnable = prompt | llm | output_parser
+    runnable = prompt | llm | parser
     output = runnable.invoke({"vocab": vocab_string, "story": story})
 
-    return _string_to_json(output)
+    return output
 
 
 # Ensures vocab is not in the story

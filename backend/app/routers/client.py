@@ -3,6 +3,8 @@ from fastapi.responses import Response
 
 from dependencies import llm, client
 from models import VocabList, SentenceResponse, SentenceChoices
+from dependencies import get_sentence_options, get_story_start
+from typing import List
 
 router = APIRouter()
 
@@ -15,13 +17,9 @@ async def healthStatus():
     return {"message": "Client API Healthy"}
 
 @router.get("/get-initial-story", tags=['client'], status_code=status.HTTP_200_OK)
-async def getInitialStory(mode: str) -> str:
-    if mode == "creative":
-        pass
-    elif mode == "test":
-        pass
-    elif mode == "mixed":
-        pass
+async def getInitialStory(vocab_list: List[str], mode: str) -> str:
+    if mode in ["creative", "test", "mixed"]:
+        get_story_start()
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
 
@@ -36,42 +34,36 @@ async def getStoryContinue(story: str, mode: str) -> dict:
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
     # Langchain stuff here
-    next_sentence = "Next Sentence."
+    next_sentence = None
     new_story = story + next_sentence
     return {"story": new_story, "next_sentence": next_sentence}
 
 @router.get("/get-sentence-options", tags=['client'], status_code=status.HTTP_200_OK)
 async def getSentenceOptions(story: str, vocab_list: VocabList, mode: str) -> SentenceChoices:
-    print(mode)
-    if mode == "creative":
-        pass
-    elif mode == "test":
-        pass
-    elif mode == "mixed":
-        pass
+    if mode in ["creative", "test", "mixed",""]:
+        sentence_options = get_sentence_options(story=story,vocab_list=vocab_list,mode=mode)
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
-    # Langchain stuff here
 
     # Return
     c1 = SentenceResponse(
-        sentence="TODO",
-        isCorrect=False,
+        sentence=sentence_options.option1,
+        isCorrect=True,
     )
 
     c2 = SentenceResponse(
-        sentence="TODO",
-        isCorrect=False,
+        sentence=sentence_options.option2,
+        isCorrect=True,
     )
 
     c3 = SentenceResponse(
-        sentence="TODO",
-        isCorrect=False,
+        sentence=sentence_options.option3,
+        isCorrect=True,
     )
 
     c4 = SentenceResponse(
-        sentence="TODO",
-        isCorrect=False,
+        sentence=sentence_options.option4,
+        isCorrect=True,
     )
 
     ret = SentenceChoices(
