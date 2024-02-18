@@ -17,21 +17,21 @@
   bottom: 0; /* Adjust positioning as needed */
   left: 5%; /* Center the popup horizontally */
   transform: translateX(-50%); /* Center the popup horizontally */
+  z-index: 1000; /* Ensure it's on top of everything */
 }
 
 
 .speech-bubble {
   position: absolute;
   top: 0;
-  right: 0;
-  transform: translate(70%, -80%); /* Adjust to move the bubble to the desired position */
+  left: 0;
+  transform: translate(10%, -100%); /* Adjust to move the bubble to the desired position */
   background: #f0f0f0;
-  border-radius: 20px;
+  border-radius: 4px;
   padding: 10px;
   text-align: center;
   color: #333; /* Adjust text color as needed */
-  width: auto; /* Adjust width as needed */
-  max-width: calc(200%); /* Ensure it doesn't overflow the parent */
+  min-width: 250px; /* Adjust to the desired width */ 
 }
 
 .speech-bubble:after {

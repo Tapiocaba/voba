@@ -140,8 +140,6 @@ const StoryPage = ({ userDetails, mode }) => {
           word = usedVocab[0];
         }
         if (word !== '') {
-          console.log(word);
-          console.log(option.text);
           const response = await axios.get('http://127.0.0.1:8000/api/explain-wrong', {
             params: {
               sentence: option.text,
@@ -167,7 +165,6 @@ const StoryPage = ({ userDetails, mode }) => {
       <div className="w-1/3" >
         <div style={{ position: 'fixed' }}>
           <VocabChecklist usedVocab={usedVocab} vocabWords={vocabWords[userDetails.grade]} />
-          <ElephantPopup text={elephantText} />
         </div>
       </div>
       <div className="w-2/3 p-4">
@@ -186,14 +183,13 @@ const StoryPage = ({ userDetails, mode }) => {
             <div style={{ height: '300px' }}></div>
           </TransitionGroup>
         </div>
-
-        <div className="fixed-bottom">
-          <div className="options-container">
-            <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} />
-          </div>
-        </div>
-
         <div ref={endOfStoryRef} />
+      </div>
+      <div className="fixed-bottom">
+        <div className="options-container">
+          <ElephantPopup text={elephantText} />
+          <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} />
+        </div>
       </div>
     </div >
   );
