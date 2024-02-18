@@ -50,7 +50,7 @@ def get_story_start(vocab_list: str, mode: str = "creative"):
         what happens next or what choice is made next. Do not actually give any options. \n
         - Write it at a level that a first-grader would understand.\n
         - Make it interesting and fun, so the first-grader wants to keep reading.\n
-        - Make it about 50 words.
+        - Make it about 2 sentences.
     """
 
     prompt = PromptTemplate.from_template(instructions)
@@ -77,7 +77,7 @@ def get_story_continue(story: str, vocab_list: str, mode: str = "creative"):
         what happens next or what choice is made next. Do not actually give any options. \n
         - Write it at a level that a first-grader would understand.\n
         - Make it interesting and fun, so the first-grader wants to keep reading.\n
-        - Make it about 50 words.\n\n
+        - Make it about 2 sentences.\n\n
 
         Here is the story I want you to the continue:
 
