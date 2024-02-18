@@ -148,11 +148,11 @@ def _string_to_json(input_string):
 
 
 # Tests
-vocab_list = ["nibbled","consequence","feast","annoy","enormous"]
-story_start = get_story_start(vocab_list)
-print(story_start)
-story_options = get_sentence_options(story=story_start, vocab_list=vocab_list)
-print(story_options)
+# vocab_list = ["nibbled","consequence","feast","annoy","enormous"]
+# story_start = get_story_start(vocab_list)
+# print(story_start)
+# story_options = get_sentence_options(story=story_start, vocab_list=vocab_list)
+# print(story_options)
 
 
 
