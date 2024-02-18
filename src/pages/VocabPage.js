@@ -4,6 +4,7 @@ import axios from 'axios'; // Assuming axios is used for dictionary API requests
 import '../css/Vocab.css';
 
 const BASE_URL = 'https://vkv088ibwf.execute-api.us-east-2.amazonaws.com/dev/api'
+// const BASE_URL = 'http://localhost:8000/api';
 
 
 const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWords }) => {
@@ -15,7 +16,10 @@ const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWor
       const params = { audio_str: text };
       const response = await axios.get(`${BASE_URL}/get-audio`, {
         params,
-        responseType: 'blob'
+        responseType: 'blob',
+        headers: {
+          'Content-Type': 'audio/mpeg',
+        },
       });
       const audioUrlObject = URL.createObjectURL(response.data);
       const audio = new Audio(audioUrlObject);
