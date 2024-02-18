@@ -47,7 +47,7 @@ const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWor
           className="mb-4 bg-gray-500 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded"
           onClick={toggleEditMode}
         >
-          {editMode ? 'Exit Edit Mode' : 'Edit Words'}
+          {editMode ? 'Exit Teacher Mode' : 'Teacher Mode'}
         </button>
 
         {editMode && (

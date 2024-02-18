@@ -58,7 +58,7 @@ const App = () => {
             }
             }
           />}
-        {currentPage === 'story' && <StoryPage userDetails={userDetails} mode={mode} />}
+        {currentPage === 'story' && <StoryPage userDetails={userDetails} mode={mode} vocabWords={vocabWords} />}
         {currentPage === 'chooseMode' && <ChooseModePage userDetails={userDetails} setCurrentMode={setCurrentMode} />}
       </div>
     </div>

@@ -3,13 +3,12 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import AdventureOptions from '../components/AdventureOptions';
 import VocabChecklist from '../components/VocabChecklist';
-import vocabWords from '../VocabWords';
 import ElephantPopup from '../components/ElephantPopup';
 import axios from 'axios';
 
 import '../css/StoryPage.css';
 
-const StoryPage = ({ userDetails, mode }) => {
+const StoryPage = ({ userDetails, mode, vocabWords }) => {
   const [storyParts, setStoryParts] = useState([]);
   const [options, setOptions] = useState([]);
   const [usedVocab, setUsedVocab] = useState([]);
@@ -27,7 +26,7 @@ const StoryPage = ({ userDetails, mode }) => {
       const response = await axios.get(requestUrl, {
         params: {
           mode: mode,
-          vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(', '),
+          vocab_list: vocabWords.map(({ word }) => word).join(', '),
         },
         headers: {
           'Accept': 'application/json',
@@ -63,12 +62,12 @@ const StoryPage = ({ userDetails, mode }) => {
       const fetchStoryContinuation = async () => {
         try {
           const requestUrl = `http://127.0.0.1:8000/api/get-story-continue`;
-  
+
           const response = await axios.get(requestUrl, {
             params: {
               story: storyParts.join(' '),
               mode: mode,
-              vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(', '),
+              vocab_list: vocabWords.map(({ word }) => word).join(', '),
             },
             headers: {
               'Accept': 'application/json',
@@ -76,20 +75,21 @@ const StoryPage = ({ userDetails, mode }) => {
           })
           newStoryPart = response.data;
           setStoryParts(prev => [...prev, newStoryPart]);
+          setElephantText('Coming up with possible continuations...');
         }
         catch (error) {
           throw new Error('Failed to fetch story continuation');
         }
       }
       fetchStoryContinuation();
-    } 
+    }
     else {
       const fetchStoryOptions = async () => {
         try {
           const optionsResponse = await axios.get('http://127.0.0.1:8000/api/get-sentence-options', {
             params: {
               story: storyParts.join(' '),
-              vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(', '),
+              vocab_list: vocabWords.map(({ word }) => word).join(', '),
               mode: mode,
             },
             headers: {
@@ -132,7 +132,7 @@ const StoryPage = ({ userDetails, mode }) => {
         setElephantText('Give me a second to continue the story...');
         setOptions([]);
         setStoryParts(prev => [...prev, `\n${option.text}\n`]);
-        const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
+        const vocabWordsForUser = vocabWords.map(({ word }) => word);
         const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
         const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace(/[.,!?]/g, ''));
         setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
@@ -140,7 +140,7 @@ const StoryPage = ({ userDetails, mode }) => {
 
     } else {
       try {
-        const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
+        const vocabWordsForUser = vocabWords.map(({ word }) => word);
         const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
         let word = '';
         if (usedVocab.length > 0) {
@@ -171,7 +171,7 @@ const StoryPage = ({ userDetails, mode }) => {
     <div className="flex">
       <div className="w-1/3" >
         <div style={{ position: 'fixed' }}>
-          <VocabChecklist usedVocab={usedVocab} vocabWords={vocabWords[userDetails.grade]} />
+          <VocabChecklist usedVocab={usedVocab} vocabWords={vocabWords} />
           <div className="fixed-bottom">
             <div className="options-container">
               <ElephantPopup text={elephantText} />
@@ -192,13 +192,13 @@ const StoryPage = ({ userDetails, mode }) => {
                 ))}</p>
               </CSSTransition>
             ))}
-            <div style={{ height: '300px' }}></div>
+            <div style={{ height: '400px' }}></div>
           </TransitionGroup>
         </div>
         <div ref={endOfStoryRef} />
         <div className="fixed-bottom">
           <div className="options-container">
-            <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} />
+            <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} vocabWords={vocabWords} />
           </div>
         </div>
       </div>
