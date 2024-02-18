@@ -51,7 +51,7 @@ const StoryPage = ({ userDetails, mode }) => {
 
           const response = await axios.get(requestUrl, {
             params: {
-              story: storyParts.join(' '),
+              story: storyParts.join(' ') + ' ' + selectedOption,
               mode: mode,
               vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(', '),
             },
@@ -165,6 +165,11 @@ const StoryPage = ({ userDetails, mode }) => {
       <div className="w-1/3" >
         <div style={{ position: 'fixed' }}>
           <VocabChecklist usedVocab={usedVocab} vocabWords={vocabWords[userDetails.grade]} />
+          <div className="fixed-bottom">
+            <div className="options-container">
+              <ElephantPopup text={elephantText} />
+            </div>
+          </div>
         </div>
       </div>
       <div className="w-2/3 p-4">
@@ -184,13 +189,13 @@ const StoryPage = ({ userDetails, mode }) => {
           </TransitionGroup>
         </div>
         <div ref={endOfStoryRef} />
-      </div>
-      <div className="fixed-bottom">
-        <div className="options-container">
-          <ElephantPopup text={elephantText} />
-          <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} />
+        <div className="fixed-bottom">
+          <div className="options-container">
+            <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} />
+          </div>
         </div>
       </div>
+
     </div >
   );
 };
