@@ -101,7 +101,6 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     # parser = JsonOutputParser(pydantic_object=SentenceOptions)
 
     # todo: change based on mode
-    print(mode)
     instructions = """
         You are a storyteller helping a first-grader learn vocabulary using a 
         choose-your-own-adventure story. Given the following story, come up with 
@@ -126,11 +125,11 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     """
 
     if mode == "creative":
-        mode_specific_instruction = "Make sure each option correctly uses the vocab word and makes sense in the context of the story."
+        mode_specific_instruction = "IMPORTANT: Make sure each option correctly uses the vocab word and makes sense in the context of the story."
     elif mode == "test":
-        mode_specific_instruction = "ONLY option1 should be grammatically correct and use the vocab word correctly. The next three options should use the vocab word wrongly."
+        mode_specific_instruction = "IMPORTANT: ONLY option1 should be grammatically correct and use the vocab word correctly. The next three options should use the vocab word completely wrongly such that the sentence doesn't make sense."
     elif mode == "mixed":
-        mode_specific_instruction = "ONLY option1 and option2 should be grammatically correct and make sense in the context of the story. The next two options should use the vocab word wrongly."
+        mode_specific_instruction = "IMPORTANT: ONLY option1 and option2 should be grammatically correct and make sense in the context of the story. The next two options should use the vocab word completely wrongly such that the sentence doesn't make sense."
 
     prompt = PromptTemplate.from_template(instructions)
 

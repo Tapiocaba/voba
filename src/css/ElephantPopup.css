@@ -26,12 +26,12 @@
   right: 0;
   transform: translate(70%, -80%); /* Adjust to move the bubble to the desired position */
   background: #f0f0f0;
-  border-radius: 4px;
+  border-radius: 20px;
   padding: 10px;
   text-align: center;
   color: #333; /* Adjust text color as needed */
   width: auto; /* Adjust width as needed */
-  max-width: calc(100% - 40px); /* Ensure it doesn't overflow the parent */
+  max-width: calc(200%); /* Ensure it doesn't overflow the parent */
 }
 
 .speech-bubble:after {

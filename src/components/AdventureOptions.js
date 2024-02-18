@@ -34,7 +34,7 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
 
     return text.split(' ').map((word, index) => {
       const key = `${index}-${word}`;
-      const wordWithoutPunctuation = word.replace('.', '').replace(',', '').replace('!', '').replace('?', '');
+      const wordWithoutPunctuation = word.replace('.', '').replace(',', '').replace('!', '').replace('?', '').replace(';', '');
       const definition = vocabMap[wordWithoutPunctuation.toLowerCase()];
       if (definition) {
         return (

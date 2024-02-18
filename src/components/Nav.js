@@ -2,7 +2,7 @@ import React from 'react';
 
 const Nav = ({ setCurrentPage }) => {
   return (
-    <div className="flex justify-between items-center px-10 py-4" style={{ backgroundColor: '#c7dffb' }}>
+    <div className="flex justify-between items-center px-10 py-4" style={{ backgroundColor: '#c7dffb', position: 'fixed', width: '100%' }}>
       <img src={`${process.env.PUBLIC_URL}/images/voba-title-blue.png`} alt="Logo" className="h-20" />
       <div className="space-x-4">
         <button

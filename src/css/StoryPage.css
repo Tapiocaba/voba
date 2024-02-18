@@ -15,17 +15,16 @@
 .fixed-bottom {
   position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%; /* Ensures it spans the full width */
   z-index: 1000; /* Keeps it on top */
   background-color: #fff; /* Optional: for visibility */
   box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Optional: for depth */
+  padding-left: 20px;
   /* Add padding if needed, but remember it affects internal content alignment */
 }
 
 .options-container {
   display: flex;
-  justify-content: center; /* Centers the buttons horizontally */
   flex-wrap: wrap; /* Allows buttons to wrap in smaller screens */
   padding: 10px 0; /* Adds vertical padding without affecting centering */
 }

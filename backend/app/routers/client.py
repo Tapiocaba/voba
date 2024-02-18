@@ -36,20 +36,16 @@ async def getStoryContinue(story: str, vocab_list: str, mode: str) -> dict:
     
 @router.get("/explain-wrong", tags=['client'], status_code=status.HTTP_200_OK)
 async def explainWrong(sentence: str, word: str) -> str:
-    print(sentence, word)
     explanation = explain_why_wrong(sentence=sentence, word=word)
     return Response(content=explanation, media_type="text/plain")
     
 
 @router.get("/get-sentence-options", tags=['client'], status_code=status.HTTP_200_OK)
 async def getSentenceOptions(story: str, vocab_list: str, mode: str) -> SentenceChoices:
-    print('hey girl')
     if mode not in ["creative", "test", "mixed",""]:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
     try:
-        print('yolo')
         sentence_options = get_sentence_options(story=story,vocab_list=vocab_list,mode=mode)
-        print('f word')
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error: Incorrect JSON format.")
 

@@ -167,24 +167,27 @@ const StoryPage = ({ userDetails, mode }) => {
       <div className="w-1/3" >
         <div style={{ position: 'fixed' }}>
           <VocabChecklist usedVocab={usedVocab} vocabWords={vocabWords[userDetails.grade]} />
+          <ElephantPopup text={elephantText} />
         </div>
       </div>
       <div className="w-2/3 p-4">
-        <TransitionGroup component={null}>
-          {storyParts.map((part, index) => (
-            <CSSTransition key={index} timeout={1000} classNames="fade">
-              <p>{part.split('\n').map((line, lineIndex) => (
-                <React.Fragment key={lineIndex}>
-                  {line}
-                  <br />
-                </React.Fragment>
-              ))}</p>
-            </CSSTransition>
-          ))}
-          <div style={{ height: '300px' }}></div>
-        </TransitionGroup>
+        <div style={{ marginLeft: 30 }}>
+          <TransitionGroup component={null}>
+            {storyParts.map((part, index) => (
+              <CSSTransition key={index} timeout={1000} classNames="fade">
+                <p>{part.split('\n').map((line, lineIndex) => (
+                  <React.Fragment key={lineIndex}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}</p>
+              </CSSTransition>
+            ))}
+            <div style={{ height: '300px' }}></div>
+          </TransitionGroup>
+        </div>
+
         <div className="fixed-bottom">
-          <ElephantPopup text={elephantText} />
           <div className="options-container">
             <AdventureOptions options={options} onOptionSelect={handleOptionSelect} userDetails={userDetails} />
           </div>
@@ -192,7 +195,7 @@ const StoryPage = ({ userDetails, mode }) => {
 
         <div ref={endOfStoryRef} />
       </div>
-    </div>
+    </div >
   );
 };
 
