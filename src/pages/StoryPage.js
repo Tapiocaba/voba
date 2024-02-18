@@ -5,6 +5,7 @@ import VocabChecklist from '../components/VocabChecklist';
 import vocabWords from '../components/VocabWords';
 import '../css/storyPage.css';
 import ElephantPopup from '../components/ElephantPopup';
+import axios from 'axios';
 
 const StoryPage = ({ userDetails, mode }) => {
   const [storyParts, setStoryParts] = useState([]);
@@ -21,19 +22,25 @@ const StoryPage = ({ userDetails, mode }) => {
 
       // if story is empty, fetch the first part of the story
       if (storyParts.length === 0) {
-        // const response = await fetch('/get-initial-story', {
-        //   method: 'GET',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        // });
+        const requestUrl = `http://127.0.0.1:8000/api/get-initial-story`;
 
-        // if (!response.ok) {
-        //   throw new Error('Failed to fetch initial story');
-        // }
+        try {
+          const response = await axios.get(requestUrl, {
+            params: {
+              mode: mode,
+              vocab_list: vocabWords[userDetails.grade].map(({ word }) => word).join(','),
+            },
+            headers: {
+              'Accept': 'application/json',
+            },
+          })
+          newStoryPart = response.data;
+        }
+        catch (error) {
+          console.error('Error fetching story continuation:', error);
+        }
 
-        // newStoryPart = await response.json();
-        newStoryPart = 'Once upon a time, in a land far, far away...';
+
       }
       else {
 

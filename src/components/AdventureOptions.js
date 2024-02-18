@@ -3,29 +3,26 @@ import VocabWords from './VocabWords.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import '../css/vocab.css';
+import axios from 'axios';
 
 const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
-  // Function to handle audio icon click
   const handleAudioClick = async (text) => {
     try {
-      // Update the endpoint URL to match your server's address and the get-audio endpoint
-      // Assuming your backend is hosted on localhost:8000, change it according to your actual backend host and port
-      const audioUrl = `http://127.0.0.1:8000/api/get-audio?audio_str=${encodeURIComponent(text)}`;
-      const response = await fetch(audioUrl);
-      if (!response.ok) {
-        console.log(response)
-        throw new Error('Audio fetch failed');
-      }
-      const blob = await response.blob();
-      const audioUrlObject = URL.createObjectURL(blob);
+      const params = { audio_str: text };
+      const response = await axios.get('http://localhost:8000/api/get-audio', {
+        params,
+        responseType: 'blob'
+      });
+      const audioUrlObject = URL.createObjectURL(response.data);
       const audio = new Audio(audioUrlObject);
       audio.play();
     } catch (error) {
       console.error('Error fetching audio:', error);
     }
   };
+
 
 
   const renderTextWithVocab = (text, grade) => {

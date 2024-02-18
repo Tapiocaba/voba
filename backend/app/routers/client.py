@@ -18,9 +18,10 @@ async def healthStatus():
     return {"message": "Client API Healthy"}
 
 @router.get("/get-initial-story", tags=['client'], status_code=status.HTTP_200_OK)
-async def getInitialStory(vocab_list: List[str], mode: str) -> str:
+async def getInitialStory(vocab_list: str, mode: str) -> str:
     if mode in ["creative", "test", "mixed"]:
-        get_story_start()
+        story = get_story_start(vocab_list=vocab_list, mode=mode)
+        return Response(content=story, media_type="text/plain")
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
 
