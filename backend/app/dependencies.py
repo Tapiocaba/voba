@@ -144,6 +144,27 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
 
     return output
 
+def explain_why_wrong(sentence: str, word: str):
+    instructions = """
+        You are a teacher helping a first-grader learn vocabulary. The student used the word {word}
+        wrong in the following sentence. Explain to the student why the word was used wrong in 2 sentences or less.
+        \n\n
+      
+        Here is the sentence the student wrote:
+        \n\n
+        {sentence}
+        \n\n
+        The vocabulary word the student used incorrectly is: {word}
+    """
+
+    prompt = PromptTemplate.from_template(instructions)
+    output_parser = StrOutputParser()
+
+    runnable = prompt | llm | output_parser
+    output = runnable.invoke({"sentence": sentence, "word": word})
+
+    return output
+
 # Ensures vocab is not in the story
 def _check_no_vocab_in_string(string: str, vocab_list: List[int]):
     for word in vocab_list:
