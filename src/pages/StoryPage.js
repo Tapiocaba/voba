@@ -13,7 +13,7 @@ const StoryPage = ({ userDetails, mode }) => {
   const [storyParts, setStoryParts] = useState([]);
   const [options, setOptions] = useState([]);
   const [usedVocab, setUsedVocab] = useState([]);
-  const [elephantText, setElephantText] = useState('What do you think the next part of the story should be? Choose an option below!');
+  const [elephantText, setElephantText] = useState('Give me a second to think of a story...');
   const endOfStoryRef = useRef(null);
   const isMounted = useRef(false);
 
@@ -90,6 +90,7 @@ const StoryPage = ({ userDetails, mode }) => {
 
       setStoryParts(prev => [...prev, newStoryPart]);
       setOptions(newOptions);
+      setElephantText('Choose an option to continue the story!');
 
     } catch (error) {
       console.error('Error fetching story continuation:', error);
@@ -110,13 +111,24 @@ const StoryPage = ({ userDetails, mode }) => {
 
   const handleOptionSelect = (option) => {
     if (option.isCorrect) {
-      setElephantText('Great job! You chose the right option!');
-      fetchStoryContinuation(option.text);
-      setStoryParts(prev => [...prev, `\n${option.text}\n`]);
-      const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
-      const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
-      const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace(/[.,!?]/g, ''));
-      setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
+      if (mode === 'test') {
+        setElephantText('Great job!');
+      }
+      else {
+        setElephantText('Nice choice!');
+      }
+      // wait 1 second and then 
+      setTimeout(() => {
+        setElephantText('Give me a second to continue the story...');
+        setOptions([]);
+        fetchStoryContinuation(option.text);
+        setStoryParts(prev => [...prev, `\n${option.text}\n`]);
+        const vocabWordsForUser = vocabWords[userDetails.grade].map(({ word }) => word);
+        const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
+        const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace(/[.,!?]/g, ''));
+        setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
+      }, 1000);
+
     } else {
       setElephantText('Oh no! That was the wrong choice. Try again!');
     }
