@@ -8,6 +8,7 @@ from langchain_core.pydantic_v1 import BaseModel, Field, validator
 from models import VocabWord, VocabList, SentenceResponse
 import json
 import os
+from typing import List
 from openai import OpenAI
 
 load_dotenv()
@@ -22,6 +23,7 @@ class SentenceOptions(BaseModel):
     option1: str = Field(description="first option to continue the story")
     option2: str = Field(description="second option to continue the story")
     option3: str = Field(description="third option to continue the story")
+    option4: str = Field(description="fourth option to continue the story")
 
     # todo: add validation logic
     # @validator("setup")
@@ -33,7 +35,6 @@ class SentenceOptions(BaseModel):
 
 # Get the start of a new story, depending on vocab list
 def get_story_start(vocab_list: VocabList, mode: str = "creative"):
-    llm = ChatOpenAI(temperature=1, model_name='gpt-4-1106-preview', openai_api_key=OPENAI_API_KEY)
     vocab_string = ", ".join(vocab_list)
 
     instructions = """
@@ -63,7 +64,6 @@ def get_story_start(vocab_list: VocabList, mode: str = "creative"):
 
 
 def get_sentence_options(story: str, vocab_list: VocabList, mode: str = "creative"):
-    llm = ChatOpenAI(temperature=1, model_name='gpt-4-1106-preview', openai_api_key=OPENAI_API_KEY)
     vocab_string = ", ".join(vocab_list)
 
     # Set up pydantic output parser
@@ -90,28 +90,35 @@ def get_sentence_options(story: str, vocab_list: VocabList, mode: str = "creativ
         partial_variables={"format_instructions": parser.get_format_instructions()},
     )
 
-    str_output_parser = StrOutputParser()
-
     runnable = prompt | llm | parser
     output = runnable.invoke({"vocab": vocab_string, "story": story})
-
+    
+    # ensure options are in the correct format & each have at least one vocab word
+    options = output.values()
     if not _validate_options_json(output):
         raise ValueError("JSON data is not in the correct format")
-    else:
-        return output
+    elif not all([_check_vocab_in_string(option, vocab_list) for option in options]):
+        raise ValueError("Not every option has a vocab word")
 
+    return output
 
 # Ensures vocab is not in the story
-def _check_no_vocab_in_string(string, words_list):
-    for word in words_list:
+def _check_no_vocab_in_string(string: str, vocab_list: List[int]):
+    for word in vocab_list:
         if word in string:
             return False
     return True
 
 
-# Ensures vocab is in the story
-def _check_vocab_in_string():
-    return False
+# Ensures vocab is in each story option
+def _check_vocab_in_string(string: str, vocab_list: List[int]):
+    word_found = []
+    for word in vocab_list:
+        if word in string:
+            word_found.append(True)
+        else:
+            word_found.append(False)
+    return any(word_found)
 
 
 # Validate the sentence options json
@@ -151,11 +158,11 @@ def _string_to_json(input_string):
 
 
 # Tests
-# vocab_list = ["nibbled","consequence","feast","annoy","enormous"]
-# story_start = get_story_start(vocab_list)
-# print(story_start)
-# story_options = get_sentence_options(story=story_start, vocab_list=vocab_list)
-# print(story_options)
+vocab_list = ["nibbled","consequence","feast","annoy","enormous"]
+story_start = get_story_start(vocab_list)
+print(story_start)
+story_options = get_sentence_options(story=story_start, vocab_list=vocab_list)
+print(story_options)
 
 
 
