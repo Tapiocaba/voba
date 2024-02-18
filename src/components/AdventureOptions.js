@@ -23,7 +23,6 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails, vocabWords }) 
   };
 
 
-
   const renderTextWithVocab = (text, grade) => {
     const gradeVocab = vocabWords || [];
     const vocabMap = gradeVocab.reduce((acc, { word, definition }) => {

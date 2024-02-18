@@ -3,7 +3,7 @@ import axios from 'axios'; // Assuming axios is used for dictionary API requests
 
 import '../css/Vocab.css';
 
-const VocabPage = ({ userDetails, onContinueToStory, vocabWords, onChangeVocabWords }) => {
+const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWords }) => {
   const [editMode, setEditMode] = useState(false);
   const [newWord, setNewWord] = useState('');
 
@@ -88,7 +88,7 @@ const VocabPage = ({ userDetails, onContinueToStory, vocabWords, onChangeVocabWo
         <div className="text-center mt-8">
           <button
             className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-            onClick={onContinueToStory}
+            onClick={onContinueToMode}
           >
             Continue
           </button>
