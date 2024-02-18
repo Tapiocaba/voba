@@ -178,6 +178,18 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
     <div className="flex">
       <div className="w-1/3" >
         <div style={{ position: 'fixed' }}>
+          {
+            mode === 'test' &&
+            <p>Test mode: Only one story continuation uses the vocab word correctly.</p>
+          }
+          {
+            mode === 'creative' &&
+            <p>Creative mode: Every story continuation uses the vocab word correctly.</p>
+          }
+          {
+            mode === 'mixed' &&
+            <p>Mixed mode: At least 1 of the story continuations use the vocab word correctly.</p>
+          }
           <VocabChecklist usedVocab={usedVocab} vocabWords={vocabWords} />
           <div className="fixed-bottom">
             <div className="options-container">
