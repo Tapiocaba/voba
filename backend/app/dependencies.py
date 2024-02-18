@@ -37,7 +37,7 @@ class SentenceOptions(BaseModel):
 def get_story_start(vocab_list: str, mode: str = "creative"):
 
     instructions = """
-        You are a storyteller that kids LOVE to listen to helping a first-grader learn vocabulary. Think of 
+        You are a storyteller that kids LOVE to listen to helping a young elementary schooler learn vocabulary. Think of 
         an interesting story plot that is likely to later use the following vocabulary words: 
         \n\n
         {vocab}
@@ -48,8 +48,8 @@ def get_story_start(vocab_list: str, mode: str = "creative"):
         - Do not actually use the vocabulary words.\n
         - Stop at a point where it would make sense to have options for
         what happens next or what choice is made next. Do not actually give any options. \n
-        - Write it at a level that a first-grader would understand.\n
-        - Make it interesting and fun, so the first-grader wants to keep reading.\n
+        - Write it at a level that a young elementary schooler would understand.\n
+        - Make it interesting and fun, so the young elementary schooler wants to keep reading.\n
         - Make it about 2 sentences.
     """
 
@@ -65,12 +65,12 @@ def get_story_continue(story: str, vocab_list: str, conclude: bool, mode: str = 
 
     if conclude:
         instructions = """
-            You are a storyteller that kids LOVE to listen to helping a first-grader learn reading. 
+            You are a storyteller that kids LOVE to listen to helping a young elementary schooler learn reading. 
             Conclude the following story.
             \n\n
             Make sure to do the following in the conclusion:
             \n\n
-            - Write it at a level that a first-grader would understand.\n
+            - Write it at a level that a young elementary schooler would understand.\n
             - Make it interesting and fun.\n
             - The conclusion should make sense in the context of the entire story,
             but it should especially follow from the last two sentences of the story.\n
@@ -83,7 +83,7 @@ def get_story_continue(story: str, vocab_list: str, conclude: bool, mode: str = 
 
     else:
         instructions = """
-            You are a storyteller that kids LOVE to listen to helping a first-grader learn vocabulary. Continue
+            You are a storyteller that kids LOVE to listen to helping a young elementary schooler learn vocabulary. Continue
             the following story that is likely to later use the following vocabulary words: 
             \n\n
             {vocab}
@@ -93,8 +93,8 @@ def get_story_continue(story: str, vocab_list: str, conclude: bool, mode: str = 
             - Do not actually use the vocabulary words.\n
             - Stop at a point where it would make sense to have options for
             what happens next or what choice is made next. Do not actually give any options. \n
-            - Write it at a level that a first-grader would understand.\n
-            - Make it interesting and fun, so the first-grader wants to keep reading.\n
+            - Write it at a level that a young elementary schooler would understand.\n
+            - Make it interesting and fun, so the young elementary schooler wants to keep reading.\n
             - The continuation should make sense in the context of the entire story.\n
             - Make it about 2 sentences.\n\n
 
@@ -121,7 +121,7 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
 
     # todo: change based on mode
     instructions = """
-        You are a storyteller that kids LOVE to listen to helping a first-grader learn vocabulary using a 
+        You are a storyteller that kids LOVE to listen to helping a young elementary schooler learn vocabulary using a 
         choose-your-own-adventure story. Given the following story, come up with 
         four options for how the story can continue. Ensure that:
         \n\n
@@ -149,9 +149,9 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     if mode == "creative":
         mode_specific_instruction = "IMPORTANT: Make sure each option correctly uses the vocab word and makes sense in the context of the story."
     elif mode == "test":
-        mode_specific_instruction = "IMPORTANT: ONLY option1 should be grammatically correct and use the vocab word correctly. The next three options should use the vocab word completely wrongly such that the sentence doesn't make sense."
+        mode_specific_instruction = "IMPORTANT: ONLY option1 should be grammatically correct and use the vocab word correctly. The next three options should use the vocab word completely incorrectly so that the sentence doesn't make sense."
     elif mode == "mixed":
-        mode_specific_instruction = "IMPORTANT: ONLY option1 and option2 should be grammatically correct and make sense in the context of the story. The next two options should use the vocab word completely wrongly such that the sentence doesn't make sense."
+        mode_specific_instruction = "IMPORTANT: ONLY option1 and option2 should be grammatically correct and make sense in the context of the story. The next two options should use the vocab word completely incorrectly so that the sentence doesn't make sense."
 
     prompt = PromptTemplate.from_template(instructions)
 
@@ -182,8 +182,8 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
 
 def explain_why_wrong(sentence: str, word: str):
     instructions = """
-        You are a teacher helping a first-grader learn vocabulary. The student used the word {word}
-        wrong in the following sentence. Explain to the student why the word was used wrong in 2 sentences or less.
+        You are a teacher helping a young elementary schooler learn vocabulary. The student used the word {word}
+        wrong in the following sentence. Explain to the student in simple terms why the word was used wrong in 2 sentences or less.
         \n\n
       
         Here is the sentence the student wrote:
