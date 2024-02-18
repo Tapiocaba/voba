@@ -6,6 +6,7 @@ import VocabPage from './pages/VocabPage';
 import StoryPage from './pages/StoryPage';
 import LandingPage from './pages/LandingPage';
 import ChooseModePage from './pages/ChooseModePage';
+import VocabWords from './components/VocabWords';
 
 import './css/App.css';
 
@@ -14,10 +15,12 @@ const App = () => {
   const [userDetails, setUserDetails] = useState({ name: '', grade: '', id: '' });
   const [currentPage, setCurrentPage] = useState('landing');
   const [mode, setMode] = useState('creative');
+  const [vocabWords, setVocabWords] = useState([]);
 
   const handleOnboardingComplete = (name, grade) => {
     setUserDetails({ name, grade });
     setOnboardingComplete(true);
+    setVocabWords(VocabWords[grade]);
     setCurrentPage('vocab'); // go to vocab once onboarding is complete
   };
 
@@ -44,9 +47,18 @@ const App = () => {
   return (
     <div>
       <Nav setCurrentPage={setCurrentPage} />
-      <div style={{ paddingTop: 200, paddingLeft: 100, paddingRight: 100 }}>
-        {currentPage === 'vocab' && <VocabPage userDetails={userDetails} onContinueToStory={handleContinueToMode} />}
-        {currentPage === 'story' && <StoryPage userDetails={userDetails} mode={mode} />}
+      <div style={{ paddingTop: 150, paddingLeft: 100, paddingRight: 100 }}>
+        {currentPage === 'vocab' &&
+          <VocabPage
+            userDetails={userDetails}
+            onContinueToMode={handleContinueToMode}
+            vocabWords={vocabWords}
+            onChangeVocabWords={(newWords) => {
+              setVocabWords(newWords);
+            }
+            }
+          />}
+        {currentPage === 'story' && <StoryPage userDetails={userDetails} mode={mode} vocabWords={vocabWords} />}
         {currentPage === 'chooseMode' && <ChooseModePage userDetails={userDetails} setCurrentMode={setCurrentMode} />}
       </div>
     </div>

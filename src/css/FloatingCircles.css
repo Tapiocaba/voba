@@ -1,0 +1,50 @@
+.floating-circles-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .circle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .circle img {
+    width: 100%; /* Adjust based on your needs */
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .circle-container p {
+    margin-top: 10px;
+    text-align: center;
+    max-width: 150px; /* Adjusted to match the circle diameter */
+  }
+  
+  /* Floating Animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  .floating-animation {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .delay-0 { animation-delay: 0s; }
+  .delay-1 { animation-delay: 0.5s; }
+  .delay-2 { animation-delay: 1s; }
+  .delay-3 { animation-delay: 1.5s; }
+  

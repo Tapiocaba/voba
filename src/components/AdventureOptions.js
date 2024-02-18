@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import VocabWords from './VocabWords.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import '../css/Vocab.css';
 import axios from 'axios';
 
-const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
+const AdventureOptions = ({ options, onOptionSelect, userDetails, vocabWords }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
   const handleAudioClick = async (text) => {
@@ -23,10 +22,8 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails }) => {
     }
   };
 
-
-
   const renderTextWithVocab = (text, grade) => {
-    const gradeVocab = VocabWords[grade] || [];
+    const gradeVocab = vocabWords || [];
     const vocabMap = gradeVocab.reduce((acc, { word, definition }) => {
       acc[word.toLowerCase()] = definition; // Ensuring case-insensitive matching
       return acc;
