@@ -75,9 +75,11 @@ const StoryPage = ({ userDetails, mode }) => {
             'Accept': 'application/json',
           },
         });
-        newOptions = optionsResponse.data;
-        console.log(newOptions);
-        console.log(optionsResponse);
+
+        newOptions = Object.values(optionsResponse.data).map(option => ({
+          text: option.sentence,
+          correct: option.isCorrect,
+        }));
       }
       catch (error) {
         console.error('Error fetching sentence options:', error);

@@ -63,7 +63,7 @@ def get_story_start(vocab_list: VocabList, mode: str = "creative"):
 
 
 def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
-
+    print('hello boys')
     # Set up pydantic output parser
     # parser = JsonOutputParser(pydantic_object=SentenceOptions)
 
@@ -89,29 +89,41 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     """
 
     prompt = PromptTemplate.from_template(instructions)
+    print('bruh')
 
     output_parser = StrOutputParser()
+    print('bruh2')
 
 
     runnable = prompt | llm | output_parser
     output = runnable.invoke({"vocab": vocab_list, "story": story})
+    
+    print('lala')
+    # slice from first bracket to last bracket.
+    start_index = output.find('{')
+    end_index = output.rfind('}') + 1
+    output = output[start_index:end_index]
+
+    print(output)
 
     # convert output to dict
     output = json.loads(output)
+
+    
 
     print(output)
 
     
     # ensure options are in the correct format & each have at least one vocab word
-    options = output.values()
+    # options = output.values()
 
-    print(options)
-    if not _validate_options_json(output):
-        raise ValueError("JSON data is not in the correct format")
-    elif not all([_check_vocab_in_string(option, vocab_list) for option in options]):
-        raise ValueError("Not every option has a vocab word")
+    # print(options)
+    # if not _validate_options_json(output):
+    #     raise ValueError("JSON data is not in the correct format")
+    # elif not all([_check_vocab_in_string(option, vocab_list) for option in options]):
+    #     raise ValueError("Not every option has a vocab word")
 
-    print('got here')
+    # print('got here')
     return output
 
 # Ensures vocab is not in the story
