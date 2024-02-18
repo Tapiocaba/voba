@@ -2,7 +2,7 @@
 
 .footer {
     background-color: #A0CBFF;
-    color: #fff;
+    color: #383838;
     text-align: center;
     padding: 20px 0;
   }
@@ -24,7 +24,7 @@
   
   .footer-section p, .footer-section a {
     margin: 5px 0;
-    color: #fff;
+    color: #383838;
     text-decoration: none;
   }
   
