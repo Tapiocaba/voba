@@ -5,6 +5,8 @@ import AdventureOptions from '../components/AdventureOptions';
 import VocabChecklist from '../components/VocabChecklist';
 import ElephantPopup from '../components/ElephantPopup';
 import axios from 'axios';
+import { jsPDF } from "jspdf";
+
 
 import '../css/StoryPage.css';
 
@@ -18,6 +20,30 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
   const [initialized, setInitialized] = useState(false);
 
   const concludeAt = 6;
+
+  const downloadStoryAsPDF = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 20; // Define a margin for left and right
+    const maxWidth = pageWidth - margin * 2; // Calculate the maximum width of the text
+    let yPos = 20; // Starting Y position
+
+    storyParts.forEach((part) => {
+      // Split the text into lines that fit within the maxWidth
+      const lines = doc.splitTextToSize(part, maxWidth);
+      doc.text(lines, margin, yPos);
+
+      // Calculate the Y position for the next part, adding 10 for margin between parts
+      yPos += lines.length * 6; // Adjust line spacing based on your needs
+      if (yPos >= doc.internal.pageSize.getHeight() - 20) { // Check if we need a new page
+        doc.addPage();
+        yPos = 10; // Reset Y position for the new page
+      }
+    });
+
+    doc.save('story.pdf');
+  };
+
 
   // fetch first part of the array
   const fetchFirstPart = async () => {
@@ -36,6 +62,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
       })
       newStoryPart = response.data;
       setStoryParts(prev => [...prev, newStoryPart]);
+      setElephantText('Coming up with possible continuations...');
       isMounted.current = true;
     }
     catch (error) {
@@ -212,9 +239,22 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
                 ))}</p>
               </CSSTransition>
             ))}
+            {storyParts.length > concludeAt && (
+              <button onClick={downloadStoryAsPDF} className='mt-5 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded flex items-center justify-center'>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-download mr-2" viewBox="0 0 16 16">
+                  <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                  <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                  <path d="M8 0a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-1 0v-10A.5.5 0 0 1 8 0z" />
+                </svg>
+                Export as PDF
+              </button>
+
+            )}
             <div style={{ height: '400px' }}></div>
           </TransitionGroup>
+
           <div ref={endOfStoryRef} />
+
         </div>
         <div className="fixed-bottom">
           <div className="options-container">
