@@ -138,11 +138,12 @@ const StoryPage = ({ userDetails, mode }) => {
           word = usedVocab[0];
         }
         if (word !== '') {
+          console.log(word);
+          console.log(option.text);
           const response = await axios.get('http://127.0.0.1:8000/api/explain-wrong', {
             params: {
               sentence: option.text,
-              word: option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, ''))),
-
+              word: word,
             },
             headers: {
               'Accept': 'application/json',

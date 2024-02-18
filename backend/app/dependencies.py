@@ -100,6 +100,7 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     # parser = JsonOutputParser(pydantic_object=SentenceOptions)
 
     # todo: change based on mode
+    print(mode)
     instructions = """
         You are a storyteller helping a first-grader learn vocabulary using a 
         choose-your-own-adventure story. Given the following story, come up with 
@@ -112,64 +113,29 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
         - {mode_specific_instruction}
 
        The output should be a json list with the following key value pairs\n
-       
+
+        "option1": "The first option to continue the story",
+        "option2": "The second option to continue the story",
+        "option3": "The third option to continue the story",
+        "option4": "The fourth option to continue the story"
+
        \n
         Story: {story}
     """
 
     if mode == "creative":
-        mode_specific_instruction = """
-        Make sure each option correctly uses the vocab word and makes sense in the context of the story.
-
-         An example output format would be:
-        {
-            "option1": {"text": "The enormous elephant nibbled on the leaves.",
-            "isCorrect": true},
-            "option2": {"text": "The enormous elephant danced in the rain.",
-            "isCorrect": true},
-            "option3": {"text": "The enormous elephant ran away.",
-            "isCorrect": true},
-            "option4": {"text": "The enormous elephant sang a song.",
-            "isCorrect": true}
-        }
-        """
+        mode_specific_instruction = "Make sure each option correctly uses the vocab word and makes sense in the context of the story."
     elif mode == "test":
-        mode_specific_instruction = """
-        Only ONE of the options should be grammatically correct and make sense in the context of the story. The other three options should use the vocab word wrongly.
-
-         An example output format would be:
-        {
-            "option1": {"text": "The enormous elephant nibbled on the leaves.",
-            "isCorrect": false},
-            "option2": {"text": "The enormous elephant danced in the rain.",
-            "isCorrect": false},
-            "option3": {"text": "The enormous elephant ran away.",
-            "isCorrect": false},
-            "option4": {"text": "The enormous elephant sang a song.",
-            "isCorrect": true}
-        }
-        """
+        mode_specific_instruction = "ONLY option1 should be grammatically correct and use the vocab word correctly. The next three options should use the vocab word wrongly."
     elif mode == "mixed":
-        mode_specific_instruction = """
-        TWO of the options should be grammatically correct and make sense in the context of the story. The other two options should use the vocab word wrongly.
-        
-         An example output format would be:
-        {
-            "option1": {"text": "The enormous elephant nibbled on the leaves.",
-            "isCorrect": false},
-            "option2": {"text": "The enormous elephant danced in the rain.",
-            "isCorrect": false},
-            "option3": {"text": "The enormous elephant ran away.",
-            "isCorrect": true},
-            "option4": {"text": "The enormous elephant sang a song.",
-            "isCorrect": true}
-        }
-        """
+        mode_specific_instruction = "ONLY option1 and option2 should be grammatically correct and make sense in the context of the story. The next two options should use the vocab word wrongly."
 
     prompt = PromptTemplate.from_template(instructions)
 
     output_parser = StrOutputParser()
+
     runnable = prompt | llm | output_parser
+    
     output = runnable.invoke({"vocab": vocab_list, "story": story, "mode_specific_instruction": mode_specific_instruction})
     
     # slice from first bracket to last bracket.
