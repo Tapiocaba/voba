@@ -10,6 +10,7 @@
 
 # production
 /build
+dep
 
 # Python
 __pycache__/
