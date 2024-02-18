@@ -22,7 +22,7 @@ const vocabWords = {
   ],
   '3': [
       {
-        word: "uncanny",
+        word: 'uncanny',
         definition: "Strange or mysterious, especially in an unsettling way.",
         imageLink: "https://media.istockphoto.com/id/1211530625/vector/the-cute-brown-haired-boy-standing-in-blue-pants-with-a-scared-face-vector-illustration-in.jpg?s=612x612&w=0&k=20&c=uVr_00ZGnqR9qgUzD5FfRfUSeBTHCBVh_g8GpobeLjw="
       },
