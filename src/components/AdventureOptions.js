@@ -4,7 +4,6 @@ import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import '../css/Vocab.css';
 import axios from 'axios';
 
-const BASE_URL = 'https://voba.vercel.app/api';
 
 const AdventureOptions = ({ options, onOptionSelect, userDetails, vocabWords }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
@@ -12,7 +11,7 @@ const AdventureOptions = ({ options, onOptionSelect, userDetails, vocabWords }) 
   const handleAudioClick = async (text) => {
     try {
       const params = { audio_str: text };
-      const response = await axios.get(`${BASE_URL}/get-audio`, {
+      const response = await axios.get(`/api/get-audio`, {
         params,
         responseType: 'blob',
         headers: {

@@ -3,7 +3,6 @@ import axios from 'axios'; // Assuming axios is used for dictionary API requests
 
 import '../css/Vocab.css';
 
-const BASE_URL = 'https://voba.vercel.app/api';
 
 
 const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWords }) => {
@@ -13,7 +12,7 @@ const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWor
   const handleAudioClick = async (text) => {
     try {
       const params = { audio_str: text };
-      const response = await axios.get(`${BASE_URL}/get-audio`, {
+      const response = await axios.get(`/api/get-audio`, {
         params,
         responseType: 'blob',
         headers: {

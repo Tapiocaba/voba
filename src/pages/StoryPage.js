@@ -9,7 +9,6 @@ import { jsPDF } from "jspdf";
 
 
 import '../css/StoryPage.css';
-const BASE_URL = 'https://voba.vercel.app/api';
 
 
 const StoryPage = ({ userDetails, mode, vocabWords }) => {
@@ -49,7 +48,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
 
   // fetch first part of the array
   const fetchFirstPart = async () => {
-    const requestUrl = `${BASE_URL}/get-initial-story`;
+    const requestUrl = `/api/get-initial-story`;
     let newStoryPart = '';
 
     try {
@@ -92,7 +91,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
     else if (storyParts.length % 2 === 0) {
       const fetchStoryContinuation = async () => {
         try {
-          const requestUrl = `${BASE_URL}/get-story-continue`;
+          const requestUrl = `/api/get-story-continue`;
 
           const response = await axios.get(requestUrl, {
             params: {
@@ -118,7 +117,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
     else if (storyParts.length !== concludeAt + 1) {
       const fetchStoryOptions = async () => {
         try {
-          const optionsResponse = await axios.get(`${BASE_URL}/get-sentence-options`, {
+          const optionsResponse = await axios.get(`/api/get-sentence-options`, {
             params: {
               story: storyParts.join(' '),
               vocab_list: vocabWords.map(({ word }) => word).join(', '),
@@ -183,7 +182,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
           word = usedVocab[0];
         }
         if (word !== '') {
-          const response = await axios.get(`${BASE_URL}/explain-wrong`, {
+          const response = await axios.get(`/api/explain-wrong`, {
             params: {
               sentence: option.text,
               word: word,
