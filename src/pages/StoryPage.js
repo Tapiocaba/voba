@@ -9,7 +9,7 @@ import { jsPDF } from "jspdf";
 
 
 import '../css/StoryPage.css';
-const BASE_URL = 'http://voba.vercel.app/api';
+const BASE_URL = 'https://voba.vercel.app/api';
 
 
 const StoryPage = ({ userDetails, mode, vocabWords }) => {

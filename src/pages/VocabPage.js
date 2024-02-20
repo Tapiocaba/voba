@@ -3,7 +3,7 @@ import axios from 'axios'; // Assuming axios is used for dictionary API requests
 
 import '../css/Vocab.css';
 
-const BASE_URL = 'http://voba.vercel.app/api';
+const BASE_URL = 'https://voba.vercel.app/api';
 
 
 const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWords }) => {
