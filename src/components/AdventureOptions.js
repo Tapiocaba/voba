@@ -4,8 +4,7 @@ import { faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import '../css/Vocab.css';
 import axios from 'axios';
 
-const BASE_URL = 'https://vkv088ibwf.execute-api.us-east-2.amazonaws.com/dev/api'
-// const BASE_URL = 'http://localhost:8000/api';
+const BASE_URL = 'http://voba.vercel.app/api';
 
 const AdventureOptions = ({ options, onOptionSelect, userDetails, vocabWords }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
