@@ -1,7 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
-# Ensure the client and other dependencies are accessible
-from api.dependencies.dependencies import client
+from dependencies.dependencies import client
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):

@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
 import json
 
-from api.dependencies.dependencies import get_story_continue
+from dependencies.dependencies import get_story_continue
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):

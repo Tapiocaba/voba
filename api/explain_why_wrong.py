@@ -1,7 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
-# Make sure to adjust the import path for explain_why_wrong based on your project structure
-from api.dependencies.dependencies import explain_why_wrong
+from dependencies.dependencies import explain_why_wrong
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):

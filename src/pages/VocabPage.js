@@ -12,7 +12,7 @@ const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWor
   const handleAudioClick = async (text) => {
     try {
       const params = { audio_str: text };
-      const response = await axios.get(`/api/get-audio`, {
+      const response = await axios.get(`http://localhost:8000/api/get_audio`, {
         params,
         responseType: 'blob',
         headers: {

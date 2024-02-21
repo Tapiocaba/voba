@@ -17,6 +17,8 @@ dep
 __pycache__/
 .venv
 
+api/venv/
+
 # misc
 .DS_Store
 .env
