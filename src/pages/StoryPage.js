@@ -48,7 +48,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
 
   // fetch first part of the array
   const fetchFirstPart = async () => {
-    const requestUrl = `http://localhost:8000/api/get_initial_story`;
+    const requestUrl = `/api/get_initial_story`;
     let newStoryPart = '';
 
     try {
@@ -91,7 +91,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
     else if (storyParts.length % 2 === 0) {
       const fetchStoryContinuation = async () => {
         try {
-          const requestUrl = `http://localhost:8000/api/get_story_continue`;
+          const requestUrl = `/api/get_story_continue`;
 
           const response = await axios.get(requestUrl, {
             params: {
@@ -117,7 +117,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
     else if (storyParts.length !== concludeAt + 1) {
       const fetchStoryOptions = async () => {
         try {
-          const optionsResponse = await axios.get(`http://localhost:8000/api/get_sentence_options`, {
+          const optionsResponse = await axios.get(`/api/get_sentence_options`, {
             params: {
               story: storyParts.join(' '),
               vocab_list: vocabWords.map(({ word }) => word).join(', '),
@@ -182,7 +182,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
           word = usedVocab[0];
         }
         if (word !== '') {
-          const response = await axios.get(`http://localhost:8000/api/explain_why_wrong`, {
+          const response = await axios.get(`/api/explain_why_wrong`, {
             params: {
               sentence: option.text,
               word: word,
