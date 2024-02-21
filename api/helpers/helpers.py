@@ -5,7 +5,6 @@ from langchain.schema import HumanMessage
 from langchain.prompts.example_selector import LengthBasedExampleSelector
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from langchain_core.pydantic_v1 import BaseModel, Field, validator
-from models import VocabWord, VocabList, SentenceResponse
 import json
 import os
 from typing import List
