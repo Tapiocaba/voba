@@ -11,7 +11,7 @@ import json
 
 app = FastAPI()
 
-@router.get("/get-audio", tags=['client'], status_code=status.HTTP_200_OK)
+@app.get("/get-audio", tags=['client'], status_code=status.HTTP_200_OK)
 async def getAudio(audio_str: str):
     # Generate audio
     response = client.audio.speech.create(

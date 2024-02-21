@@ -11,7 +11,7 @@ import json
 
 app = FastAPI()
 
-@router.get("/explain-wrong", tags=['client'], status_code=status.HTTP_200_OK)
+@app.get("/explain-wrong", tags=['client'], status_code=status.HTTP_200_OK)
 async def explainWrong(sentence: str, word: str) -> str:
     explanation = explain_why_wrong(sentence=sentence, word=word)
     return Response(content=explanation, media_type="text/plain")

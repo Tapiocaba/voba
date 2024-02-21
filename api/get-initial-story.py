@@ -11,7 +11,7 @@ import json
 
 app = FastAPI()
 
-@router.get("/get-initial-story", tags=['client'], status_code=status.HTTP_200_OK)
+@app.get("/get-initial-story", tags=['client'], status_code=status.HTTP_200_OK)
 async def getInitialStory(vocab_list: str, mode: str) -> str:
     if mode in ["creative", "test", "mixed"]:
         story = get_story_start(vocab_list=vocab_list, mode=mode)
