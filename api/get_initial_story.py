@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import parse_qs, urlparse
-from dependencies.dependencies import get_story_start  # Ensure this path is correct based on your project structure
+from api.helpers.helpers import get_story_start  # Ensure this path is correct based on your project structure
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
