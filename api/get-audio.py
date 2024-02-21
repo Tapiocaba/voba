@@ -1,26 +1,31 @@
-from fastapi import FastAPI, Request, HTTPException, status
-from mangum import Mangum
-from fastapi.responses import Response
-from fastapi.responses import JSONResponse
+from http.server import BaseHTTPRequestHandler
+from urllib.parse import parse_qs, urlparse
+# Ensure the client and other dependencies are accessible
+from api.dependencies.dependencies import client
 
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        # Parse query parameters
+        query_components = parse_qs(urlparse(self.path).query)
+        audio_str = query_components.get('audio_str', [None])[0]
+        
+        if audio_str:
+            # Simulate the audio generation logic
+            # This is a placeholder for your actual audio generation logic
+            response = client.audio.speech.create(
+                model="tts-1",
+                voice="shimmer",
+                input=audio_str,
+            )
+            
+            # Placeholder response, replace with actual response handling
+            self.send_response(200)
+            self.send_header('Content-type', 'audio/mpeg')
+            self.end_headers()
+            self.wfile.write(response.encode())
+        else:
+            self.send_response(400)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write('{"detail": "Missing audio_str parameter"}'.encode())
 
-from models import VocabList, SentenceResponse, SentenceChoices
-from api.dependencies.dependencies import get_sentence_options, get_story_start, get_story_continue, explain_why_wrong, client
-from typing import List
-import json
-
-app = FastAPI()
-
-@app.get("/get-audio", tags=['client'], status_code=status.HTTP_200_OK)
-async def getAudio(audio_str: str):
-    # Generate audio
-    response = client.audio.speech.create(
-        model="tts-1",
-        voice="shimmer",
-        input=audio_str,
-    )
-
-    return Response(content=response.content, media_type="audio/mpeg")
-
-
-handler = Mangum(app)

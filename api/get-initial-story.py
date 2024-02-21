@@ -1,23 +1,24 @@
-from fastapi import FastAPI, Request, HTTPException, status
-from mangum import Mangum
-from fastapi.responses import Response
-from fastapi.responses import JSONResponse
+from http.server import BaseHTTPRequestHandler
+from urllib.parse import parse_qs, urlparse
+from api.dependencies.dependencies import get_story_start  # Ensure this path is correct based on your project structure
 
-
-from models import VocabList, SentenceResponse, SentenceChoices
-from api.dependencies.dependencies import get_sentence_options, get_story_start, get_story_continue, explain_why_wrong, client
-from typing import List
-import json
-
-app = FastAPI()
-
-@app.get("/get-initial-story", tags=['client'], status_code=status.HTTP_200_OK)
-async def getInitialStory(vocab_list: str, mode: str) -> str:
-    if mode in ["creative", "test", "mixed"]:
-        story = get_story_start(vocab_list=vocab_list, mode=mode)
-        return Response(content=story, media_type="text/plain")
-    else:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Error: Invalid mode provided")
-
-
-handler = Mangum(app)
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        # Parse query parameters
+        query_components = parse_qs(urlparse(self.path).query)
+        vocab_list = query_components.get('vocab_list', [None])[0]
+        mode = query_components.get('mode', [None])[0]
+        
+        # Validate and process the request
+        if mode in ["creative", "test", "mixed"] and vocab_list is not None:
+            story = get_story_start(vocab_list=vocab_list, mode=mode)
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(story.encode())
+        else:
+            self.send_response(400)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write('{"detail": "Error: Invalid mode provided or missing vocab_list"}'.encode())
