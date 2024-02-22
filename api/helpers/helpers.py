@@ -39,8 +39,9 @@ class SentenceOptions(BaseModel):
 def get_story_start(vocab_list: str, mode: str = "creative"):
 
     instructions = """
-        You are a storyteller that kids LOVE to listen to helping a young elementary schooler learn vocabulary. Think of 
-        an interesting story plot that is likely to later use the following vocabulary words: 
+        You are a writer helping a young elementary schooler learn vocabulary. Think of 
+        an interesting story plot that is likely to later use the following vocabulary words. Be creative
+        with the story, incorporating dialogue, characters, and a plot. 
         \n\n
         {vocab}
         \n\n
@@ -50,8 +51,6 @@ def get_story_start(vocab_list: str, mode: str = "creative"):
         - Do not actually use the vocabulary words.\n
         - Stop at a point where it would make sense to have options for
         what happens next or what choice is made next. Do not actually give any options. \n
-        - Write it at a level that a young elementary schooler would understand.\n
-        - Make it interesting and fun, so the young elementary schooler wants to keep reading.\n
         - Make it about 2 sentences.
     """
 
@@ -85,8 +84,9 @@ def get_story_continue(story: str, vocab_list: str, conclude: bool, mode: str = 
 
     else:
         instructions = """
-            You are a storyteller that kids LOVE to listen to helping a young elementary schooler learn vocabulary. Continue
-            the following story that is likely to later use the following vocabulary words: 
+            You are a writer helping a young elementary schooler learn vocabulary. Continue
+            the following story that is likely to later use the following vocabulary words. Be creative
+        with the story, incorporating dialogue, characters, and a plot.  
             \n\n
             {vocab}
             \n\n
@@ -122,20 +122,39 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     # parser = JsonOutputParser(pydantic_object=SentenceOptions)
 
     # todo: change based on mode
-    instructions = """
-        You are a storyteller that kids LOVE to listen to helping a young elementary schooler learn vocabulary using a 
+
+    incorrect_instructions = """
+        You are a teacher helps learn vocabulary using a choose-your-own-adventure story. To test if they actually understand the vocabulary words,
+        you come up with 3 sentences that use the vocabulary word INCORRECTLY, so that the sentence doesn't make any sense at all.
+          Given the following story, come up with three INCORRECT options for how the story can continue. Ensure that:
+        \n\n
+        - The sentence makes no sense at all because the vocabulary word is used incorrectly.\n
+        - Each option is one sentence.\n
+        - Each option is written at a first-grade level.\n
+        - Each option uses exactly one of the following vocab words: {vocab}\n
+        - None of the options use the same vocab word.\n
+        
+
+       The output should be a json object with the following key value pairs\n
+
+        "option1": "The first option to continue the story",
+        "option2": "The second option to continue the story",
+        "option3": "The third option to continue the story",
+        
+       \n
+        Story: {story}
+    """
+     
+    correct_instructions = """
+        You are a storyteller helping a young elementary schooler learn vocabulary using a 
         choose-your-own-adventure story. Given the following story, come up with 
         four options for how the story can continue. Ensure that:
         \n\n
         - Each option is one sentence.\n
         - Each option is written at a first-grade level.\n
-        - Each option is interesting and makes sense in the story context.\n
-        - The options present significantly different choices for the reader, so they 
-        feel like their choices impact the story.\n
-        - The options should be written in an active voice, without modal verbs.\n
         - Each option uses exactly one of the following vocab words: {vocab}\n
         - None of the options use the same vocab word.\n
-        - {mode_specific_instruction}
+        
 
        The output should be a json object with the following key value pairs\n
 
@@ -148,37 +167,50 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
         Story: {story}
     """
 
-    if mode == "creative":
-        mode_specific_instruction = "IMPORTANT: Make sure each option correctly uses the vocab word and makes sense in the context of the story."
-    elif mode == "test":
-        mode_specific_instruction = "IMPORTANT: ONLY option1 should be grammatically correct and use the vocab word correctly. The next three options should use the vocab word completely incorrectly so that the sentence doesn't make sense."
-    elif mode == "mixed":
-        mode_specific_instruction = "IMPORTANT: ONLY option1 and option2 should be grammatically correct and make sense in the context of the story. The next two options should use the vocab word completely incorrectly so that the sentence doesn't make sense."
-
-    prompt = PromptTemplate.from_template(instructions)
-
+    prompt1 = PromptTemplate.from_template(correct_instructions)
     output_parser = StrOutputParser()
+    runnable = prompt1 | llm | output_parser
+    output1 = runnable.invoke({"vocab": vocab_list, "story": story})
+    
+    prompt2 = PromptTemplate.from_template(incorrect_instructions)
+    output_parser = StrOutputParser()
+    runnable = prompt2 | llm | output_parser
+    output2 = runnable.invoke({"vocab": vocab_list, "story": story})
 
-    runnable = prompt | llm | output_parser
     
-    output = runnable.invoke({"vocab": vocab_list, "story": story, "mode_specific_instruction": mode_specific_instruction})
-    
-    print(output)
+
+
     # slice from first bracket to last bracket.
-    start_index = output.find('{')
-    end_index = output.rfind('}') + 1
-    output = output[start_index:end_index]
+    start_index = output1.find('{')
+    end_index = output1.rfind('}') + 1
+    output1 = output1[start_index:end_index]
+
+    start_index = output2.find('{')
+    end_index = output2.rfind('}') + 1
+    output2 = output2[start_index:end_index]
 
     # convert output to dict
-    output = json.loads(output)
+    output1 = json.loads(output1)
+    output2 = json.loads(output2)
 
-    # ensure options are in the correct format & each have at least one vocab word
-    # options = output.values()
+    # merge the two outputs depending on mode
+    if mode == "creative":
+        output = output1
+    elif mode == "test":
+        # first is correct, the next 3 are incorrect
+        output = {}
+        output["option1"] = output1["option1"]
+        output["option2"] = output2["option1"]
+        output["option3"] = output2["option2"]
+        output["option4"] = output2["option3"]
+    elif mode == "mixed":
+        # first two are correct, the next 2 are incorrect
+        output = {}
+        output["option1"] = output1["option1"]
+        output["option2"] = output1["option2"]
+        output["option3"] = output2["option1"]
+        output["option4"] = output2["option2"]
 
-    # if not _validate_options_json(output):
-    #     raise ValueError("JSON data is not in the correct format")
-    # elif not all([_check_vocab_in_string(option, vocab_list) for option in options]):
-    #     raise ValueError("Not every option has a vocab word")
 
     return output
 
