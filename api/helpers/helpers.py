@@ -124,7 +124,8 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
     incorrect_instructions = """
         You are a teacher helps learn vocabulary using a choose-your-own-adventure story. To test if they actually understand the vocabulary words,
         you come up with 3 sentences that use the vocabulary word INCORRECTLY, so that the sentence doesn't make any sense at all. The word should 
-        be used incorrectly in multiple ways: grammatically, semantically, and in terms of the story.
+        be used incorrectly in multiple ways: grammatically, semantically, and in terms of the story. It should be pathetically bad, and no way
+        to argue that the word was used correctly. Like if the word was "large", you could say "The large was great", which makes no sense at all.
           Given the following story, come up with three INCORRECT options for how the story can continue. Ensure that:
         \n\n
         - The sentence makes no sense at all because the vocabulary word is used incorrectly.\n
