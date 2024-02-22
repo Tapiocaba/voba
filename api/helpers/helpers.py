@@ -16,7 +16,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 # llm = ChatOpenAI(temperature=1, model_name='gpt-4-1106-preview')
 # to reduce cost and speed up response time
-llm = ChatOpenAI(temperature=2, model_name='gpt-3.5-turbo-0125')
+llm = ChatOpenAI(temperature=1.5, model_name='gpt-3.5-turbo-0125')
 
 
 
