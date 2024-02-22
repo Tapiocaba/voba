@@ -16,12 +16,10 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
   const [options, setOptions] = useState([]);
   const [usedVocab, setUsedVocab] = useState([]);
   const [elephantText, setElephantText] = useState('Give me a second to think of a story...');
+  const [hasEnded, setHasEnded] = useState(false);
   const endOfStoryRef = useRef(null);
   const isMounted = useRef(false);
-  const [initialized, setInitialized] = useState(false);
-  const [readyForNextPart, setReadyForNextPart] = useState(false);
 
-  const concludeAt = 6;
 
   const downloadStoryAsPDF = () => {
     const doc = new jsPDF();
@@ -49,7 +47,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
 
   // fetch first part of the array
   const fetchFirstPart = async () => {
-    const requestUrl = `/api/get_initial_story`;
+    const requestUrl = `https://voba.vercel.app/api/get_initial_story`;
 
     try {
       const params = new URLSearchParams({
@@ -76,6 +74,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
         reader.read().then(({ done, value }) => {
           if (done) {
             setElephantText('Coming up with possible continuations...');
+            fetchStoryOptions(newStoryParts);
             isMounted.current = true;
             return;
           }
@@ -99,6 +98,95 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
     }
   };
 
+  const fetchStoryContinuation = async (parts) => {
+    try {
+      const requestUrl = `https://voba.vercel.app/api/get_story_continue`;
+
+      // Prepare URLSearchParams for the GET request
+      const params = new URLSearchParams({
+        story: parts.join('\n'),
+        mode: mode,
+        vocab_list: vocabWords.map(({ word }) => word).join(', '),
+        conclude: usedVocab.length === vocabWords.length,
+      });
+
+      const response = await fetch(`${requestUrl}?${params}`, {
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+
+      // Check if the response is OK
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const reader = response.body.getReader();
+      let newStoryParts = [...parts, ''];
+
+      // Function to read the stream
+      const read = () => {
+        reader.read().then(({ done, value }) => {
+          if (done) {
+            if (usedVocab.length === vocabWords.length) {
+              setHasEnded(true);
+              setElephantText('The end!');
+              return;
+            }
+            setElephantText('Coming up with possible continuations...');
+            fetchStoryOptions(newStoryParts);
+            return
+          }
+
+          // Convert the Uint8Array to a string and update the state
+          const textChunk = new TextDecoder().decode(value);
+          newStoryParts[newStoryParts.length - 1] += textChunk;
+          setStoryParts(newStoryParts);
+
+          // Read the next chunk
+          read();
+        }).catch(error => {
+          console.error('Stream reading failed:', error);
+        });
+      };
+
+      // Start reading the stream
+      read();
+    } catch (error) {
+      console.error('Failed to fetch story continuation', error);
+      throw new Error('Failed to fetch story continuation');
+    }
+  };
+
+  const fetchStoryOptions = async (parts) => {
+    let newOptions = [];
+
+    try {
+      const optionsResponse = await axios.get(`https://voba.vercel.app/api/get_sentence_options`, {
+        params: {
+          story: parts.join('\n'),
+          vocab_list: vocabWords.map(({ word }) => word).join(', '),
+          mode: mode,
+        },
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+
+      newOptions = Object.values(optionsResponse.data).map(option => ({
+        text: option.text,
+        isCorrect: option.isCorrect,
+      }));
+      // shuffle the options
+      newOptions = newOptions.sort(() => Math.random() - 0.5);
+      setOptions(newOptions);
+      setElephantText('Choose an option to continue the story!');
+    }
+    catch (error) {
+      console.error('Error fetching sentence options:', error);
+    }
+  }
+
 
   useEffect(() => {
     if (!isMounted.current) {
@@ -107,112 +195,6 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
     }
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    if (!readyForNextPart) {
-      return;
-    }
-    let newOptions = [];
-
-    if (!initialized) {
-      // Set the flag to true to indicate that initialization has occurred
-      setInitialized(true);
-      // Don't perform any action during the first render
-    }
-    else if (storyParts.length % 2 === 0) {
-      setReadyForNextPart(false);
-      const fetchStoryContinuation = async () => {
-        try {
-          const requestUrl = `/api/get_story_continue`;
-
-          // Prepare URLSearchParams for the GET request
-          const params = new URLSearchParams({
-            story: storyParts.join(' '),
-            mode: mode,
-            vocab_list: vocabWords.map(({ word }) => word).join(', '),
-            conclude: storyParts.length === concludeAt.toString(),
-          });
-
-          const response = await fetch(`${requestUrl}?${params}`, {
-            headers: {
-              'Accept': 'application/json',
-            },
-          });
-
-          // Check if the response is OK
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-
-          const reader = response.body.getReader();
-          let newStoryParts = [...storyParts, ''];
-
-          // Function to read the stream
-          const read = () => {
-            reader.read().then(({ done, value }) => {
-              if (done) {
-                setElephantText('Coming up with possible continuations...');
-                setReadyForNextPart(true);
-                return;
-              }
-
-              // Convert the Uint8Array to a string and update the state
-              const textChunk = new TextDecoder().decode(value);
-              newStoryParts[newStoryParts.length - 1] += textChunk;
-              setStoryParts(newStoryParts);
-
-              // Read the next chunk
-              read();
-            }).catch(error => {
-              console.error('Stream reading failed:', error);
-            });
-          };
-
-          // Start reading the stream
-          read();
-        } catch (error) {
-          console.error('Failed to fetch story continuation', error);
-          throw new Error('Failed to fetch story continuation');
-        }
-      };
-
-      fetchStoryContinuation();
-    }
-    else if (storyParts.length !== concludeAt + 1) {
-      const fetchStoryOptions = async () => {
-        try {
-          const optionsResponse = await axios.get(`/api/get_sentence_options`, {
-            params: {
-              story: storyParts.join(' '),
-              vocab_list: vocabWords.map(({ word }) => word).join(', '),
-              mode: mode,
-            },
-            headers: {
-              'Accept': 'application/json',
-            },
-          });
-
-          newOptions = Object.values(optionsResponse.data).map(option => ({
-            text: option.text,
-            isCorrect: option.isCorrect,
-          }));
-          // shuffle the options
-          newOptions = newOptions.sort(() => Math.random() - 0.5);
-          setOptions(newOptions);
-          setElephantText('Choose an option to continue the story!');
-        }
-        catch (error) {
-          console.error('Error fetching sentence options:', error);
-        }
-      }
-      fetchStoryOptions()
-
-    }
-    else {
-      setElephantText('The end! Great job!');
-    }
-    // eslint-disable-next-line
-  }, [storyParts]);
 
   useEffect(() => {
     endOfStoryRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -227,14 +209,17 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
         setElephantText('Nice choice!');
       }
       // wait 1 second and then 
-      setTimeout(() => {
+      setTimeout(async () => {
         setElephantText('Give me a second to continue the story...');
         setOptions([]);
-        setStoryParts(prev => [...prev, `\n${option.text}\n`]);
         const vocabWordsForUser = vocabWords.map(({ word }) => word);
         const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
         const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace(/[.,!?]/g, ''));
         setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
+
+        const parts = [...storyParts, option.text];
+        setStoryParts(prev => [...prev, option.text]);
+        fetchStoryContinuation(parts);
       }, 1000);
 
     } else {
@@ -247,7 +232,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
         }
         if (word !== '') {
           const fetchExplanation = async () => {
-            const requestUrl = `/api/explain_why_wrong`;
+            const requestUrl = `https://voba.vercel.app/api/explain_why_wrong`;
 
             // Prepare URLSearchParams for the GET request
             const params = new URLSearchParams({
@@ -296,7 +281,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
               throw new Error('Failed to fetch explanation');
             }
           };
-
+          fetchExplanation();
         }
         else {
           setElephantText('Try again!');
@@ -345,7 +330,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
                 ))}</p>
               </CSSTransition>
             ))}
-            {storyParts.length > concludeAt && (
+            {hasEnded && (
               <button onClick={downloadStoryAsPDF} className='mt-5 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded flex items-center justify-center'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-download mr-2" viewBox="0 0 16 16">
                   <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
