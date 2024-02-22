@@ -49,7 +49,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
 
   // fetch first part of the array
   const fetchFirstPart = async () => {
-    const requestUrl = `/api/get_initial_story`;
+    const requestUrl = `https://voba.vercel.app/api/get_initial_story`;
 
     try {
       const response = await axios.get(requestUrl, {
@@ -61,15 +61,18 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
           'Accept': 'application/json',
         },
         responseType: 'stream',
-      })
+      });
       const newStoryParts = [...storyParts, ''];
       response.data.on('data', (chunk) => {
+        console.log('chunk')
+        console.log(chunk.toString())
         newStoryParts[newStoryParts.length - 1] += chunk.toString();
         setStoryParts(newStoryParts);
       });
       response.data.on('end', () => {
         setElephantText('Coming up with possible continuations...');
         isMounted.current = true;
+        setReadyForNextPart(true);
       });
     }
     catch (error) {

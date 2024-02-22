@@ -17,8 +17,11 @@ class handler(BaseHTTPRequestHandler):
             self.end_headers()
 
             story = get_story_start(vocab_list=vocab_list, mode=mode)
+            
+            num = 0
             for chunk in story:
-                self.wfile.write(chunk.encode())
+                chunk_edited = str(num) + " " + chunk
+                self.wfile.write(chunk_edited.encode())
                 self.wfile.flush()
 
         else:
