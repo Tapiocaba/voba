@@ -39,19 +39,19 @@ class SentenceOptions(BaseModel):
 def get_story_start(vocab_list: str, mode: str = "creative"):
 
     instructions = """
-        You are a writer helping a young elementary schooler learn vocabulary. Think of 
+        You are a writer helping a child learn vocabulary. Think of 
         an interesting story plot that is likely to later use the following vocabulary words. Be creative
         with the story, incorporating dialogue, characters, and a plot. 
         \n\n
         {vocab}
         \n\n
-        Now, write an introduction to the story. Make sure to do the following in
-        the introduction:
+        Now, write a 2-3 sentence introduction to the story at a first-grade level, with a captivating hook, 
+        possibly with dialogue, characters, and introducing conflicts.
+        Make sure to do the following in the introduction:
         \n\n
         - Do not actually use the vocabulary words.\n
         - Stop at a point where it would make sense to have options for
         what happens next or what choice is made next. Do not actually give any options. \n
-        - Make it about 2 sentences.
     """
 
     prompt = PromptTemplate.from_template(instructions)
@@ -90,14 +90,12 @@ def get_story_continue(story: str, vocab_list: str, conclude: bool, mode: str = 
             \n\n
             {vocab}
             \n\n
-            Make sure to do the following in the continuation:
+            Make sure to do the following in the continuation. Keep it super interesting with dialogue, characters, and lots of conflict.
             \n\n
             - Do not actually use the vocabulary words.\n
             - Stop at a point where it would make sense to have options for
             what happens next or what choice is made next. Do not actually give any options. \n
-            - Write it at a level that a young elementary schooler would understand.\n
-            - Make it interesting and fun, so the young elementary schooler wants to keep reading.\n
-            - The continuation should make sense in the context of the entire story.\n
+            - Write it at a level that a child would understand.\n
             - Make it about 2 sentences.\n\n
 
             Here is the story I want you to the continue:
@@ -125,7 +123,8 @@ def get_sentence_options(story: str, vocab_list: str, mode: str = "creative"):
 
     incorrect_instructions = """
         You are a teacher helps learn vocabulary using a choose-your-own-adventure story. To test if they actually understand the vocabulary words,
-        you come up with 3 sentences that use the vocabulary word INCORRECTLY, so that the sentence doesn't make any sense at all.
+        you come up with 3 sentences that use the vocabulary word INCORRECTLY, so that the sentence doesn't make any sense at all. The word should 
+        be used incorrectly in multiple ways: grammatically, semantically, and in terms of the story.
           Given the following story, come up with three INCORRECT options for how the story can continue. Ensure that:
         \n\n
         - The sentence makes no sense at all because the vocabulary word is used incorrectly.\n
