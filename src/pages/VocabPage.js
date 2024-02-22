@@ -10,6 +10,7 @@ const VocabPage = ({ userDetails, onContinueToMode, vocabWords, onChangeVocabWor
   const [newWord, setNewWord] = useState('');
 
   const handleAudioClick = async (text) => {
+    if (editMode) return;
     try {
       const params = { audio_str: text };
       const response = await axios.get(`/api/get_audio`, {

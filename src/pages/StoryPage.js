@@ -98,7 +98,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
     }
   };
 
-  const fetchStoryContinuation = async (parts) => {
+  const fetchStoryContinuation = async (parts, uniqueUsedVocab) => {
     try {
       const requestUrl = `https://voba.vercel.app/api/get_story_continue`;
 
@@ -107,7 +107,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
         story: parts.join('\n'),
         mode: mode,
         vocab_list: vocabWords.map(({ word }) => word).join(', '),
-        conclude: usedVocab.length === vocabWords.length,
+        conclude: uniqueUsedVocab.length === vocabWords.length,
       });
 
       const response = await fetch(`${requestUrl}?${params}`, {
@@ -128,7 +128,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
       const read = () => {
         reader.read().then(({ done, value }) => {
           if (done) {
-            if (usedVocab.length === vocabWords.length) {
+            if (uniqueUsedVocab.length === vocabWords.length) {
               setHasEnded(true);
               setElephantText('The end!');
               return;
@@ -213,13 +213,16 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
         setElephantText('Give me a second to continue the story...');
         setOptions([]);
         const vocabWordsForUser = vocabWords.map(({ word }) => word);
-        const usedVocab = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
-        const usedVocabWithoutPunctuation = usedVocab.map(word => word.replace(/[.,!?]/g, ''));
+        const usedVocabInSentence = option.text.split(' ').filter(word => vocabWordsForUser.includes(word.replace(/[.,!?]/g, '')));
+        const usedVocabWithoutPunctuation = usedVocabInSentence.map(word => word.replace(/[.,!?]/g, ''));
         setUsedVocab(prev => [...prev, ...usedVocabWithoutPunctuation]);
+
+        // create usedVocab list with unique values
+        const uniqueUsedVocab = [...new Set(usedVocabWithoutPunctuation), ...new Set(usedVocab)];
 
         const parts = [...storyParts, option.text];
         setStoryParts(prev => [...prev, option.text]);
-        fetchStoryContinuation(parts);
+        fetchStoryContinuation(parts, uniqueUsedVocab);
       }, 1000);
 
     } else {
