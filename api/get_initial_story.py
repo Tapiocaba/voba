@@ -18,10 +18,8 @@ class handler(BaseHTTPRequestHandler):
 
             story = get_story_start(vocab_list=vocab_list, mode=mode)
             
-            num = 0
             for chunk in story:
-                chunk_edited = str(num) + " " + chunk
-                self.wfile.write(chunk_edited.encode())
+                self.wfile.write(chunk.encode())
                 self.wfile.flush()
 
         else:

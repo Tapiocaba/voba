@@ -52,30 +52,53 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
     const requestUrl = `/api/get_initial_story`;
 
     try {
-      const response = await axios.get(requestUrl, {
-        params: {
-          mode: mode,
-          vocab_list: vocabWords.map(({ word }) => word).join(', '),
-        },
+      const params = new URLSearchParams({
+        mode: mode,
+        vocab_list: vocabWords.map(({ word }) => word).join(', '),
+      });
+
+      const response = await fetch(`${requestUrl}?${params}`, {
         headers: {
           'Accept': 'application/json',
         },
-        responseType: 'stream',
-      })
-      const newStoryParts = [...storyParts, ''];
-      response.data.on('data', (chunk) => {
-        newStoryParts[newStoryParts.length - 1] += chunk.toString();
-        setStoryParts(newStoryParts);
       });
-      response.data.on('end', () => {
-        setElephantText('Coming up with possible continuations...');
-        isMounted.current = true;
-      });
-    }
-    catch (error) {
+
+      // Check if the response is OK
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const reader = response.body.getReader();
+      let newStoryParts = [...storyParts, ''];
+
+      // Function to read the stream
+      const read = () => {
+        reader.read().then(({ done, value }) => {
+          if (done) {
+            setElephantText('Coming up with possible continuations...');
+            isMounted.current = true;
+            return;
+          }
+
+          // Convert the Uint8Array to a string and update the state
+          const textChunk = new TextDecoder().decode(value);
+          newStoryParts[newStoryParts.length - 1] += textChunk;
+          setStoryParts(newStoryParts);
+
+          // Read the next chunk
+          read();
+        }).catch(error => {
+          console.error('Stream reading failed:', error);
+        });
+      };
+
+      // Start reading the stream
+      read();
+    } catch (error) {
       console.error('Error fetching story continuation:', error);
     }
-  }
+  };
+
 
   useEffect(() => {
     if (!isMounted.current) {
@@ -102,32 +125,57 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
         try {
           const requestUrl = `/api/get_story_continue`;
 
-          const response = await axios.get(requestUrl, {
-            params: {
-              story: storyParts.join(' '),
-              mode: mode,
-              vocab_list: vocabWords.map(({ word }) => word).join(', '),
-              conclude: storyParts.length === concludeAt,
-            },
+          // Prepare URLSearchParams for the GET request
+          const params = new URLSearchParams({
+            story: storyParts.join(' '),
+            mode: mode,
+            vocab_list: vocabWords.map(({ word }) => word).join(', '),
+            conclude: storyParts.length === concludeAt.toString(),
+          });
+
+          const response = await fetch(`${requestUrl}?${params}`, {
             headers: {
               'Accept': 'application/json',
             },
-            responseType: 'stream',
-          })
-          const newStoryParts = [...storyParts, ''];
-          response.data.on('data', (chunk) => {
-            newStoryParts[newStoryParts.length - 1] += chunk.toString();
-            setStoryParts(newStoryParts);
           });
-          response.data.on('end', () => {
-            setElephantText('Coming up with possible continuations...');
-            setReadyForNextPart(true);
-          });
-        }
-        catch (error) {
+
+          // Check if the response is OK
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const reader = response.body.getReader();
+          let newStoryParts = [...storyParts, ''];
+
+          // Function to read the stream
+          const read = () => {
+            reader.read().then(({ done, value }) => {
+              if (done) {
+                setElephantText('Coming up with possible continuations...');
+                setReadyForNextPart(true);
+                return;
+              }
+
+              // Convert the Uint8Array to a string and update the state
+              const textChunk = new TextDecoder().decode(value);
+              newStoryParts[newStoryParts.length - 1] += textChunk;
+              setStoryParts(newStoryParts);
+
+              // Read the next chunk
+              read();
+            }).catch(error => {
+              console.error('Stream reading failed:', error);
+            });
+          };
+
+          // Start reading the stream
+          read();
+        } catch (error) {
+          console.error('Failed to fetch story continuation', error);
           throw new Error('Failed to fetch story continuation');
         }
-      }
+      };
+
       fetchStoryContinuation();
     }
     else if (storyParts.length !== concludeAt + 1) {
@@ -198,21 +246,57 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
           word = usedVocab[0];
         }
         if (word !== '') {
-          const response = await axios.get(`/api/explain_why_wrong`, {
-            params: {
+          const fetchExplanation = async () => {
+            const requestUrl = `/api/explain_why_wrong`;
+
+            // Prepare URLSearchParams for the GET request
+            const params = new URLSearchParams({
               sentence: option.text,
               word: word,
-            },
-            headers: {
-              'Accept': 'application/json',
-            },
-            responseType: 'stream',
-          });
-          let elephantText = '';
-          response.data.on('data', (chunk) => {
-            elephantText += chunk.toString();
-            setElephantText(elephantText);
-          });
+            });
+
+            try {
+              const response = await fetch(`${requestUrl}?${params}`, {
+                headers: {
+                  'Accept': 'application/json',
+                },
+              });
+
+              // Check if the response is OK
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+
+              const reader = response.body.getReader();
+              let elephantText = '';
+
+              // Function to read the stream
+              const read = () => {
+                reader.read().then(({ done, value }) => {
+                  if (done) {
+                    setElephantText(elephantText);
+                    return;
+                  }
+
+                  // Convert the Uint8Array to a string
+                  elephantText += new TextDecoder().decode(value);
+                  setElephantText(elephantText);
+
+                  // Read the next chunk
+                  read();
+                }).catch(error => {
+                  console.error('Stream reading failed:', error);
+                });
+              };
+
+              // Start reading the stream
+              read();
+            } catch (error) {
+              console.error('Failed to fetch explanation', error);
+              throw new Error('Failed to fetch explanation');
+            }
+          };
+
         }
         else {
           setElephantText('Try again!');
