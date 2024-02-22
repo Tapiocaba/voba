@@ -14,7 +14,10 @@ load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
-llm = ChatOpenAI(temperature=1, model_name='gpt-4-1106-preview')
+# llm = ChatOpenAI(temperature=1, model_name='gpt-4-1106-preview')
+# to reduce cost and speed up response time
+llm = ChatOpenAI(temperature=1, model_name='gpt-3.5-turbo-0125')
+
 
 
 # Data structure for sentence option outputs

@@ -326,6 +326,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
                   <React.Fragment key={lineIndex}>
                     {line}
                     <br />
+                    <br />
                   </React.Fragment>
                 ))}</p>
               </CSSTransition>
