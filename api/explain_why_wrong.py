@@ -11,12 +11,15 @@ class handler(BaseHTTPRequestHandler):
         
         if sentence and word:
             # Simulate the explanation logic
-            explanation = explain_why_wrong(sentence=sentence, word=word)
             
             self.send_response(200)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
-            self.wfile.write(explanation.encode())
+            explanation = explain_why_wrong(sentence=sentence, word=word)
+            for chunk in explanation:
+                self.wfile.write(chunk.encode())
+                self.wfile.flush()
+
         else:
             self.send_response(400)
             self.send_header('Content-type', 'application/json')

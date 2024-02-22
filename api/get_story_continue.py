@@ -23,11 +23,15 @@ class handler(BaseHTTPRequestHandler):
             return
 
         try:
-            continued_story = get_story_continue(story=story, vocab_list=vocab_list, mode=mode, conclude=conclude)
             self.send_response(200)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
-            self.wfile.write(continued_story.encode())
+            continued_story = get_story_continue(story=story, vocab_list=vocab_list, mode=mode, conclude=conclude)
+            for chunk in continued_story:
+                self.wfile.write(chunk.encode())
+                self.wfile.flush()
+
+            
         except Exception as e:  # General exception handling, consider specifying exceptions
             self.send_response(500)
             self.send_header('Content-type', 'application/json')

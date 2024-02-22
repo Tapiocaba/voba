@@ -11,12 +11,16 @@ class handler(BaseHTTPRequestHandler):
         
         # Validate and process the request
         if mode in ["creative", "test", "mixed"] and vocab_list is not None:
-            story = get_story_start(vocab_list=vocab_list, mode=mode)
             
             self.send_response(200)
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
-            self.wfile.write(story.encode())
+
+            story = get_story_start(vocab_list=vocab_list, mode=mode)
+            for chunk in story:
+                self.wfile.write(chunk.encode())
+                self.wfile.flush()
+
         else:
             self.send_response(400)
             self.send_header('Content-type', 'application/json')

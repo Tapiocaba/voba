@@ -19,6 +19,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
   const endOfStoryRef = useRef(null);
   const isMounted = useRef(false);
   const [initialized, setInitialized] = useState(false);
+  const [readyForNextPart, setReadyForNextPart] = useState(false);
 
   const concludeAt = 6;
 
@@ -49,7 +50,6 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
   // fetch first part of the array
   const fetchFirstPart = async () => {
     const requestUrl = `/api/get_initial_story`;
-    let newStoryPart = '';
 
     try {
       const response = await axios.get(requestUrl, {
@@ -60,11 +60,17 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
         headers: {
           'Accept': 'application/json',
         },
+        responseType: 'stream',
       })
-      newStoryPart = response.data;
-      setStoryParts(prev => [...prev, newStoryPart]);
-      setElephantText('Coming up with possible continuations...');
-      isMounted.current = true;
+      const newStoryParts = [...storyParts, ''];
+      response.data.on('data', (chunk) => {
+        newStoryParts[newStoryParts.length - 1] += chunk.toString();
+        setStoryParts(newStoryParts);
+      });
+      response.data.on('end', () => {
+        setElephantText('Coming up with possible continuations...');
+        isMounted.current = true;
+      });
     }
     catch (error) {
       console.error('Error fetching story continuation:', error);
@@ -80,7 +86,9 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
   }, []);
 
   useEffect(() => {
-    let newStoryPart = '';
+    if (!readyForNextPart) {
+      return;
+    }
     let newOptions = [];
 
     if (!initialized) {
@@ -89,6 +97,7 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
       // Don't perform any action during the first render
     }
     else if (storyParts.length % 2 === 0) {
+      setReadyForNextPart(false);
       const fetchStoryContinuation = async () => {
         try {
           const requestUrl = `/api/get_story_continue`;
@@ -103,10 +112,17 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
             headers: {
               'Accept': 'application/json',
             },
+            responseType: 'stream',
           })
-          newStoryPart = response.data;
-          setStoryParts(prev => [...prev, newStoryPart]);
-          setElephantText('Coming up with possible continuations...');
+          const newStoryParts = [...storyParts, ''];
+          response.data.on('data', (chunk) => {
+            newStoryParts[newStoryParts.length - 1] += chunk.toString();
+            setStoryParts(newStoryParts);
+          });
+          response.data.on('end', () => {
+            setElephantText('Coming up with possible continuations...');
+            setReadyForNextPart(true);
+          });
         }
         catch (error) {
           throw new Error('Failed to fetch story continuation');
@@ -190,8 +206,13 @@ const StoryPage = ({ userDetails, mode, vocabWords }) => {
             headers: {
               'Accept': 'application/json',
             },
+            responseType: 'stream',
           });
-          setElephantText(response.data);
+          let elephantText = '';
+          response.data.on('data', (chunk) => {
+            elephantText += chunk.toString();
+            setElephantText(elephantText);
+          });
         }
         else {
           setElephantText('Try again!');

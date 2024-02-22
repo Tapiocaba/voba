@@ -56,7 +56,7 @@ def get_story_start(vocab_list: str, mode: str = "creative"):
     output_parser = StrOutputParser()
 
     runnable = prompt | llm | output_parser
-    output = runnable.invoke({"vocab": vocab_list})
+    output = runnable.stream({"vocab": vocab_list})
 
     return output
 
@@ -108,7 +108,7 @@ def get_story_continue(story: str, vocab_list: str, conclude: bool, mode: str = 
 
 
     runnable = prompt | llm | output_parser
-    output = runnable.invoke({"vocab": vocab_list, "story": story})
+    output = runnable.stream({"vocab": vocab_list, "story": story})
 
 
     return output
@@ -196,7 +196,7 @@ def explain_why_wrong(sentence: str, word: str):
     output_parser = StrOutputParser()
 
     runnable = prompt | llm | output_parser
-    output = runnable.invoke({"sentence": sentence, "word": word})
+    output = runnable.stream({"sentence": sentence, "word": word})
 
     return output
 
